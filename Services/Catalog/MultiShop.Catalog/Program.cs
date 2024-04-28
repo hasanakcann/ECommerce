@@ -8,6 +8,8 @@ using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add services to the container.
+
 //Singleton Nedir?
 //Singleton bir tasarım şablonudur. Bellekte bir nesneden sadece bir tane olabilir. Her istek geldiğinde o nesne(aynı nesne) verilir. Program sonlanana kadar bellekte varlığını korur.
 
