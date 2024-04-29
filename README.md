@@ -1,5 +1,3 @@
-Makaleler:
-
 => Mikro Servis: https://medium.com/@furkanbegen/mikroservis-mimarisi-nedir-ve-avantajlar%C4%B1-nelerdir-1369175cc4e6
 
 => MongoDb: https://medium.com/@berkekurnaz/nedir-bu-mongodb-994a94a9d1df
