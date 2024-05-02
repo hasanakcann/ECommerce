@@ -1,11 +1,23 @@
 using MultiShop.Order.Application.Features.CQRS.Handlers.AddressHandlers;
 using MultiShop.Order.Application.Features.CQRS.Handlers.OrderDetailHandlers;
+using MultiShop.Order.Application.Interfaces;
+using MultiShop.Order.Application.Services;
+using MultiShop.Order.Persistance.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-//CQRS Registration - Handler'lar servis örneklerimiz oluyor.
+#region Repository Registration
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+#endregion
+
+#region Service Registration - MediatR
+builder.Services.AddApplicationService(builder.Configuration);
+#endregion
+
+#region CQRS Registration
+//Handler'lar servis örneklerimiz oluyor.
 builder.Services.AddScoped<GetAddressQueryHandler>();
 builder.Services.AddScoped<GetAddressByIdQueryHandler>();
 builder.Services.AddScoped<CreateAddressCommandHandler>();
@@ -17,6 +29,7 @@ builder.Services.AddScoped<GetOrderDetailByIdQueryHandler>();
 builder.Services.AddScoped<CreateOrderDetailCommandHandler>();
 builder.Services.AddScoped<UpdateOrderDetailCommandHandler>();
 builder.Services.AddScoped<RemoveOrderDetailCommandHandler>();
+#endregion
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
