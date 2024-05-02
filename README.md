@@ -1,4 +1,4 @@
-=> .Net Core Sürümleri: https://learn.microsoft.com/tr-tr/dotnet/standard/whats-new/whats-new-in-dotnet-standard?tabs=csharp
+=> .Net: https://learn.microsoft.com/tr-tr/dotnet/standard/whats-new/whats-new-in-dotnet-standard?tabs=csharp
 
 => Mikro Servis: https://medium.com/@furkanbegen/mikroservis-mimarisi-nedir-ve-avantajlar%C4%B1-nelerdir-1369175cc4e6
 
