@@ -10,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+#region Service Registration
 //Singleton Nedir?
 //Singleton bir tasarım şablonudur. Bellekte bir nesneden sadece bir tane olabilir. Her istek geldiğinde o nesne(aynı nesne) verilir. Program sonlanana kadar bellekte varlığını korur.
 
@@ -19,11 +20,11 @@ var builder = WebApplication.CreateBuilder(args);
 //Transient Nedir? 
 //Transient bir nevi Prototype tasarım şablonudur. Her istek geldiğinde istek başına bir tane nesne üretilir. Her seferinde yeni nesne üretildiği için performansı olumsuz etkileyebilir. İstek tamamlanmadan başka bir istek gelirse yenisi yaratılır eskisi verilmez. Transient ile Scoped farkı budur.
 
-//Registiration
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IProductDetailService, ProductDetailService>();
 builder.Services.AddScoped<IProductImageService, ProductImageService>();
+#endregion
 
 //AutoMapper kullanarak DTO sınıflarını oluşturduğumuzda, client tarafında göstermek istediğimiz alanları sınırlandırarak, gerçek nesnemizin güvenliğini sağlamış oluruz.
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
