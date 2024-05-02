@@ -13,3 +13,5 @@
 => Onion Mimarisi: https://fatih-gunalp.medium.com/1-asp-net-coreda-onion-mimarisine-genel-bak%C4%B1%C5%9F-67940d3c43d8
 
 => CQRS: https://sefikcankanber.medium.com/cqrs-command-query-responsibility-segregation-nedir-16b196376389
+
+=> Mediator: https://refactoring.guru/design-patterns/mediator
