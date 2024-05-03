@@ -54,6 +54,8 @@ https://www.docker.com/products/docker-desktop/
 
 https://medium.com/devopsturkiye/docker-ile-portainer-kurulumu-ve-portainera-h%C4%B1zl%C4%B1-bak%C4%B1%C5%9F-2fdcf2b31deb
 
+https://medium.com/devopsturkiye/portainer-ile-sunucular%C4%B1n%C4%B1z-%C3%BCzerinde-container-y%C3%B6netimi-sa%C4%9Flay%C4%B1n-6e39d539d46a#:~:text=Portainer'%C4%B1%20Docker%20%C3%BCzerinde%20%C3%A7al%C4%B1%C5%9Ft%C4%B1rarak,i%C5%9Fleminden%20sonra%20art%C4%B1k%20kullanmaya%20ba%C5%9Flayabiliriz.
+
 Portainer Kurulumu Cmd Komutları:
 
 docker volume create portainer_data
