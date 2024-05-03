@@ -30,7 +30,9 @@ https://refactoring.guru/design-patterns/mediator
 
 => Docker: 
 https://aws.amazon.com/tr/docker/
+
 https://medium.com/geeks-of-data/docker-101-yeni-ba%C5%9Flayanlar-i%C3%A7in-ad%C4%B1m-ad%C4%B1m-rehber-253e6b7cb9f6
+
 https://acokgungordu.medium.com/docker-serisi-docker-volumes-1c509f043f98
 
 Docker Kurulum:
@@ -41,5 +43,6 @@ https://medium.com/devopsturkiye/docker-ile-portainer-kurulumu-ve-portainera-h%C
 
 Portainer Kurulumu Cmd Komutları:
 docker volume create portainer_data
+
 docker run -d -p 8000:8000 -p 9000:9000 --name=portainer --restart=always -v /var/run/docker.sock:/van/docker.sock -v portainer_data:/data portainer/portainer-ce
 
