@@ -29,3 +29,6 @@ https://refactoring.guru/design-patterns/mediator
 https://aws.amazon.com/tr/docker/
 https://medium.com/geeks-of-data/docker-101-yeni-ba%C5%9Flayanlar-i%C3%A7in-ad%C4%B1m-ad%C4%B1m-rehber-253e6b7cb9f6
 https://acokgungordu.medium.com/docker-serisi-docker-volumes-1c509f043f98
+
+=> Portainer:
+https://medium.com/devopsturkiye/docker-ile-portainer-kurulumu-ve-portainera-h%C4%B1zl%C4%B1-bak%C4%B1%C5%9F-2fdcf2b31deb
