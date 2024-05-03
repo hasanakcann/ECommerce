@@ -32,3 +32,7 @@ https://acokgungordu.medium.com/docker-serisi-docker-volumes-1c509f043f98
 
 => Portainer:
 https://medium.com/devopsturkiye/docker-ile-portainer-kurulumu-ve-portainera-h%C4%B1zl%C4%B1-bak%C4%B1%C5%9F-2fdcf2b31deb
+Portainer Kurulumu Cmd Komutları:
+docker volume create portainer_data
+docker run -d -p 8000:8000 -p 9000:9000 --name=portainer --restart=always -v /var/run/docker.sock:/van/docker.sock -v portainer_data:/data portainer/portainer-ce
+
