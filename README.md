@@ -22,6 +22,8 @@ https://medium.com/@ecanyuksel/automapper-nedir-db05f85facd2
 
 https://atarikguney.medium.com/asenkron-asynchronous-programlama-nedir-296230121f9d
 
+
+
 => Dapper: 
 
 https://medium.com/software-development-turkey/micro-orm-lerin-kral%C4%B1-dapper-nedir-ec5838b115ac
@@ -74,7 +76,7 @@ docker container start portainer
 
 https://medium.com/innoviletech/net-core-mikroservis-mimarisinde-identityserver4-framework%C3%BC-932c82e2b88c
 
-IdentityServer4 Kurulumu Cmd Komutları
+IdentityServer4 Kurulumu Cmd Komutları:
 
 dotnet new -i identityserver4.templates
 
@@ -84,6 +86,19 @@ dotnet new is4aspid --name MultiShop.IdentityServer
 
 Do you want to run this action [Y(yes)|N(no)]?
 n
+
+Migration - VS Package Manager Console Komutları:
+
+add-migration mig1
+
+update-database
+
+Error:
+To change the IDENTITY property of a column, the column needs to be dropped and recreated
+
+Yukarıdaki hata alınırsa proje içerisindeki migrations klasörü silinir ve tekrar add-migration mig1 komutu çalıştırılır sonrasında update-database komutu çalıştırılır.
+
+
 
 
 
