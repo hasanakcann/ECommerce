@@ -70,7 +70,9 @@ docker run --rm -v portainer_data:/data portainer/helper-reset-password
 
 docker container start portainer
 
+=> Identity Server
 
+https://medium.com/innoviletech/net-core-mikroservis-mimarisinde-identityserver4-framework%C3%BC-932c82e2b88c
 
 
 
