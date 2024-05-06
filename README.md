@@ -75,6 +75,7 @@ docker container start portainer
 https://medium.com/innoviletech/net-core-mikroservis-mimarisinde-identityserver4-framework%C3%BC-932c82e2b88c
 
 IdentityServer4 Kurulumu Cmd Komutları
+
 dotnet new -i identityserver4.templates
 
 cd C:\Users\akcan\source\repos\MultiShop\IdentityServer
