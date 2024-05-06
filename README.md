@@ -100,6 +100,10 @@ Identity Server Version Değiştirme:
 
 https://learn.microsoft.com/en-us/answers/questions/1183067/could-not-load-file-or-assembly-system-runtime-ver
 
+Postman Kurulum:
+
+https://www.postman.com/downloads/
+
 => JWT(Json Web Tokens)
 
 https://tugrulbayrak.medium.com/jwt-json-web-tokens-nedir-nasil-calisir-5ca6ebc1584a
