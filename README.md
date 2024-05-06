@@ -96,7 +96,7 @@ update-database
 Error:
 To change the IDENTITY property of a column, the column needs to be dropped and recreated
 
-Yukarıdaki hata alınırsa proje içerisindeki migrations klasörü silinir ve tekrar add-migration mig1 komutu çalıştırılır sonrasında update-database komutu çalıştırılır.
+Yukarıdaki hata alınırsa proje içerisindeki migrations klasörü silinir ve tekrar add-migration mig1 komutu çalıştırılır sonrasında update-database komutu çalıştırılmalıdır.
 
 
 
