@@ -22,8 +22,6 @@ https://medium.com/@ecanyuksel/automapper-nedir-db05f85facd2
 
 https://atarikguney.medium.com/asenkron-asynchronous-programlama-nedir-296230121f9d
 
-
-
 => Dapper: 
 
 https://medium.com/software-development-turkey/micro-orm-lerin-kral%C4%B1-dapper-nedir-ec5838b115ac
@@ -98,7 +96,9 @@ To change the IDENTITY property of a column, the column needs to be dropped and 
 
 Yukarıdaki hata alınırsa proje içerisindeki migrations klasörü silinir ve tekrar sırasıyla add-migration mig1 komutu sonrasında da update-database komutu çalıştılır. Hata düzelecektir.
 
+Identity Server Version Değiştirme:
 
+https://learn.microsoft.com/en-us/answers/questions/1183067/could-not-load-file-or-assembly-system-runtime-ver
 
 
 
