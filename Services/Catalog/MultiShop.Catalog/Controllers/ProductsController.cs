@@ -10,9 +10,9 @@ namespace MultiShop.Catalog.Controllers
     {
         private readonly IProductService _productService;
 
-        public ProductsController(IProductService ProductService)
+        public ProductsController(IProductService productService)
         {
-            _productService = ProductService;
+            _productService = productService;
         }
 
         [HttpGet]

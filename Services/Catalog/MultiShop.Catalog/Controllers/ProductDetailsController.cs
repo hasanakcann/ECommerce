@@ -10,9 +10,9 @@ namespace MultiShop.Catalog.Controllers
     {
         private readonly IProductDetailService _productDetailService;
 
-        public ProductDetailsController(IProductDetailService ProductDetailService)
+        public ProductDetailsController(IProductDetailService productDetailService)
         {
-            _productDetailService = ProductDetailService;
+            _productDetailService = productDetailService;
         }
 
         [HttpGet]
