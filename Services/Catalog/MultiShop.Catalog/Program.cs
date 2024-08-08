@@ -24,7 +24,6 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IProductDetailService, ProductDetailService>();
 builder.Services.AddScoped<IProductImageService, ProductImageService>();
-#endregion
 
 //AutoMapper kullanarak DTO sınıflarını oluşturduğumuzda, client tarafında göstermek istediğimiz alanları sınırlandırarak, gerçek nesnemizin güvenliğini sağlamış oluruz.
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
@@ -35,6 +34,7 @@ builder.Services.AddScoped<IDatabaseSettings>(serviceProvider =>
 {
     return serviceProvider.GetRequiredService<IOptions<DatabaseSettings>>().Value;
 });
+#endregion
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
