@@ -12,7 +12,7 @@ using MultiShop.Order.Persistance.Context;
 namespace MultiShop.Order.Persistance.Migrations
 {
     [DbContext(typeof(OrderContext))]
-    [Migration("20240504154231_mig1")]
+    [Migration("20240810153511_mig1")]
     partial class mig1
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace MultiShop.Order.Persistance.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.4")
+                .HasAnnotation("ProductVersion", "8.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);

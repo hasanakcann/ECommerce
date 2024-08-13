@@ -1,11 +1,14 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MultiShop.IdentityServer.Dtos;
 using MultiShop.IdentityServer.Models;
 using System.Threading.Tasks;
+using static IdentityServer4.IdentityServerConstants;
 
 namespace MultiShop.IdentityServer.Controllers
 {
+    [Authorize(LocalApi.PolicyName)]
     [Route("api/[controller]")]
     [ApiController]
     public class RegistersController : ControllerBase
@@ -23,9 +26,9 @@ namespace MultiShop.IdentityServer.Controllers
             var values = new ApplicationUser()
             {
                 UserName = userRegisterDto.UserName,
-                Email = userRegisterDto.Email,
                 Name = userRegisterDto.Name,
-                SurName = userRegisterDto.SurName
+                Surname = userRegisterDto.Surname,
+                Email = userRegisterDto.Email
             };
             var result = await _userManager.CreateAsync(values, userRegisterDto.Password);
             if (result.Succeeded)
@@ -34,7 +37,7 @@ namespace MultiShop.IdentityServer.Controllers
             }
             else
             {
-                return Ok("Kullanıcı eklenirken bir hata oluştu, lütfen daha sonra tekrar deneyiniz.");
+                return Ok("Bir hata oluştu, tekrar deneyiniz");
             }
         }
     }

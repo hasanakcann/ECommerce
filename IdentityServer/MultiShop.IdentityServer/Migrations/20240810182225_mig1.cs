@@ -41,7 +41,7 @@ namespace MultiShop.IdentityServer.Migrations
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
                     Name = table.Column<string>(nullable: true),
-                    SurName = table.Column<string>(nullable: true)
+                    Surname = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {

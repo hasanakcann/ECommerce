@@ -10,7 +10,7 @@ using MultiShop.IdentityServer.Data;
 namespace MultiShop.IdentityServer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240506144343_mig1")]
+    [Migration("20240810182225_mig1")]
     partial class mig1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -200,7 +200,7 @@ namespace MultiShop.IdentityServer.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("SurName")
+                    b.Property<string>("Surname")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("TwoFactorEnabled")

@@ -1,0 +1,432 @@
+﻿=> Identity Micro Service <=
+
+Identity Makale: https://medium.com/innoviletech/net-core-mikroservis-mimarisinde-identityserver4-framework%C3%BC-932c82e2b88c
+
+Authentication ve Authorization farkı:
+Authentication login işlemi esnasında yapılan işlemlerdir.
+Authorization ise login olduktan sonraki yetkilendirme işlemlerinin yapıldığı yerdir.
+
+Solution'da Open Folder in File Explorer tıklanarak dosya dizinine gidilir. Dizene IdentityServer adında yeni bir folder oluşturulur.
+C:\Users\akcan\source\repos\MultiShop
+
+=> IdentityServer4 Framework'ü Kurulumu Cmd Komutları:
+dotnet new -i identityserver4.templates
+
+cd C:\Users\akcan\source\repos\MultiShop\IdentityServer
+
+dotnet new is4aspid --name MultiShop.IdentityServer
+
+Do you want to run this action [Y(yes)|N(no)]? n
+
+Visual Studio da Solution'a IdentityServer folder'ı oluşturulur.
+IdentityServer -> Add -> Existing Project -> MultiShop -> IdentityServer -> MultiShop.IdentityServer -> MultiShop.IdentityServer.csproj seçilir.
+Visual Studio'da Proje adı MultiShop.IdentityServer seçilir ve SelfHost ile çalıştırılırsa:
+https://localhost:5001/ portu ile Welcome to IdentityServer4 web sayfası görüntülenir.
+
+-> Visual Studio da MultiShop.IdentityServer için Manage Nuget Package'da:
+Microsoft.EntityFrameworkCore.SqlServer Version="3.1.5" kurulur. 3.1.5 ücretsiz olduğu için kuruldu.
+
+MultiShop.IdentityServer\Model\ApplicationUser class'ına property eklendi.
+
+MultiShop.IdentityServer\appsettings.json'da connection string:
+"Server=localhost,1433; initial Catalog=MultiShopIdentityDb; User=sa; Password=123456aA*; TrustServerCertificate=true"
+
+3.1.5 versiyonu olduğu için Startup class'ı bulunuyor.
+MultiShop.IdentityServer\Startup class'ında ConfigureServices metodunda UseSqlServer yapmak gerekiyor. Default olarak UseSqlite kullanıyor.
+ services.AddDbContext<ApplicationDbContext>(options =>
+     options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+	 
+-> Proje MultiShop.IdentityServer seçili ve Package Manager Console da migration işlemi yapılır.
+
+=> Migration - Visual Studio - Package Manager Console Komutları:
+
+add-migration mig1
+
+update-database
+
+Error: To change the IDENTITY property of a column, the column needs to be dropped and recreated
+
+Yukarıdaki hata alınırsa proje içerisindeki migrations klasörü silinir ve tekrar sırasıyla add-migration mig1 komutu sonrasında da update-database komutu çalıştılır. Hata düzelecektir.
+
+Error: There is already an object named 'AspNetRoles' in the database.
+DBeaver'da master'da bulunan MultiShopIdentityDb silinir.
+Visual Studio Package Manager Console'da update-database komutu çalıştırılır.
+ApplicationUser class'ına eklediğim Name ve Surname property'leri MultiShopIdentityDb'de bulunan AspNetUsers tablosuna sütun olarak yansıdı.
+
+Register İşlemi:
+MultiShop.IdentityServer'da Dtos adında yeni bir folder açıyorum. 
+UserRegisterDto class'ı oluşturuyorum. Property'leri oluşturuyorum.
+
+MultiShop.IdentityServer'da Controllers folder'ı oluşturulur.
+API Controller -> RegistersController oluşturulur.
+
+Identity Server Version Değiştirme:
+https://learn.microsoft.com/en-us/answers/questions/1183067/could-not-load-file-or-assembly-system-runtime-ver
+MultiShop.IdentityServer\Properties çift tıklanır Target Framework değiştirilir. .NET 8.0
+Proje SelfHost ile çalıştırıldığında Welcome to IdentityServer4 (version 4.0.0) arayüzü görülür.
+
+Postman Kurulu: 
+https://www.postman.com/downloads/
+
+-> Postman üzerinden API testi:
+Uygulama ayaktayken postman açılır.
+
+Postman'de
+POST işlemi seçilir. URL: https://localhost:5001/api/Registers
+Body:
+{
+   "UserName": "hasan01",
+   "Name":"Hasan",
+   "Surname":"Akcan",
+   "Email": "hasan@gmail.com",
+   "Password":"111111aA*"
+}
+
+Send butonu tıklanır.
+
+-> Http: 500 hatası alınırsa versiyonları güncellemek gerekiyor.
+MultiShop.IdentityServer çift tıklanır versiyonlar 8.0.7'ye upgrade edilir.
+<PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="8.0.7" />
+<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.7" />
+<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.7" />
+<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.7">
+<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.7" />
+<PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.7" />
+
+Proje tekrar ayağa kaldırılır ve Postman üzerinden istek atılır.
+Kullanıcı başarıyla eklenir.
+
+DBeaver'da MultiShopIdentityDb'de AspNetUsers tablosunda kaydın geldiği görülür.
+
+Postman üzerinden aşağıdaki gibi istek gönderirsem password istenilen formatta olmadığı için hata alırım. 
+{
+   "UserName": "mehmet01",
+   "Name":"Mehmet",
+   "Surname":"Akcan",
+   "Email": "mehmet@gmail.com",
+   "Password":"0"
+}
+
+{
+   "UserName": "mehmet01",
+   "Name":"Mehmet",
+   "Surname":"Akcan",
+   "Email": "mehmet@gmail.com",
+   "Password":"111111aA*"
+}
+
+{
+   "UserName": "merve01",
+   "Name":"Merve",
+   "Surname":"Akcan",
+   "Email": "merve@gmail.com",
+   "Password":"111111aA*"
+}
+
+Bu kısma kadar kullanıcı oluşturma işlemi yapıldı.
+
+=> Kullanıcılar ile token'nın IdentityServer mikro servisi üzerinden alınması:
+Json Web Token Makale: https://tugrulbayrak.medium.com/jwt-json-web-tokens-nedir-nasil-calisir-5ca6ebc1584a
+
+=> Authentication: Kimlik doğrulama işlemidir. Kullanıcı adı, şifre gibi bilgilerin doğrulanmasıdır.
+=> Authorization: Sisteme giriş için yetki kontrolüdür.
+
+JWT: https://jwt.io/
+
+-> Veritabanına ihtiyaç olmadan token kullanılabilir.
+
+=> MultiShop.IdentityServer'da Config dosyasının düzenlenmesi:
+Config class'ında çeşitli yetkilere sahip kullancıların yaptığı işlemler bulunur. 
+IdentityServer'dan gelen config class'ı içerisindeki kodlar kapatıldı. Config class'ı düzenlendi.
+
+Config Client İşlemleri
+-> Visitor - Ziyaretçi
+-> Manager - Yönetici
+-> Admin - Tüm sisteme erişimi olan kullanıcı
+
+=> MultiShop.IdentityServer'da Startup class'ında config tarafında eklediğimiz ApiResource register edilir.
+.AddInMemoryApiResources(Config.ApiResources)
+
+=> Token Alma İşlemi:
+-> Visiual Studio'da uygulama MultiShop.IdentityServer seçilir ve SelfHost ile ayağa kaldırılır.
+Postman üzerinden token alma işlemi yapılır.
+https://localhost:5001/connect/token adresine gideriz. Identity üzerinden token almamızı sağlayan URL
+POST işlemi yapılır.
+Body - x-www-form-urlencoded seçilir.
+
+AccessTokenLifetime tanımlanmazsa default expires_in 3600 olur.
+
+=> Visitor
+Key				    Value
+client_id		    MultiShopVisitorId
+client_secret		multishopsecret
+grant_type			client_credentials
+
+SEND butonu tıklanır.
+
+{
+    "access_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IkEyNzNCQTM4RTNEODBGQ0Q2RUE2OThBMzE1ODRENzA3IiwidHlwIjoiYXQrand0In0.eyJuYmYiOjE3MjM0NTg0ODcsImV4cCI6MTcyMzQ2MjA4NywiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NTAwMSIsImF1ZCI6WyJSZXNvdXJjZUNhdGFsb2ciLCJodHRwczovL2xvY2FsaG9zdDo1MDAxL3Jlc291cmNlcyJdLCJjbGllbnRfaWQiOiJNdWx0aVNob3BWaXNpdG9ySWQiLCJqdGkiOiJGODQ0NjFGQTdCN0NFRDA2NTdDNDhCODU1NUI0NTk0QyIsImlhdCI6MTcyMzQ1ODQ4Nywic2NvcGUiOlsiQ2F0YWxvZ1JlYWRQZXJtaXNzaW9uIl19.Nca9AR4UKJn2tFTcUiF5JjAePjaM-zlLKAo51aD51S_zTFissZEOsAFA9voJ5zrgXPNWWBv2T7ht9k2UEFOHzOLMvOh7aHZ4MymJCpsMINjV27MjZW51jQI1IcEWOxIyzD9eM_QIVoHY7Qi-PFzj1fcR9Yo__fB2Eh1_y7chbSgqhUpNNrQvw6k-fpGXs6UOm4tZtafHInglL0Sfzl5IzfHtScchrKuIUFdTepXZRhgChgF2Xzjsq7lAePV4PEsQgStf1VVxgOgrpCw2Spvq2FLEL9HFG9R-GL_jI6FcBCNACkojoW1fbisD1MU-JPTxxcSVv2ulUxa23LOoyK3QWA",
+    "expires_in": 3600,
+    "token_type": "Bearer",
+    "scope": "CatalogReadPermission"
+}
+
+Oluşan Token cpoy yapılır ve https://jwt.io/ adresinde Encoded alanına paste edilir. Payload alanında data görüntülenir.
+
+{
+  "nbf": 1723458487,
+  "exp": 1723462087,
+  "iss": "https://localhost:5001",
+  "aud": [
+    "ResourceCatalog",
+    "https://localhost:5001/resources"
+  ],
+  "client_id": "MultiShopVisitorId",
+  "jti": "F84461FA7B7CED0657C48B8555B4594C",
+  "iat": 1723458487,
+  "scope": [
+    "CatalogReadPermission"
+  ]
+}
+
+=> Manager
+{
+    "access_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IkEyNzNCQTM4RTNEODBGQ0Q2RUE2OThBMzE1ODRENzA3IiwidHlwIjoiYXQrand0In0.eyJuYmYiOjE3MjM0NTg4MDYsImV4cCI6MTcyMzQ2MjQwNiwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NTAwMSIsImF1ZCI6WyJSZXNvdXJjZUNhdGFsb2ciLCJodHRwczovL2xvY2FsaG9zdDo1MDAxL3Jlc291cmNlcyJdLCJjbGllbnRfaWQiOiJNdWx0aVNob3BNYW5hZ2VySWQiLCJqdGkiOiIyRDNENjBBNTUwMjkzMUQ4QzJERUM3NUY0NEI5MDlCQyIsImlhdCI6MTcyMzQ1ODgwNiwic2NvcGUiOlsiQ2F0YWxvZ0Z1bGxQZXJtaXNzaW9uIiwiQ2F0YWxvZ1JlYWRQZXJtaXNzaW9uIl19.Ju82flMT1fWadZuCzECbXXEz7CeM9n1VamUiwE38JgSGvpsvfybRj1GGtsC4EfktzGJBa6KpLnoZ7cXBNpkKPBAH6mTOlVBoNvyVi-U9nQKo9DYjDGG_F3MsSinTMF121akMqDUYBoZnrSFhAQdl17uQHPxnfUhFgM5K5pYIOaRqGy1I-OGaWhzF0hzlRbFNnPZE3xiwIZtJcc5T5bRY8mAkANC2TLnBYO5kzuH063XdZ0jYvv3-zrGxQn0STIUAxDWLeyAmhBGH4p9Fyqc6RrKyiP6f36M2exAHi_j06FXhM-l2gEiSGSG1LLkAVirT_W00VQaMNGOzLQUqsho_CA",
+    "expires_in": 3600,
+    "token_type": "Bearer",
+    "scope": "CatalogFullPermission CatalogReadPermission"
+}
+
+{
+  "nbf": 1723458806,
+  "exp": 1723462406,
+  "iss": "https://localhost:5001",
+  "aud": [
+    "ResourceCatalog",
+    "https://localhost:5001/resources"
+  ],
+  "client_id": "MultiShopManagerId",
+  "jti": "2D3D60A5502931D8C2DEC75F44B909BC",
+  "iat": 1723458806,
+  "scope": [
+    "CatalogFullPermission",
+    "CatalogReadPermission"
+  ]
+}
+
+=> Admin
+{
+    "access_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IkEyNzNCQTM4RTNEODBGQ0Q2RUE2OThBMzE1ODRENzA3IiwidHlwIjoiYXQrand0In0.eyJuYmYiOjE3MjM0NTg5MTgsImV4cCI6MTcyMzQ1OTUxOCwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NTAwMSIsImF1ZCI6WyJSZXNvdXJjZUNhdGFsb2ciLCJSZXNvdXJjZURpc2NvdW50IiwiUmVzb3VyY2VPcmRlciIsImh0dHBzOi8vbG9jYWxob3N0OjUwMDEvcmVzb3VyY2VzIl0sImNsaWVudF9pZCI6Ik11bHRpU2hvcEFkbWluSWQiLCJqdGkiOiJDQTVFQjM1RkZBMjU5MUM3QzMyNEUwQURFNTU4RUY0MCIsImlhdCI6MTcyMzQ1ODkxOCwic2NvcGUiOlsiQ2F0YWxvZ0Z1bGxQZXJtaXNzaW9uIiwiQ2F0YWxvZ1JlYWRQZXJtaXNzaW9uIiwiRGlzY291bnRGdWxsUGVybWlzc2lvbiIsIk9yZGVyRnVsbFBlcm1pc3Npb24iXX0.EA-bNHWEoysRSpmMxi-6wU472h6npjUnvZJg4KEudvPLbXw4eHOMJ2Gc0hoFzig0x39yIkq6vHTZjU7uwI-l_H8hsQoWSnooloC-xZB4y_tql62-IcFIEVuaHY_eS554dgJcoNt22k3VG8Dc0ikLwr5Wc1TBpmORQrEoOgrSVllUcptrmKdomK1ek6mikhG36Ro29k7jfknrFhmyiYRmwBbV_sWWDoI0IJIN40ZA7xJojYejEk8lW6Cd9aAuHUvPvZtmtqhH99ml2Y6LD2-EHc8ONpD9FAHWFUkUl-X8XoaDsHrBWaR2a2MLLBPeioB1MG0I7VhENj05hnzWQe2YVA",
+    "expires_in": 600,
+    "token_type": "Bearer",
+    "scope": "CatalogFullPermission CatalogReadPermission DiscountFullPermission OrderFullPermission"
+}
+
+{
+  "nbf": 1723458918,
+  "exp": 1723459518,
+  "iss": "https://localhost:5001",
+  "aud": [
+    "ResourceCatalog",
+    "ResourceDiscount",
+    "ResourceOrder",
+    "https://localhost:5001/resources"
+  ],
+  "client_id": "MultiShopAdminId",
+  "jti": "CA5EB35FFA2591C7C324E0ADE558EF40",
+  "iat": 1723458918,
+  "scope": [
+    "CatalogFullPermission",
+    "CatalogReadPermission",
+    "DiscountFullPermission",
+    "OrderFullPermission"
+  ]
+}
+
+=> Mikro Servislerin Koruma Altına Alınması: <=
+İlk olarak Identity Micro Service'i koruma altına alındı.
+
+MultiShop.IdentityServer Startup class'ın da ConfigureServices'da 
+services.AddLocalApiAuthentication(); metodu eklenir.
+MultiShop.IdentityServer Startup class'ın da Configure'da
+app.UseAuthentication(); metodu da eklenir.
+
+MultiShop.IdentityServer\Controllers\RegistersController class'ında
+[Authorize(LocalApi.PolicyName)] attribute eklenir. Bu sayede koruma altına alınır. IdentityServerAccessToken'a sahip olmak zorundalar.
+
+Uygulama ayağa kaldırılır ve testi yapılır.
+Postman üzerinde:
+https://localhost:5001/api/Registers -> Url 
+
+{
+   "UserName": "mukaddes01",
+   "Name":"Mukaddes",
+   "Surname":"Akcan",
+   "Email": "mukaddes@gmail.com",
+   "Password":"111111aA*"
+}
+
+SEND butonu tıklanır.
+
+401 Unauthorized hatası alınır. Erişim yetkisinin olmadığını belirtir.
+
+Config class'ında ApiResources da:
+new ApiResource(IdentityServerConstants.LocalApi.ScopeName) eklenir.
+
+Config class'ında ApiScopes da: 
+new ApiScope(IdentityServerConstants.LocalApi.ScopeName) eklenir.
+
+Admin:
+POST
+https://localhost:5001/connect/token -> URL
+
+{
+    "access_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IkEyNzNCQTM4RTNEODBGQ0Q2RUE2OThBMzE1ODRENzA3IiwidHlwIjoiYXQrand0In0.eyJuYmYiOjE3MjM0NjU1MjksImV4cCI6MTcyMzQ2NjEyOSwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NTAwMSIsImF1ZCI6WyJSZXNvdXJjZUNhdGFsb2ciLCJSZXNvdXJjZURpc2NvdW50IiwiUmVzb3VyY2VPcmRlciIsImh0dHBzOi8vbG9jYWxob3N0OjUwMDEvcmVzb3VyY2VzIl0sImNsaWVudF9pZCI6Ik11bHRpU2hvcEFkbWluSWQiLCJqdGkiOiJFM0Y0RjU3NThGRTJCODE4OTQxQjBBNzQ3NjA5MDcyRSIsImlhdCI6MTcyMzQ2NTUyOSwic2NvcGUiOlsiQ2F0YWxvZ0Z1bGxQZXJtaXNzaW9uIiwiQ2F0YWxvZ1JlYWRQZXJtaXNzaW9uIiwiRGlzY291bnRGdWxsUGVybWlzc2lvbiIsIklkZW50aXR5U2VydmVyQXBpIiwiT3JkZXJGdWxsUGVybWlzc2lvbiJdfQ.NZFJhbbT58vZjwHsb_H7ZM2tbrINsvtGmIvqKJcVnaSz0I0-YtY386RWS-ZcO3GdM9el0X4UjvMegG9yhMwlzukTLeVpc5HSeFasZUD_-jJ0wt_zE-i_7IG0wbAkbXFownn0zcZGnm7QVPr6i_sx4xqYp6TAQCTM1AAntyRt3Rm52aMkgXBlZb7CdqIVO_aAPsRsvQ8yxlxcIRQvVCzT5atjUfi0PL4ajE6RkYjhQp5pV_h1bEhYUGVtgNWxt5fhbReFeg4465XbSfCtRhlxolLgQI3WcixBwXIs36s96grrG4CNEl6357TYITka20NtK7MUuHV9F_ITUMzFL9lIsA",
+    "expires_in": 600,
+    "token_type": "Bearer",
+    "scope": "CatalogFullPermission CatalogReadPermission DiscountFullPermission IdentityServerApi OrderFullPermission"
+}
+
+https://jwt.io/'da access_token Encoded alanına yapıştırılır.
+
+{
+  "nbf": 1723465529,
+  "exp": 1723466129,
+  "iss": "https://localhost:5001",
+  "aud": [
+    "ResourceCatalog",
+    "ResourceDiscount",
+    "ResourceOrder",
+    "https://localhost:5001/resources"
+  ],
+  "client_id": "MultiShopAdminId",
+  "jti": "E3F4F5758FE2B818941B0A747609072E",
+  "iat": 1723465529,
+  "scope": [
+    "CatalogFullPermission",
+    "CatalogReadPermission",
+    "DiscountFullPermission",
+    "IdentityServerApi",
+    "OrderFullPermission"
+  ]
+}
+
+Yeni bir token ile işlem tekrar denenir. Başarılı bir şekilde kayıt eklenir.
+Admin'den token alınır.
+{
+    "access_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IkEyNzNCQTM4RTNEODBGQ0Q2RUE2OThBMzE1ODRENzA3IiwidHlwIjoiYXQrand0In0.eyJuYmYiOjE3MjM0NjU5MTEsImV4cCI6MTcyMzQ2NjUxMSwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NTAwMSIsImF1ZCI6WyJSZXNvdXJjZUNhdGFsb2ciLCJSZXNvdXJjZURpc2NvdW50IiwiUmVzb3VyY2VPcmRlciIsImh0dHBzOi8vbG9jYWxob3N0OjUwMDEvcmVzb3VyY2VzIl0sImNsaWVudF9pZCI6Ik11bHRpU2hvcEFkbWluSWQiLCJqdGkiOiI0RTFCOEQzRjZGRENCMTg1QTY0RDUzMUE5OTNCRUMyMiIsImlhdCI6MTcyMzQ2NTkxMSwic2NvcGUiOlsiQ2F0YWxvZ0Z1bGxQZXJtaXNzaW9uIiwiQ2F0YWxvZ1JlYWRQZXJtaXNzaW9uIiwiRGlzY291bnRGdWxsUGVybWlzc2lvbiIsIklkZW50aXR5U2VydmVyQXBpIiwiT3JkZXJGdWxsUGVybWlzc2lvbiJdfQ.eqiZ_eH6sPA9BynJ0xbBBO1J4saakDDjI80-tB5WiiapckMvoUwr6PprKAYpECWFdjrFMbrvandZyVpftTYh8PXgE9mr7XaYk_6sbhzpDVBt0PVLWA7lvmkH-M29ajSb0ZBvr3k6XY5wIO34FrldRmhHHwJgkWxxOkI3eIXjTcDeKvJuBgz8tn7ZnFZVRA_vpzU_1_909vJmajNS7evFhQyTrkrkuzPLmmNO9n-ZwTGaxR3FQWfJhcsdusmZyo2-SeHbj9AbZWApkfp4wj7GdBRjKmsoGvLQzYDV5R_Z6T0_v3BsxxeUQ9SvKZEa56qxBJfp0pQ4dkRrhWjGVNkQWA",
+    "expires_in": 600,
+    "token_type": "Bearer",
+    "scope": "CatalogFullPermission CatalogReadPermission DiscountFullPermission IdentityServerApi OrderFullPermission"
+}
+
+POST - https://localhost:5001/api/Registers - URL
+Authorization - AuthType -> OAuth2.0 seçilir token yapıştılır. SEND butonu tıklanır ve kayıt başarılı şekilde veritabanına kaydedilir.
+
+-> DBeaver'da 1433 MultiShopIdentityDb AspNetUsers tablosunda 
+mukaddes01'in kaydedildiği görülür.
+
+Visitor:
+{
+    "access_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IkEyNzNCQTM4RTNEODBGQ0Q2RUE2OThBMzE1ODRENzA3IiwidHlwIjoiYXQrand0In0.eyJuYmYiOjE3MjM0NjY1MDIsImV4cCI6MTcyMzQ3MDEwMiwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NTAwMSIsImF1ZCI6WyJSZXNvdXJjZUNhdGFsb2ciLCJodHRwczovL2xvY2FsaG9zdDo1MDAxL3Jlc291cmNlcyJdLCJjbGllbnRfaWQiOiJNdWx0aVNob3BWaXNpdG9ySWQiLCJqdGkiOiI1MjcwQ0IzQjM3RTYyMzI3NjI5RUQ1RURBRUE2NDBGNyIsImlhdCI6MTcyMzQ2NjUwMiwic2NvcGUiOlsiQ2F0YWxvZ1JlYWRQZXJtaXNzaW9uIl19.Y_Wqy62e9cZ0L6k26YAJ5xCdus4Q-mkSMkhx8jjrrMJsp3GhMzTLyY-OklZqmjMQaDzalR3Z1kor4C583da7k0HRIute2d7KrUFGH1pFWZCsuaF8fbzZtFAMEb8yYCX_n_u88WByXCEPrc8WUpN6aMAn9GvWjVOiZMsP6WzxDtYNFa5r2HwkEbVqXWaiaNhcDN6W95d1P49HoXX1W6z6fKrNi12XHvRYOCSQGZw99RGESj4HuShZL1YdQxavTwWid9gPLmY7oBfK8nXWO7eM6JZEN7CRi43umfa_5DcG1tkxNfLuBVDJVwfCluXbAqNaxvICuAgEX86mM96sXK0J_w",
+    "expires_in": 3600,
+    "token_type": "Bearer",
+    "scope": "CatalogReadPermission"
+}
+
+Config'de IdentityServerConstants.LocalApi.ScopeName ekli olmadığı için 401 hatası alır.
+
+Manager:
+{
+    "access_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IkEyNzNCQTM4RTNEODBGQ0Q2RUE2OThBMzE1ODRENzA3IiwidHlwIjoiYXQrand0In0.eyJuYmYiOjE3MjM0NjY1NTgsImV4cCI6MTcyMzQ3MDE1OCwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NTAwMSIsImF1ZCI6WyJSZXNvdXJjZUNhdGFsb2ciLCJodHRwczovL2xvY2FsaG9zdDo1MDAxL3Jlc291cmNlcyJdLCJjbGllbnRfaWQiOiJNdWx0aVNob3BNYW5hZ2VySWQiLCJqdGkiOiIwMEE3NUI4Mzc1RkE3QTIyNUI5RDhENDE0NDU1RkRDMSIsImlhdCI6MTcyMzQ2NjU1OCwic2NvcGUiOlsiQ2F0YWxvZ0Z1bGxQZXJtaXNzaW9uIiwiQ2F0YWxvZ1JlYWRQZXJtaXNzaW9uIl19.IH6xbmGDxpdtDIvjfSHRuQukjcpRS4R8ido2MtxSKzACFgfWXZlDC10GGB3pBeW9eNsWFn60DQFjDcmHAu25LcYg0D-AaDulaiYYmriII86t-pkYPjk8fAvnRNTb-JFiA66j4VyBtXeTx4Ed18j9jf_cSbFlcb3E3kvER3mey7PnCUBTEofi4A59j8AKDxmHkRX1yW2jGBp4vzwWopRS3nJ3X_bdRt01cnPLvY88j9eM8O9xmMn4C1oLO87iDEOFq7pxrdcIsgY45aysrDBTz9mLDp6sooI6YPSkYZRFFP6iGuec6xN6bFqxmag3wssOPUyQsVOiMaMJJ6fsTx9YXg",
+    "expires_in": 3600,
+    "token_type": "Bearer",
+    "scope": "CatalogFullPermission CatalogReadPermission"
+}
+Config'de IdentityServerConstants.LocalApi.ScopeName ekli olmadığı için 401 hatası alır.
+
+POST - https://localhost:5001/api/Registers - URL
+{
+   "UserName": "taner01",
+   "Name":"Taner",
+   "Surname":"Öztürk",
+   "Email": "taner@gmail.com",
+   "Password":"111111aA*"
+}
+Kaydı oluşturulur.
+
+=> Catalog micro service bearer token uygulaması:
+
+-> İlk olarak Catalog mikro servisine paket yüklenir: 
+Microsoft.AspNetCore.Authentication.JwtBearer
+
+-> Catalog mikro servisinde Program.cs class'ında:
+Authentication region'ındaki kodlar eklenir.
+
+-> Catalog mikro servisinde appsettings.json'da:
+IdentityServerUrl tanımlanır.
+
+-> IdentityServer Config'de Visitor AllowedScopes = { "DiscountFullPermission" } değiştirildi.
+
+-> Catalog Program.cs class'ında: 
+app.UseAuthentication(); eklenir.
+
+-> MultiShop.IdentityServer\Properties\launchSettings.json da https olan url'ler http olarak değiştirilir.
+
+-> MultiShop.Catalog\Controllers\CategoriesController ve MultiShop.Catalog\Controllers\ProductsController'a: 
+[Authorize] attribute kullanılır. Login olma zorunluluğu eklenir.
+
+-> Catalog Micro Service Testi:
+IdentityServer ve Catalog birlikte ayağa kaldırılacak.
+Visual Studio'da SelfHost'un yanında bulunan v ikondan Configure Startup Projects seçilir.
+Multiple startup projects seçilir. Catalog ve IdentityServer Start olarak işaretlenir.
+Start edilerek proje çalıştırılır. 2 mikro servise ait sekmeler açılır.
+
+https://localhost:7096/swagger/index.html -> Catalog Micro Service
+
+http://localhost:5001/ -> IdentityServer Micro Service
+
+Postman'de yeni bir sekme açılır:
+GET https://localhost:7096/api/Categories Url postman'e yapıştırılır.
+GET https://localhost:7096/api/Products Url postman'e yapıştırılır.
+
+Catalog mikro servisi koruma altına alınmış olur.
+
+=> Discount Micro Service Testi:
+Microsoft.AspNetCore.Authentication.JwtBearer paket eklenir.
+
+Discount\Program.cs class'ında Authentication kodları eklendi.
+app.UseAuthentication(); eklenir.
+
+Discount\Controller\DiscountController class'ında [Authorize] attribute eklenerek login olma zorunluluğu getirilir.
+Visual Studio'da SelfHost'un yanında bulunan v ikondan Configure Startup Projects seçilir.
+Multiple startup projects seçilir. Discount Start olarak işaretlenir.
+
+-> Discount mikro servisinde appsettings.json'da:
+IdentityServerUrl tanımlanır.
+
+https://localhost:7189/api/Discounts ile ayağa kalkar.
+
+Postman üzerinde Testi:
+Visitor için token alınır ve Discount mikro servisi için:
+GET https://localhost:7189/api/Discounts Url'ine SEND ile istek atılır.
+
+-> Order Mikro servisinin token ile koruma altına alınması:
+Order\Presentation\MultiShop.Order.WebApi -> Manage Nuget Package'da Microsoft.AspNetCore.Authentication.JwtBearer paketi eklenir.
+
+MultiShop.Order.WebApi'de program.cs class'ında Authentication ile ilgili düzenlemeler yapılmıştır.
+MultiShop.Order.WebApi'de appsettings.json'da IdentityServerUrl tanımlanır.
+
+MultiShop.Order.WebApi\Controllers'da AddressesController - OrderDetailsController - OrderingsController [Authorize] attribute eklenir.
+
+Visual Studio'da SelfHost'un yanında bulunan v ikondan Configure Startup Projects seçilir.
+Multiple startup projects seçilir. MultiShop.Order.WebApi Start olarak işaretlenir.
+
+Proje start edilir.
+
+Postman'de test edilir.
+Admin için tokan alınır ve alınan token ile GET https://localhost:7072/api/Addresses istek atılır.
+Admin için tokan alınır ve alınan token ile GET https://localhost:7072/api/OrderDetails istek atılır.
+Admin için tokan alınır ve alınan token ile GET https://localhost:7072/api/Orderings istek atılır.
+
+Order mikro servisi token ile koruma altına alındı.

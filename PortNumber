@@ -1,0 +1,17 @@
+﻿Tarayıcı Düzenlemesi:
+
+IdentityServer - Catalog - Discount Multiple Startup Project olarak işaretli.
+Birden çok mikro servis ayağa kalktığında farklı portlarda sekmeler açılmakta.
+
+-> IdentityServer\Properties\launchSettings.json da launchBrowser false set edildi. 5001 portu default değeriyle kullanılıyor.
+
+-> Catalog\Properties\launchSettings.json'da düzenlemeler yapıldı. 7070 portu setlendi.
+Uygulama çalıştırıldığında Catalog mikro servisine ait sekme açılmadı.
+
+-> Discount\Properties\launchSettings.json'da düzenlemeler yapıldı.
+Postman'de test:
+Visitor da Discount için token alınır ve 7071 portunda denenir.
+GET https://localhost:7071/api/Discounts 
+
+-> Order 
+MultiShop.Order.WebApi\Properties\launchSettings.json'da launchBrowser false set edildi. 7072 portu setlendi.

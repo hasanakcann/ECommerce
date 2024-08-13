@@ -29,14 +29,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MultiShop.Order.Persistance
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MultiShop.Order.WebApi", "Services\Order\Presentation\MultiShop.Order.WebApi\MultiShop.Order.WebApi.csproj", "{79844263-EE28-4DC0-9185-6E9C493DFB6C}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IdentityServer", "IdentityServer", "{05199B91-A684-464E-A877-B109C2ECD5E7}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MultiShop.IdentityServer", "IdentityServer\MultiShop.IdentityServer\MultiShop.IdentityServer.csproj", "{E46CDE87-C031-45D3-BFAD-721F11D126F8}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{A9BC4743-0B18-4AA2-AC82-F47BB2ACC1C3}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ReadMe", "ReadMe", "{A9BC4743-0B18-4AA2-AC82-F47BB2ACC1C3}"
 	ProjectSection(SolutionItems) = preProject
-		Documents. = Documents.
+		CatologMicroService = CatologMicroService
+		DiscountMicroService = DiscountMicroService
+		ECommerce = ECommerce
+		IdentityMicroService = IdentityMicroService
+		OrderMicroService = OrderMicroService
+		PortNumber = PortNumber
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IdentityServer", "IdentityServer", "{5CA6FC3E-2704-4148-A850-0762FCE240E9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MultiShop.IdentityServer", "IdentityServer\MultiShop.IdentityServer\MultiShop.IdentityServer.csproj", "{2A1436A1-1022-47AD-99A0-3CF318AD8086}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -68,10 +73,10 @@ Global
 		{79844263-EE28-4DC0-9185-6E9C493DFB6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79844263-EE28-4DC0-9185-6E9C493DFB6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79844263-EE28-4DC0-9185-6E9C493DFB6C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E46CDE87-C031-45D3-BFAD-721F11D126F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E46CDE87-C031-45D3-BFAD-721F11D126F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E46CDE87-C031-45D3-BFAD-721F11D126F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E46CDE87-C031-45D3-BFAD-721F11D126F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A1436A1-1022-47AD-99A0-3CF318AD8086}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A1436A1-1022-47AD-99A0-3CF318AD8086}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A1436A1-1022-47AD-99A0-3CF318AD8086}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A1436A1-1022-47AD-99A0-3CF318AD8086}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -89,7 +94,7 @@ Global
 		{0EFE98ED-8D57-4CA0-93D0-B71ACFCFA64E} = {E7FFA5C1-5301-4DB5-84E0-2C1B11E77A1D}
 		{6CF5B2AC-00CB-48CA-BF04-90FD6E69ADDC} = {5D940DD7-D3A4-48D2-A5AE-6F0CBCAAF1F3}
 		{79844263-EE28-4DC0-9185-6E9C493DFB6C} = {C59E01C2-C3D7-4EDB-80F2-D7A35A525347}
-		{E46CDE87-C031-45D3-BFAD-721F11D126F8} = {05199B91-A684-464E-A877-B109C2ECD5E7}
+		{2A1436A1-1022-47AD-99A0-3CF318AD8086} = {5CA6FC3E-2704-4148-A850-0762FCE240E9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {69CEE46C-CEF7-4E91-8DBA-09B690BE9FB0}

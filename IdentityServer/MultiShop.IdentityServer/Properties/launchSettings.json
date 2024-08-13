@@ -1,12 +1,38 @@
+//{
+//  "profiles": {
+//    "SelfHost": {
+//      "commandName": "Project",
+//      "launchBrowser": true,
+//      "environmentVariables": {
+//        "ASPNETCORE_ENVIRONMENT": "Development"
+//      },
+//      "applicationUrl": "https://localhost:5001"
+//    }
+//  }
+//}
+
+//{
+//  "profiles": {
+//    "SelfHost": {
+//      "commandName": "Project",
+//      "launchBrowser": true,
+//      "environmentVariables": {
+//        "ASPNETCORE_ENVIRONMENT": "Development"
+//      },
+//      "applicationUrl": "http://localhost:5001" //http olarak setlendi.
+//    }
+//  }
+//}
+
 {
   "profiles": {
     "SelfHost": {
       "commandName": "Project",
-      "launchBrowser": true,
+      "launchBrowser": false, //false set edildi.
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "https://localhost:5001"
+      "applicationUrl": "http://localhost:5001"
     }
   }
 }

@@ -1,0 +1,193 @@
+﻿=> Order Micro Service <=
+
+Onion Architecture kullanıldı.
+=> Onion Mimari Makale: 
+https://fatih-gunalp.medium.com/1-asp-net-coreda-onion-mimarisine-genel-bak%C4%B1%C5%9F-67940d3c43d8 
+
+Order Folder -> Core - Infrastructure - Presentation Folder'ları oluşturuldu.
+
+=> Core Folder -> Add -> New Project -> Class Library
+-> MultiShop.Order.Domain class library oluşturuldu. Project references ve packages bulunmuyor. 
+Entities Folderı Oluşturuldu.
+Entities folder'ı içinde Address - OrderDetail - Ordering class'ları oluşturuldu.
+
+=> CQRS(Command Query Responsibility Segregation) Makale: 
+https://sefikcankanber.medium.com/cqrs-command-query-responsibility-segregation-nedir-16b196376389
+
+CQRS tasarım deseni: Okuma ve yazma sorumluluklarını ayırır.
+
+-> MultiShop.Order.Application class library oluşturuldu. Project References olarak MultiShop.Order.Domain eklenmeli. Nuget Packages eklenmeli.
+Features - Interface - Services folder'ları oluşturuldu.
+
+Features Folder
+=> CQRS Folder'ı oluşturulur.
+Commands - Handlers - Queries - Results folder'ları oluşturuldu.
+
+-> Commands folder'ı içinde:
+AddressCommands - OrderDetailCommands folder'ları oluşturuldu.
+
+AddressCommands folder'ı içinde:
+CreateAddressCommand - RemoveAddressCommand - UpdateAddressCommand class'ları oluşturuldu.
+
+OrderDetailCommands folder'ı içinde:
+CreateOrderDetailCommand - RemoveOrderDetailCommand - UpdateOrderDetailCommand class'ları oluşturuldu.
+
+-> Handlers folder'ı içinde: CRUD işlemleri yapılır.
+AddressHandlers - OrderDetailHandlers folder'ları oluşturuldu.
+
+AddressHandlers folder'ı içinde:
+CreateAddressCommandHandler - GetAddressByIdQueryHandler - GetAddressQueryHandler - RemoveAddressCommandHandler - UpdateAddressCommandHandler class'ları oluşturuldu.
+Handler'lar oluşturulduktan sonra MultiShop.Order.Persistance class library'de Repository folder'ı oluşturulur ve Repository class'ı yazılır.
+
+OrderDetailHandlers folder'ı içinde:
+CreateOrderDetailCommandHandler - GetOrderDetailByIdQueryHandler - GetOrderDetailQueryHandler - RemoveOrderDetailCommandHandler - UpdateOrderDetailCommandHandler class'ları oluşturuldu.
+
+-> Queries folder'ı içinde:
+AddressQueries - OrderDetailQueries folder'ları oluşturuldu.
+
+AddressQueries folder'ı içinde:
+GetAddressByIdQuery class'ı oluşturuldu.
+
+OrderDetailQueries folder'ı içinde:
+GetOrderDetailByIdQuery class'ı oluşturuldu.
+
+-> Results folder'ı içinde:
+AddressResults - OrderDetailResults folder'ları oluşturuldu.
+
+AddressResults folder'ı içinde:
+GetAddressByIdQueryResult - GetAddressQueryResult class'ları oluşturuldu.
+
+OrderDetailResults folder'ı içinde:
+GetOrderDetailByIdQueryResult - GetOrderDetailQueryResult class'ları oluşturuldu. 
+
+=> Mediator Folder'ı oluşturulur.
+Commands - Handlers - Queries - Results folder'ları oluşturuldu.
+
+-> Commands folder'ı içinde OrderingCommands folder'ı oluşturuldu.
+OrderingCommands folder'ı içinde:
+CreateOrderingCommand - RemoveOrderingCommand - UpdateOrderingCommand class'ları oluşturuldu.
+
+-> Handlers folder'ı içinde OrderingHandlers folder'ı oluşturuldu.
+OrderingHandlers folder'ı içinde:
+CreateOrderingCommandHandler - GetOrderingByIdQueryHandler - GetOrderingQueryHandler - RemoveOrderingCommandHandler - UpdateOrderingCommandHandler class'ları oluşturuldu.
+
+-> Queries folder'ı içinde OrderingQueries folder'ı oluşturuldu.
+OrderingQueries folder'ı içinde:
+GetOrderingByIdQuery - GetOrderingQuery class'ları oluşturuldu.
+
+-> Results folder'ı içinde OrderingResults folder'ı oluşturuldu.
+OrderingResults folder'ı içinde:
+GetOrderingByIdQueryResult - GetOrderingQueryResult class'ları oluşturuldu.
+
+-> Interface Folder
+IRepository interface'i oluşturulur. 
+
+-> Services Folder
+ServiceRegistration static class'ı oluşturuldu.
+
+=> Infrastructure Folder -> Add -> New Project -> Class Library
+-> MultiShop.Order.Persistance class library oluşturuldu. Project References MultiShop.Order.Domain ve MultiShop.Order.Application. Nuget Packages'lar eklenir.
+Context ve Repository folder'ları oluşturulur. Migrations kendisi oluşur.
+OrderContext class'ı oluşturulur.
+Repository class'ı oluşturulur.
+
+=> Presentation Folder -> Add -> New Project -> ASP.NET Core Web API
+-> MultiShop.Order.WebApi - Project references MultiShop.Order.Domain - MultiShop.Order.Application - MultiShop.Order.Persistance. Nuget Packages'lar eklenir.
+
+-> Cotroller folder'ı içinde API contoller'lar oluşturulur. 
+AddressesController - OrderDetailsController - OrderingsController api controller'ları oluşturuldu.
+
+=> Mediator Makale: 
+https://refactoring.guru/design-patterns/mediator
+
+-> Program.cs'de register edilir.
+
+=> Docker'ın uygulama üzerinden ayağa kaldırılması.
+
+-> Docker Makale: 
+https://aws.amazon.com/tr/docker/
+
+https://medium.com/geeks-of-data/docker-101-yeni-ba%C5%9Flayanlar-i%C3%A7in-ad%C4%B1m-ad%C4%B1m-rehber-253e6b7cb9f6
+
+https://acokgungordu.medium.com/docker-serisi-docker-volumes-1c509f043f98
+
+Not: Docker komutlarına bakılacak!
+
+Docker Kurulumu:
+https://www.docker.com/products/docker-desktop/
+
+Her mikro servis bir container'dır.
+Docker Volumes sayesinde container silinse bile verilerin tutulması sağlanır. 
+
+C:\Users\akcan>docker images -> Docker üzerindeki images'lar cmd deki komutla görüntülenir.
+
+=> Portainer
+Docker veya Docker Swarm Cluester'ımızı yönetmemizi sağlayan bir management UI'dır.
+
+Portainer Makale: 
+https://medium.com/devopsturkiye/docker-ile-portainer-kurulumu-ve-portainera-h%C4%B1zl%C4%B1-bak%C4%B1%C5%9F-2fdcf2b31deb
+
+https://medium.com/devopsturkiye/portainer-ile-sunucular%C4%B1n%C4%B1z-%C3%BCzerinde-container-y%C3%B6netimi-sa%C4%9Flay%C4%B1n-6e39d539d46a#:~:text=Portainer'%C4%B1%20Docker%20%C3%BCzerinde%20%C3%A7al%C4%B1%C5%9Ft%C4%B1rarak,i%C5%9Fleminden%20sonra%20art%C4%B1k%20kullanmaya%20ba%C5%9Flayabiliriz.
+
+Portainer Kurulumu:
+docker volume create portainer_data
+
+docker run -d -p 8000:8000 -p 9000:9000 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce
+
+http://localhost:9000/
+
+Portainer'ın kendisi de bir containerdır.
+
+DBeaver Kurulumu:
+https://dbeaver.io/
+
+Dbeaver aracılığıyla sanallaştırılmış tüm veritabanlarına erişim sağlarız.
+
+Portainer:
+Portainer üzerinden App Templates'de Microsoft SQL Server on Linux seçilir.
+OrderDb - 123456aA*
+Show advanced options seçeneği açılır.
+Port mapping yapılır. host 1440 portu verilir. 1433 portunu identity server'a vereceğimiz için yapıldı.
+1440 portunda veritabanı ayağa kaldırılması.
+Deploy the container butonu tıklanır.
+
+Portainer üzerinden App Templates'de Microsoft SQL Server on Linux seçilir.
+IdentityDb - 123456aA*
+Port mapping yapılır. host 1433 portu verilir. 1433 portunu identity server'a vereceğimiz için yapıldı.
+1433 portunda veritabanı ayağa kaldırılması.
+Deploy the container butonu tıklanır.
+
+DBeaver'da Database Connection yapılır. Microsoft SQL Server seçilir.
+Port: 1433
+Username: sa
+Password: 123456aA*
+
+DBeaver'da Database Connection yapılır. Microsoft SQL Server seçilir.
+Port: 1440
+Username: sa
+Password: 123456aA*
+
+Docker üzerinden ayağa kaldırılan container içerisine veritabanı oluşturma işlemi yapılır.
+Visual Studio üzerinde Services -> Order -> Infrastructure -> Context -> OrderContext connection string yazılır. Veritabanına bağlantı sağlanmaya çalışılır.
+Visual Studio da Package Manager Console açılır.
+MultiShop.Order.WebApi seçilir ve Package Manager Console'da MultiShop.Order.Persistance seçilir.
+Artık locale veritabanından çıkıp port üzerinde docker ile ayağa kaldırılan container içerisinde veritabanı gönderiyoruz.
+add-migration mig1 komutu çalıştırılır.
+update-database komutu çalıştırılır.
+Bu şekilde migration uygulanmış olur.
+
+DBeaver üzerinde localhost:1440'da MultiShopOrderDb oluştu. Tamamen docker üzerinden ayağa kalkıyor. Veritabanına erişmek için docker ayakta olmalı.
+
+MSSQL üzerinden bağlantı sağlama:
+Server type: Database Engine
+Server name: localhost,1440
+Authentication: SQL Server Authentication
+Login: sa
+Password: 123456aA*
+
+MultiShopOrderDb'de Database Diagrams a tablolar seçilip eklenir ve diagram oluşturulur.
+Locale'deki SQL Server'ı değil de 1440 portu üzerindeki SQL Server üzerinde çalışıyor olacağız.
+
+-> Order Mikro Servisi Api testinin yapılması.
+Sırasıyla Post - Get - Put - Get(Id) - Delete çalıştırılır.
+MSSQL Server'da hem de DBeaver da tablolara ait data'lar görülür.

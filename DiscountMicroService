@@ -1,0 +1,36 @@
+﻿=> Discount Micro Service <=
+
+Discount Folder -> Discount -> New Project -> ASP.NET Core Web API -> MultiShop.Discount -> .NET 8.0
+Visual Studio'da MultiShop.Discount için Manage Nuget Package -> Microsoft.EntityFrameworkCore'e ait packages'lar eklenir. Dapper'a ait paketler eklenir.
+
+-> Entities Folder oluşturuldu.
+Coupon entity oluşturuldu.
+
+-> Context Folder oluşturuldu.
+DapperContext oluşturuldu.
+MS SQL veritabanı bağlantısını sağlanır.
+Visual Studio Package Manager Console'da proje ismi MultiShop.Discount seçilir. 
+add-migration mig1 komutu çalıştırılır sonra update-database komutu çalıştırılır.
+SQL Server'a bakılır, Coupos tablosu oluşturuldu.
+appsettings.json da bağlantı adresi verilir.
+
+-> Dtos Folder oluşturuldu.
+ResultDiscountCouponDto class'ları oluşturulur.
+CreateDiscountCouponDto class'ları oluşturulur.
+UpdateDiscountCouponDto class'ları oluşturulur.
+GetByIdDiscountCouponDto class'ları oluşturulur.
+
+=> Dapper Makale: https://medium.com/software-development-turkey/micro-orm-lerin-kral%C4%B1-dapper-nedir-ec5838b115ac
+
+-> Services Folder oluşturuldu.
+IDiscountService interface'i oluşturulur.
+DiscountService class'ı oluşturulur. 
+
+-> Controllers Folder'da
+Add -> Controller -> API -> DiscountsController oluşturulur.
+
+-> Program.cs'de register edilir.
+
+-> MultiShop.Discount projesi seçilir ve çalıştırılır. 
+
+-> Swagger üzerinden test edilir.

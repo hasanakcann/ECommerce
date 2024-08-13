@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Options;
 using MultiShop.Catalog.Services.CategoryServices;
 using MultiShop.Catalog.Services.ProductDetailServices;
 using MultiShop.Catalog.Services.ProductImageServices;
@@ -36,6 +37,18 @@ builder.Services.AddScoped<IDatabaseSettings>(serviceProvider =>
 });
 #endregion
 
+#region Authentication
+//JwtBearer token geçerliliğini kontrol eden pakettir.
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+{
+    //Authority JwtBearer'ı kiminle kullanıcağını belirtir. IdentityServerUrl appsettings.json'dan gelir.
+    //Catalog mikro servisi ayağa kalkarken IdentityServer mikro servisi de ayağa kalkar.
+    options.Authority = builder.Configuration["IdentityServerUrl"];
+    options.Audience = "ResourceCatalog";//Config tarafında dinleyici olan key ResourceCatalog ApiResource setlenir.
+    options.RequireHttpsMetadata = false;//IdentityServerUrl http olduğu için false set edildi.
+});
+#endregion
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -51,6 +64,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

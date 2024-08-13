@@ -1,0 +1,58 @@
+﻿=> Catalog Micro Service <=
+
+-> Catalog Folder -> Catalog -> New Project -> ASP.NET Core Web API -> MultiShop.Catalog -> .NET 8.0
+
+-> MongoDb kuruldu. 
+=> MongoDb Makale: https://medium.com/@berkekurnaz/nedir-bu-mongodb-994a94a9d1df
+
+MongoDb'de:
+Tablolar - Collection
+Satırlar - Document  
+Sütunlar - Field
+
+Visual Studio'da MultiShop.Category için Manage Nuget Package -> MongoDb'ye ait packages'lar eklenir.
+
+-> Entities oluşturulur.
+Category class'ı oluşturulur. => Katolog
+Product class'ı oluşturulur. => Ürün 
+ProductDetail class'ı oluşturulur. => Ürün Detayı
+ProductImage class'ı oluşturulur. => Ürün Fotoğrafları
+
+-> appsettings.json da bağlantı konfigürasyonu yapılır. Veritabanına yansıtılması istenen tablolar oluşturulur.
+
+-> Settings folder'ı oluşturulur.
+IDatabaseSettings interface'i oluşturulur.
+DatabaseSettings class'ı oluşturulur.
+
+-> Dtos Folder'ı oluşturulur. Her bir crud işlemi için sınıflar oluşturulur.
+Entity class'ında bulunan property'ler dto class'larında da oluşturuldu.
+CategoryDtos -> Result -> Create -> Update -> GetById
+ProductDtos -> Result -> Create -> Update -> GetById
+ProductDetailDtos -> Result -> Create -> Update -> GetById
+ProductImageDtos -> Result -> Create -> Update -> GetById
+
+-> MultiShop.Catalog -> Manage Nuget Package -> Auto Mapper kütüphanesine ait packages'lar eklenir.
+=> Auto Mapper Makale: https://medium.com/@ecanyuksel/automapper-nedir-db05f85facd2
+Auto Mapper Dto ile Entities'leri eştirir.
+Mapping Folder'ı oluşturuldu.
+GeneralMapping class'ı oluşturuldu.
+
+=> Asenkron Programlama Makale: https://atarikguney.medium.com/asenkron-asynchronous-programlama-nedir-296230121f9d
+
+-> Services Folder'ı oluşturulur.
+CategoryServices -> ICategoryService interface'i oluşturulur -> CategoryService class'ı oluşturulur.
+ProductServices -> IProductService interface'i oluşturulur -> ProductService class'ı oluşturulur.
+ProductDetailServices -> IProductDetailService interface'i oluşturulur -> ProductDetailService class'ı oluşturulur.
+ProductImageServices -> IProductImageService interface'i oluşturulur -> ProductImageService class'ı oluşturulur.
+
+-> Controllers Folder'da
+Add -> Controller -> API -> CategoriesController oluşturulur.
+Add -> Controller -> API -> ProductsController oluşturulur.
+Add -> Controller -> API -> ProductDetailsController oluşturulur.
+Add -> Controller -> API -> ProductImagesController oluşturulur.
+
+-> Program.cs'de register edilir.
+
+-> MultiShop.Catalog projesi seçilir ve çalıştırılır. 
+
+-> Swagger üzerinden test edilir.
