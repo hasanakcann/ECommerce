@@ -1,0 +1,271 @@
+﻿=> Cargo Micro Service: <= 
+Kargo mikro servisi için N-Tier mimari kullanıldı.
+
+=> MultiShop.Cargo.BusinessLayer -> Location: C:\Users\akcan\source\repos\MultiShop\Services\Cargo - BusinessLayer class library oluşturulur. .NET 8.0
+=> MultiShop.Cargo.EntityLayer -> Location: C:\Users\akcan\source\repos\MultiShop\Services\Cargo - EntityLayer class library oluşturulur. .NET 8.0
+=> MultiShop.Cargo.DataAccessLayer -> Location: C:\Users\akcan\source\repos\MultiShop\Services\Cargo - DataAccessLayer class library oluşturulur. .NET 8.0
+=> MultiShop.Cargo.DtoLayer -> Location: C:\Users\akcan\source\repos\MultiShop\Services\Cargo - DtoLayer class library oluşturulur. .NET 8.0
+=> MultiShop.Cargo.WebApi -> Location: C:\Users\akcan\source\repos\MultiShop\Services\Cargo - WebApi ASP.NET Core Web API oluşturulur. .NET 8.0
+
+=> EntityLayer:
+EFCore paketleri eklenir.
+Concrete folder'ı oluşturulur. 
+
+Concrete folder'ı içinde:
+CargoCompany class'ı oluşturulur.
+CargoCustomer class'ı oluşturulur.
+CorgoDetail class'ı oluşturulur.
+CargoOperation class'ı oluşturulur.
+
+=> DataAccessLayer:
+Project reference olarak EntityLayer verilir.
+Concrete\CargoContext class'ı oluşturulur.
+Portainer'da yeni bir container oluşturulur. App Templates'de Sql Server Linux seçilir.
+CargoDb - 123456aA* - 1441 portu verilir.
+
+MultiShop.Cargo.WebApi'ye proje referansı olarak tüm katmanlar(BusinessLayer - EntityLayer - DataAccessLayer - DtoLayer) verilir. Paketler eklenir.
+
+Projede MultiShop.Cargo.WebApi seçilir. Package Manager Console da MultiShop.Cargo.DataAccessLayer seçilir.  
+Migration işlemi yapılır.
+add-migration mig1
+update-database
+
+DBeaver'da 1441 portu için SQL Server veritabanı bağlantısı oluşturulur.
+Username: sa
+Password: 123456aA*
+
+IdentityDb - OrderDb ve CargoDb DBeaver'da - DiscountDb local sql serverda bulunuyor.
+
+Repository Design Pattern:
+Genellikle N-Tier mimaride kullanılan Crud işlemlerindeki tekrarı önlemeyi amaçlayan bir tasarım desenidir.
+Interface'lere bağlıdır. Interface'ler tanımlanır daha sonra tanımlanmış olan interface'lerin sınıf karşılıkları oluşturulur. 
+Bu sınıflar interface'lerden miras alarak işlemler gerçekleşir.
+
+MultiShop.Cargo.DataAccessLayer\Abstract folder'ı oluşturulur. Abstract folder'ında genellikle soyut ifadeler yani Interface'ler tutulur.
+Dal -> DataAccessLayer demektir.
+IGenericDal interface'i oluşturulur.
+
+Entity'ler içinde interface'ler oluşturulur.
+ICargoCompanyDal interface'i oluşturulur.
+ICargoCustomerDal interface'i oluşturulur.
+ICargoDetailDal interface'i oluşturulur.
+ICargoOperationDal interface'i oluşturulur.
+
+MultiShop.Cargo.DataAccessLayer\Repositories folder'ı oluşturulur.
+GenericRepository class'ı oluşturulur.
+
+MultiShop.Cargo.DataAccessLayer\EntityFramework folder'ı oluşturulur.
+EfCargoCompanyDal class'ı oluşturulur.
+EfCargoCustomerDal class'ı oluşturulur.
+EfCargoDetailDal class'ı oluşturulur.
+EfCargoOperationDal class'ı oluşturulur.
+
+=> BusinessLayer:
+Proje reference olarak MultiShop.Cargo.DataAccessLayer referans verilir. 
+
+MultiShop.Cargo.BusinessLayer\Abstract folder'ı oluşturulur.
+MultiShop.Cargo.BusinessLayer\Concrete folder'ı oluşturulur.
+MultiShop.Cargo.BusinessLayer\Extensions folder'ı oluşturulur.
+MultiShop.Cargo.BusinessLayer\ValidationRules folder'ı oluşturulur.
+
+-> MultiShop.Cargo.BusinessLayer\Abstract 
+IGenericService interface'i oluşturulur.
+MultiShop.Cargo.DataAccessLayer\Abstract'daki IGenericDal interface'indeki metotlar ile aynı olacak.
+MultiShop.Cargo.BusinessLayer\Abstract\IGenericService interface'indeki metotların baş harfleri T ile başlar, karışmaması için.
+MultiShop.Cargo.BusinessLayer\Abstract içeriside:
+ICargoCompanyService interface'i oluşturulur.
+ICargoCustomerService interface'i oluşturulur.
+ICargoDetailService interface'i oluşturulur.
+ICargoOperationService interface'i oluşturulur.
+
+-> MultiShop.Cargo.BusinessLayer\Concrete
+CargoCompanyManager class'ı oluşturulur.
+CargoCustomerManager class'ı oluşturulur.
+CargoDetailManager class'ı oluşturulur.
+CargoOperationManager class'ı oluşturulur.
+
+=> MultiShop.Cargo.DtoLayer\Dtos
+Entity'lerde tanımlı property'ler Dto içinde tanımlanır.
+
+MultiShop.Cargo.DtoLayer\Dtos\CargoCompanyDtos
+CreateCargoCompanyDto class'ı oluşturulur.
+UpdateCargoCompanyDto class'ı oluşturulur.
+
+MultiShop.Cargo.DtoLayer\Dtos\CargoCustomerDtos
+CreateCargoCustomerDto class'ı oluşturulur.
+UpdateCargoCustomerDto class'ı oluşturulur.
+
+MultiShop.Cargo.DtoLayer\Dtos\CargoDetailDtos
+CreateCargoDetailDto class'ı oluşturulur.
+UpdateCargoDetailDto class'ı oluşturulur.
+
+MultiShop.Cargo.DtoLayer\Dtos\CargoOperationDtos
+CreateCargoOperationDto class'ı oluşturulur.
+UpdateCargoOperationDto class'ı oluşturulur.
+
+=> MultiShop.Cargo.WebApi\Controllers
+CargoCompaniesController controller'ı oluşturulur.
+CargoCustomersController controller'ı oluşturulur.
+CargoDetailsController controller'ı oluşturulur.
+CargoOperationsController controller'ı oluşturulur.
+
+-> MultiShop.Cargo.WebApi projesi çalıştırılır, swagger üzerinde görülür.
+
+-> MultiShop.Cargo.WebApi\Properties\launchSettings.json'da launchBrowser false set edildi. 7073 portu setlendi.
+
+-> MultiShop.Cargo.WebApi\appsettings.json'da IdentityServerUrl eklenir.
+"IdentityServerUrl": "http://localhost:5001",//5001 IdentityServer'ın ayağa kalktığı port numarasıdır.
+
+-> MultiShop.Cargo.WebApi projesine Manage Nuget Package'de Jwt bearer paketi eklenir.
+Microsoft.AspNetCore.Authentication.JwtBearer
+
+-> MultiShop.Cargo.WebApi\Program.cs'de
+Registiration işlemleri yapılır.
+
+-> MultiShop.Cargo.WebApi projesi çalıştırılır, Postman'de test edilir.
+
+NOT: Url bilgilerini swagger üzerinde görebililir. MultiShop.Cargo.WebApi\Properties launchSettings.json da "launchBrowser": true,//true set edilir.
+DELETE https://localhost:7073/api/CargoCompanies?id=1
+GET https://localhost:7073/api/CargoCompanies/3
+Uygulama ayağa kaldırıldığında swagger'da açılır. DELETE(?id=1) ve ID(/3)'ye göre veri getirme işlemindeki Url'e nasıl parametre geçileceği görüntülenir.
+
+
+
+POST https://localhost:7073/api/CargoCompanies
+{
+    "CargoCompanyName" : "Yurtiçi Kargo" 
+}
+SEND butonu tıklanır.
+
+GET https://localhost:7073/api/CargoCompanies
+[
+    {
+        "cargoCompanyId": 1,
+        "cargoCompanyName": "Yurtiçi Kargo"
+    },
+    {
+        "cargoCompanyId": 2,
+        "cargoCompanyName": "Aras Kargo"
+    },
+    {
+        "cargoCompanyId": 3,
+        "cargoCompanyName": "Mng Kargo"
+    },
+    {
+        "cargoCompanyId": 4,
+        "cargoCompanyName": "Ptt Kargo"
+    }
+]
+
+PUT https://localhost:7073/api/CargoCompanies
+{
+    "CargoCompanyId" : 1,
+    "CargoCompanyName" : "Dhl Kargo" //Yurtiçi Kargo -> Dhl Kargo olarak güncellendi.
+}
+SEND butonu tıklanır.
+
+GET https://localhost:7073/api/CargoCompanies
+SEND butonu tıklanır.
+
+[
+    {
+        "cargoCompanyId": 1,
+        "cargoCompanyName": "Dhl Kargo"
+    },
+    {
+        "cargoCompanyId": 2,
+        "cargoCompanyName": "Aras Kargo"
+    },
+    {
+        "cargoCompanyId": 3,
+        "cargoCompanyName": "Mng Kargo"
+    },
+    {
+        "cargoCompanyId": 4,
+        "cargoCompanyName": "Ptt Kargo"
+    }
+]
+
+DELETE https://localhost:7073/api/CargoCompanies?id=1
+SEND butonu tıklanır.
+
+GET https://localhost:7073/api/CargoCompanies
+SEND butonu tıklanır. Id numarası 1 olan kayıt silinmiştir.
+[
+    {
+        "cargoCompanyId": 2,
+        "cargoCompanyName": "Aras Kargo"
+    },
+    {
+        "cargoCompanyId": 3,
+        "cargoCompanyName": "Mng Kargo"
+    },
+    {
+        "cargoCompanyId": 4,
+        "cargoCompanyName": "Ptt Kargo"
+    }
+]
+
+Id'ye göre getirme işlemi:
+GET https://localhost:7073/api/CargoCompanies/3
+SEND butonu tıklanır.
+
+{
+    "cargoCompanyId": 3,
+    "cargoCompanyName": "Mng Kargo"
+}
+
+-> MultiShop.IdentityServer\Config class'ında:
+Cargo mikro servisi ile ilgili yetkilendirme işlemleri yapıldı.
+
+-> MultiShop.Cargo.WebApi\Program.cs'de
+Authentication işlemleri yapılır.
+
+-> MultiShop.Cargo.WebApi\Controllers'da
+CargoCompaniesController'a [Authorize] attribute eklenir.
+CargoCustomersController'a [Authorize] attribute eklenir.
+CargoDetailsController'a [Authorize] attribute eklenir.
+CargoOperationsController'a [Authorize] attribute eklenir.
+
+-> Multiple Startup Projects'de:
+MultiShop.Cargo.WebApi 
+MultiShop.Catalog
+MultiShop.Discount
+MultiShop.IdentityServer
+MultiShop.Order.WebApi
+Mikro servisleri start edilir. 
+
+-> Postman üzerinde yetki kontrolü ve testi:
+GET https://localhost:7073/api/CargoCompanies/3 401 Unauthorized hatası verdi.
+
+Admin yetkileri:
+"scope": "CargoFullPermission CatalogFullPermission CatalogReadPermission DiscountFullPermission IdentityServerApi OrderFullPermission"
+
+Admin için token alınır.
+Token: eyJhbGciOiJSUzI1NiIsImtpZCI6IkEyNzNCQTM4RTNEODBGQ0Q2RUE2OThBMzE1ODRENzA3IiwidHlwIjoiYXQrand0In0.eyJuYmYiOjE3MjM3Mjc1MTEsImV4cCI6MTcyMzcyODExMSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDAxIiwiYXVkIjpbIlJlc291cmNlQ2FyZ28iLCJSZXNvdXJjZUNhdGFsb2ciLCJSZXNvdXJjZURpc2NvdW50IiwiUmVzb3VyY2VPcmRlciIsImh0dHA6Ly9sb2NhbGhvc3Q6NTAwMS9yZXNvdXJjZXMiXSwiY2xpZW50X2lkIjoiTXVsdGlTaG9wQWRtaW5JZCIsImp0aSI6IkM5NUJGOEIxRjg4M0I2MDI3NTczN0Y2Mjg2ODlCOTVGIiwiaWF0IjoxNzIzNzI3NTExLCJzY29wZSI6WyJDYXJnb0Z1bGxQZXJtaXNzaW9uIiwiQ2F0YWxvZ0Z1bGxQZXJtaXNzaW9uIiwiQ2F0YWxvZ1JlYWRQZXJtaXNzaW9uIiwiRGlzY291bnRGdWxsUGVybWlzc2lvbiIsIklkZW50aXR5U2VydmVyQXBpIiwiT3JkZXJGdWxsUGVybWlzc2lvbiJdfQ.H51oDLEqFR9h6BLO-KZ1DmmwlZEhn2Aiz_cYsfl4o3FuInuDpL6jrLDzyWuSvbtMJS-0ulU1wlEP9OtYNdEnv8KRviwEQSLXlFFgu_erJ0bjFJnl6lJLzBf7BigSbki1g8_TDw4S2nmIqadGQoW1UkvuCph4cPprsnrI6sL36DxO-fw30erwrPRcvj9F7x53_DLkyfUHl__T9rAvAK_Pw2K0D0SQ_eoFKVvtIasGYfB4t-nejoJiTpi8wg9YDGzzdEJ0_DlS9GSdZUjeHZdiTz47OZdZMKQ1HexN9Bm4KCWvcLMlO6KkZ-AldOfa8PM3_pDGj8DPM6Y6Oo2xkQ0sog
+
+Alınan token key'i GET https://localhost:7073/api/CargoCompanies/3 için Authorization OAuth2'da Token bölümüne yapıştırılır.
+SEND butonu tıklanır. Id numarası 3 olan kayıt listelenir.
+{
+    "cargoCompanyId": 3,
+    "cargoCompanyName": "Mng Kargo"
+}
+
+Tüm veriler için:
+GET https://localhost:7073/api/CargoCompanies
+SEND butonu tıklanır.
+
+[
+    {
+        "cargoCompanyId": 2,
+        "cargoCompanyName": "Aras Kargo"
+    },
+    {
+        "cargoCompanyId": 3,
+        "cargoCompanyName": "Mng Kargo"
+    },
+    {
+        "cargoCompanyId": 4,
+        "cargoCompanyName": "Ptt Kargo"
+    }
+]

@@ -1,6 +1,6 @@
 ﻿Tarayıcı Düzenlemesi:
 
-IdentityServer - Catalog - Discount Multiple Startup Project olarak işaretli.
+IdentityServer - Catalog - Discount - Order Multiple Startup Project olarak işaretli.
 Birden çok mikro servis ayağa kalktığında farklı portlarda sekmeler açılmakta.
 
 -> IdentityServer\Properties\launchSettings.json da launchBrowser false set edildi. 5001 portu default değeriyle kullanılıyor.
@@ -15,3 +15,6 @@ GET https://localhost:7071/api/Discounts
 
 -> Order 
 MultiShop.Order.WebApi\Properties\launchSettings.json'da launchBrowser false set edildi. 7072 portu setlendi.
+
+-> Cargo
+MultiShop.Cargo.WebApi\Properties\launchSettings.json'da launchBrowser false set edildi. 7073 portu setlendi.
