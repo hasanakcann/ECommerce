@@ -1,0 +1,4 @@
+﻿=> Frontends <=
+
+MultiShop projesine Frontends folder'ı oluşturulur.
+ASP.NET Core Web App (Model-View-Controller) projesi MultiShop.WebUI adında .NET 8.0 Framework'ü ile oluştulur.

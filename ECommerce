@@ -4,3 +4,42 @@
 https://medium.com/@furkanbegen/mikroservis-mimarisi-nedir-ve-avantajlar%C4%B1-nelerdir-1369175cc4e6
 
 -> Visual Studio 2022 -> Create a new project -> Blank Solution -> MultiShop -> Service Folder
+
+Kurulumlar:
+Visual Studio 2022
+MongoDb
+MSSQL Server
+Docker
+Portainer
+DBeaver
+Postman
+
+Kullanılan Teknolojiler - Paketler - Tasarım Desenleri - Mimari Yaklaşımlar
+.Net 8.0
+Redis
+Dapper
+Docker
+MongoDB
+PostgreSQL
+MSSQL
+SQLLite
+Google Drive Entegreli Fotoğraf Yükleme
+Identity Server
+Api Gateway
+Ocelot Gateway
+Postman
+Swagger
+Onion Architecture
+N-Tier Architecture
+CQRS Design Pattern
+Mediator Design Pattern
+Repository Design Pattern
+AspNet Core Api
+Api Consume
+Rapid Api
+Authentication
+Authorization
+Json Web Token
+JWT Bearer
+SignalR
+Ajax

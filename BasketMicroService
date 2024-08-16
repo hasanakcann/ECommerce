@@ -1,0 +1,227 @@
+﻿=> Basket Micro Service <=
+
+Redis Makale: https://medium.com/devopsturkiye/redis-nedir-ne-i%CC%87%C5%9Fe-yarar-1a19ebbdb2b4
+Redis: C ile yazılmış, key-value şeklinde tasarlanmış bir NoSQL veritabanıdır. Veriyi bellekte tuttuğu için çok hızlı okuma ve yazma yapılır.
+
+Services\Basket folder'ı oluşturulur.
+ASP.NET Core Web API projesi oluşturulur.
+Project name: MultiShop.Basket
+Location: C:\Users\akcan\source\repos\MultiShop\Services\Basket
+Framework: .Net 8.0
+
+-> MultiShop.Basket için paket kurulumu yapılır.
+StackExchange.Redis
+Microsoft.AspNetCore.Authentication.JwtBearer
+
+-> MultiShop.Basket\Controllers
+API Controller olarak BasketsController oluşturulur.
+
+-> MultiShop.Basket\appsettings.json'da 
+"IdentityServerUrl": "http://localhost:5001", Eklenir. 5001 IdentityServer'ın ayağa kalktığı port numarasıdır.
+
+-> MultiShop.Basket\Properties\launchSettings.json'da 
+launchBrowser false set edildi. 7074 portu setlendi.
+
+-> MultiShop.Basket\Dtos
+BasketItemDto class'ı oluşturulur.
+BasketTotalDto class'ı oluşturulur.
+
+-> Docker arayüzü Portainer'da 
+http://localhost:9000/#!/home
+
+App Templates'de Redis seçilir.
+Name: BasketDb
+
+Show advanced options'da
+host: 6379 default portu verilir.
+
+Deploy the container butonu tıklanır.
+
+-> MultiShop.Basket\appsettings.json'da Redis ayarları yapılır.
+
+-> MultiShop.Basket\Settings folder'ı oluşturulur.
+RedisSettings class'ı oluşturulur, appsettings.json da tanımlı olan ayarlar tutulur. 
+RedisService class'ı oluşturulur.
+Redis Makale: https://medium.com/multinetinventiv/net-core-ile-redis-distributed-caching-kullan%C4%B1m%C4%B1-92f84bbddfb0
+
+-> MultiShop.Basket\Services
+Services folder'ı oluşturulur.
+IBaskerService interface'i oluşturulur.
+BasketService class'ı oluşturulur.
+
+-> Giriş yapan kullanıcının Id'sinin yakalanması:
+MultiShop.Basket\LoginServices
+ILoginService interface'i oluşturulur.
+LoginService class'ı oluşturulur.
+
+-> MultiShop.Basket\Controller\BasketsController'da
+Sepet ile ilgili işlemler yapılır.
+
+-> MultiShop.IdentityServer\Config class'ında:
+ResourceBasket - BasketFullPermission - Admin için AllowedScopes olarak BasketFullPermission eklenir. 
+
+-> MultiShop.Basket\Program.cs'de:
+Register işlemleri yapılır.
+
+-> Proje seviyesinde Authentication işlemi:
+MultiShop.Basket\Program.cs'de:
+//requireAuthorizePolicy değişkenine bir kullanıcının zorunlu olması gerektiği atanır.
+
+//Kullanıcının login olma zorunluluğu sağlanır. Proje seviyesinde Authentication işlemi yapılır.
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add(new AuthorizeFilter(requireAuthorizePolicy));
+});
+
+app.UseAuthentication(); Eklenir.
+
+-> Kullanıcı Adı ve Şifresi ile Token Alma İşlemi:
+
+-> Login olmadan önce sistemde var olan kullanıcılarımıza göre token oluşturma işlemi:
+Docker ayakta olmalı. 
+Visual Studio'da Proje MultiShop.IdentityServer seçilir ve ayağa kaldırılır.
+DBeaver - IdentityDb'de AspNetUsers tablosuna bakılır.
+
+Postman'de:
+POST http://localhost:5001/connect/token 
+Body\x-www-form-urlencoded
+
+Key ve Value değerleri MultiShop.IdentityServer\Config'de setlenen değerlerdir.
+
+Key					Value
+client_id			MultiShopAdminId
+client_secret		multishopsecret
+grant_type			password
+username			hasan01
+password			123456aA*
+
+SEND butonu tıklanır.
+
+Hata alınır.
+{
+    "error": "unauthorized_client"
+}
+
+MultiShop.IdentityServer\Config'de
+Manager ve Admin için:
+GrantTypes -> ResourceOwnerPassword yapıldı. Giriş yapan kullanıcının şifresine göre çalışsın.
+AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
+
+Proje tekrar ayağa kaldırılır. Post üzerinden tekrar aynı şekilde istek gönderilir.
+
+{
+    "error": "invalid_grant",
+    "error_description": "invalid_username_or_password"
+}
+
+Password: 111111aA* yapılır.
+
+SEND butonu tıklanır.
+Alınan token değeri jwtio'da https://jwt.io/ encoded alanına yapıştırılır.
+
+"sub": "ed330580-6b3d-4a64-89ec-cdbbba1fca69", -> DBeaver'da IdentityDb'deki AspNetUsers tablosundaki Id değeridir.
+
+Payload Data:
+{
+  "nbf": 1723814226,
+  "exp": 1723814826,
+  "iss": "http://localhost:5001",
+  "aud": [
+    "ResourceBasket",
+    "ResourceCargo",
+    "ResourceCatalog",
+    "ResourceDiscount",
+    "ResourceOrder",
+    "http://localhost:5001/resources"
+  ],
+  "client_id": "MultiShopAdminId",
+  "sub": "ed330580-6b3d-4a64-89ec-cdbbba1fca69", -> DBeaver'da IdentityDb'deki AspNetUsers tablosundaki Id değeridir. 
+  "auth_time": 1723814226,
+  "idp": "local",
+  "jti": "26CE67EAD876D524BC37396AE16C19EE",
+  "iat": 1723814226,
+  "scope": [
+    "BasketFullPermission",
+    "CargoFullPermission",
+    "CatalogFullPermission",
+    "CatalogReadPermission",
+    "DiscountFullPermission",
+    "email",
+    "IdentityServerApi",
+    "openid",
+    "OrderFullPermission",
+    "profile"
+  ],
+  "amr": [
+    "pwd"
+  ]
+}
+
+-> MultiShop.Basket\Controllers\BasketsController'da configuration:
+var user = User.Claims; -> Sisteme girmiş olan token'a ait bilgileri verir. jwtio'da payload'da gösterilen değerleri visual studio tarafında gösterir.
+
+Projede MultiShop.Basket ve MultiShop.IdentityServer projeleri birlikte ayağa kaldırılır.
+
+Postman'de:
+hasan01 kullanıcısı ile token alınır.
+
+Authorization OAuth2.0 seçilir ve token yapıştırılır.
+https://localhost:7074/api/Baskets SEND butonu tıklanır. Hata alınır. 
+System.NullReferenceException: Object reference not set to an instance of an object.
+
+MultiShop.Basket\Program.cs'de:
+//Sub'ın maplemesi kaldırılır.
+JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("sub");
+
+options.MapInboundClaims = false; //User.Claims'da sub değeri için .Net 8.0 versiyonunda MapInboundClaims'ı false set etmek gerekiyor.
+
+Tekrar proje çalıştırılır.
+Postman üzerinden alınan token ile istek gönderilir, sub değeri alınır.
+Null değer döner.
+
+Postman'de:
+POST https://localhost:7074/api/Baskets
+Body\raw
+BasketsController'daki SaveMyBasket metodundaki BasketTotalDto sınıfındaki property'lere göre POST isteği gönderilir.
+
+{
+    "UserId": "d96558fc-432f-47f2-8bea-f1bcf993fcd1",
+    "DiscountCode" : "Yok",
+    "DiscountRate" : 0,
+    "BasketItems": [
+        {
+            "ProductId":"abc1",
+            "ProductName": "Bilgisayar",
+            "Quantity": 1,
+            "Price": 35000
+        },
+        {
+            "ProductId":"abc2",
+            "ProductName": "Masa",
+            "Quantity": 2,
+            "Price": 789
+        }
+    ]
+}
+
+GET https://localhost:7074/api/Baskets
+{
+    "userId": "d96558fc-432f-47f2-8bea-f1bcf993fcd1",
+    "discountCode": "Yok",
+    "discountRate": 0,
+    "basketItems": [
+        {
+            "productId": "abc1",
+            "productName": "Bilgisayar",
+            "quantity": 1,
+            "price": 35000
+        },
+        {
+            "productId": "abc2",
+            "productName": "Masa",
+            "quantity": 2,
+            "price": 789
+        }
+    ],
+    "totalPrice": 36578
+}
