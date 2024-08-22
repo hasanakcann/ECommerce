@@ -1,7 +1,6 @@
-﻿namespace MultiShop.DtoLayer.CatalogDtos.CategoryDtos
+﻿namespace MultiShop.DtoLayer.CatalogDtos.CategoryDtos;
+
+public class CreateCategoryDto
 {
-    public class CreateCategoryDto
-    {
-        public string CategoryName { get; set; }
-    }
+    public string CategoryName { get; set; }
 }

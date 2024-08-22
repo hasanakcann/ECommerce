@@ -13,9 +13,7 @@
                 <br />
                 <div class="bs-example" data-example-id="bordered-table">
                     <form method="post">
-                        <label>Kategori Id</label>
-                        <input type="text" readonly class="form-control" asp-for="CategoryId" />
-                        <br />
+                        <input type="hidden" asp-for="CategoryId" />
                         <label>Kategori Adı</label>
                         <input type="text" class="form-control" asp-for="CategoryName" />
                         <br />

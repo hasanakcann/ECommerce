@@ -5,7 +5,8 @@ using MultiShop.Catalog.Services.ProductServices;
 
 namespace MultiShop.Catalog.Controllers
 {
-    [Authorize]//Login olma zorunluluğu eklendi.
+    //[Authorize]//Login olma zorunluluğu eklendi.
+    [AllowAnonymous]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductsController : ControllerBase

@@ -1,8 +1,7 @@
-﻿namespace MultiShop.DtoLayer.CatalogDtos.CategoryDtos
+﻿namespace MultiShop.DtoLayer.CatalogDtos.CategoryDtos;
+
+public class ResultCategoryDto
 {
-    public class ResultCategoryDto
-    {
-        public string CategoryId { get; set; }
-        public string CategoryName { get; set; }
-    }
+    public string CategoryId { get; set; }
+    public string CategoryName { get; set; }
 }

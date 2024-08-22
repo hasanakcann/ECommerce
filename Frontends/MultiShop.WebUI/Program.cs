@@ -2,7 +2,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+#region Service Registiration
 builder.Services.AddHttpClient();
+#endregion
 
 builder.Services.AddControllersWithViews();
 

@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace MultiShop.WebUI.Areas.Admin.Controllers
+namespace MultiShop.WebUI.Areas.Admin.Controllers;
+
+[Area("Admin")]
+public class AdminLayoutController : Controller
 {
-    [Area("Admin")]
-    public class AdminLayoutController : Controller
+    public IActionResult Index()
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
+        return View();
     }
 }
