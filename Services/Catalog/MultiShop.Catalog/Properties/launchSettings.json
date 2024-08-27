@@ -64,7 +64,7 @@
     "https": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "launchBrowser": false,//false yapıldı, uygulama çalışacak fakat tarayıcı açılmayacak.
+      "launchBrowser": true,//false yapıldı, uygulama çalışacak fakat tarayıcı açılmayacak.
       "launchUrl": "swagger",
       "applicationUrl": "https://localhost:7070",//7070 portu verildi.
       "environmentVariables": {
