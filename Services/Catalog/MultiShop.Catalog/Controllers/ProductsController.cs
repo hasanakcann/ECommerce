@@ -59,5 +59,12 @@ namespace MultiShop.Catalog.Controllers
             var values = await _productService.GetProductsWithCategoryAsync();
             return Ok(values);
         }
+
+        [HttpGet("ProductsWithCategoryByCategoryId")]
+        public async Task<IActionResult> GetProductsWithCategoryByCategoryId(string id)
+        {
+            var values = await _productService.GetProductsWithCategoryByCategoryIdAsync(id);
+            return Ok(values);
+        }
     }
 }
