@@ -1,4 +1,548 @@
-﻿=> Frontends <=
+﻿Kullanıcı Arayüzü Layout
+=> Frontends <=
 
 MultiShop projesine Frontends folder'ı oluşturulur.
 ASP.NET Core Web App (Model-View-Controller) projesi MultiShop.WebUI adında .NET 8.0 Framework'ü ile oluştulur.
+
+Aşağıdaki path'de bulunan tema dosyası Frontends\MultiShop.WebUI\wwwroot folder'ına eklenir.
+C:\Users\akcan\Desktop\Education\asp.net_core_mikroservis_mimarisi\MultiShop-master\Frontends\MultiShop.WebUI\wwwroot
+
+ctrl + shift + w ile proje MultShop.WebUI seçiliyken ayağa kaldırılır.
+https://localhost:7277/online-shop-website-template/index.html
+
+-> Frontends\MultiShop.WebUI\wwwroot'da Controllers'da MVC\Controller'da UILayoutController oluşturulur.
+UILayoutController'da Index'e sağ tıklanarak Add View -> Razor View denilerek UILayout oluşturulur.
+
+-> MultiShop\Frontends\MultiShop.WebUI\Views\UILayout\Index.cshtml'e MultiShop\Frontends\MultiShop.WebUI\wwwroot\online-shop-website-template'de bulunan 
+contact.html kodlarını yapıştırırız.
+
+-> Frontends\MultiShop.WebUI\wwwroot'da Controllers'da MVC\Controller'da DefaultController oluşturulur. Anasayfayı temsil eden controller'dır.
+Use a layout page eklenir.
+~/Views/UILayout/Index.cshtml 
+
+UI Tasarımının düzenlenmesi.
+
+_UILayout.cshtml'de düzenleme yapılır. Default\Index.cshtml'de ctrl + shift + w ile uygulama ayağa kaldırılır.
+    <!-- Libraries Stylesheet -->
+    <link href="~/online-shop-website-template/lib/animate/animate.min.css" rel="stylesheet">
+    <link href="~/online-shop-website-template/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="~/online-shop-website-template/css/style.css" rel="stylesheet">
+	
+    <script src="~/online-shop-website-template/lib/easing/easing.min.js"></script>
+    <script src="~/online-shop-website-template/lib/owlcarousel/owl.carousel.min.js"></script>
+
+    <!-- Contact Javascript File -->
+    <script src="~/online-shop-website-template/mail/jqBootstrapValidation.min.js"></script>
+    <script src="~/online-shop-website-template/mail/contact.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="~/online-shop-website-template/js/main.js"></script>
+	
+-> MultiShop.WebUI\ViewComponents folder'ı oluşturulur.
+MultiShop.WebUI\ViewComponents folder'ı içine UILayoutViewComponents folder'ı oluşturulur.
+_HeadUILayoutComponentPartial class'ı oluşturulur.
+
+Header Component Partial
+-> MultiShop.WebUI\Views\Shared\Components\_HeadUILayoutComponentPartial folder'ı içine Razor View oluşturulur. Partial View olarak Default adında eklenir.
+Default.cshtml içine _UILayout'da head kodları yapıştırılır.
+
+_UILayout.cshtml'de @await Component.InvokeAsync("_HeadUILayoutComponentPartial"); kodu eklenir.
+
+Daha sonra Index.cshtml açılır ve ctrl + shift + w ile başlığın değiştiği kontrol edilir. Default.cshtml'de  <title>MultiShop - E Ticaret</title>
+
+-> MultiShop.WebUI\ViewComponents\UILayoutViewComponents folder'ı içine:
+_TopbarUILayoutComponentPartial class'ı oluşturulur.
+
+MultiShop.WebUI\Views\Shared\Components\ altına _TopbarUILayoutComponentPartial folder'ı oluşturulur, içine Razor View oluşturulur. Partial View olarak Default adında eklenir.
+
+-> MultiShop.WebUI\ViewComponents\UILayoutViewComponents folder'ı içine:
+_NavbarUILayoutComponentPartial class'ı oluşturulur.
+
+MultiShop.WebUI\Views\Shared\Components\ altına _NavbarUILayoutComponentPartial folder'ı oluşturulur, içine Razor View oluşturulur. Partial View olarak Default adında eklenir.
+
+-> MultiShop.WebUI\ViewComponents folder'ı içine DefaultViewComponents folder'ı içine:
+_CarouselDefaultComponentPartial class'ı oluşturulur.
+
+MultiShop.WebUI\Views\Shared\Components\ altına _CarouselDefaultComponentPartial folder'ı oluşturulur, içine Razor View oluşturulur. Partial View olarak Default adında eklenir.
+
+MultiShop.WebUI\Views\Default\Index.cshtml
+@await Component.InvokeAsync("_CarouselDefaultComponentPartial"); Eklenir.
+
+-> Özel Teklifler ve İndirimler:
+MultiShop.WebUI\ViewComponents folder'ı içine DefaultViewComponents folder'ı içine:
+_SpecialOfferComponentPartial class'ı oluşturulur.
+
+MultiShop.WebUI\Views\Shared\Components\ altına _SpecialOfferComponentPartial folder'ı oluşturulur, içine Razor View oluşturulur. Partial View olarak Default adında eklenir.
+
+_CarouselDefaultComponentPartial component'i içinde _SpecialOfferComponentPartial componenti çağrıldı.
+@await Component.InvokeAsync("_SpecialOfferComponentPartial");
+
+-> Öne çıkan hizmetler:
+MultiShop.WebUI\ViewComponents folder'ı içine DefaultViewComponents folder'ı içine:
+_FeatureDefaultComponentPartial class'ı oluşturulur.
+
+MultiShop.WebUI\Views\Shared\Components\ altına _FeatureDefaultComponentPartial folder'ı oluşturulur, içine Razor View oluşturulur. Partial View olarak Default adında eklenir.
+
+-> Kategoriler
+MultiShop.WebUI\ViewComponents folder'ı içine DefaultViewComponents folder'ı içine:
+_CategoriesDefaultComponentPartial class'ı oluşturulur.
+
+MultiShop.WebUI\Views\Shared\Components\ altına _CategoriesDefaultComponentPartial folder'ı oluşturulur, içine Razor View oluşturulur. Partial View olarak Default adında eklenir.
+
+-> Öne Çıkan Ürünler
+MultiShop.WebUI\ViewComponents folder'ı içine DefaultViewComponents folder'ı içine:
+_FeatureProductsDefaultComponentPartial class'ı oluşturulur.
+
+MultiShop.WebUI\Views\Shared\Components\ altına _FeatureProductsDefaultComponentPartial folder'ı oluşturulur, içine Razor View oluşturulur. Partial View olarak Default adında eklenir.
+
+-> İndirim Teklifleri
+MultiShop.WebUI\ViewComponents folder'ı içine DefaultViewComponents folder'ı içine:
+_OfferDiscountDefaultComponentPartial class'ı oluşturulur.
+
+MultiShop.WebUI\Views\Shared\Components\ altına _OfferDiscountDefaultComponentPartial folder'ı oluşturulur, içine Razor View oluşturulur. Partial View olarak Default adında eklenir.
+
+-> Markalar
+MultiShop.WebUI\ViewComponents folder'ı içine DefaultViewComponents folder'ı içine:
+_VendorDefaultComponentPartial class'ı oluşturulur.
+
+MultiShop.WebUI\Views\Shared\Components\ altına _VendorDefaultComponentPartial folder'ı oluşturulur, içine Razor View oluşturulur. Partial View olarak Default adında eklenir.
+
+-> Footer Layout
+-> MultiShop.WebUI\ViewComponents\UILayoutViewComponents folder'ı içine:
+_FooterUILayoutComponentPartial class'ı oluşturulur.
+
+MultiShop.WebUI\Views\Shared\Components\ altına _FooterUILayoutComponentPartial folder'ı oluşturulur, içine Razor View oluşturulur. Partial View olarak Default adında eklenir.
+_UILayout.cshtml'de @await Component.InvokeAsync("_FooterUILayoutComponentPartial"); kodu eklenir.
+
+-> Script
+MultiShop.WebUI\ViewComponents\UILayoutViewComponents folder'ı içine:
+_ScriptUILayoutComponentPartial class'ı oluşturulur.
+
+MultiShop.WebUI\Views\Shared\Components\ altına _ScriptUILayoutComponentPartial folder'ı oluşturulur, içine Razor View oluşturulur. Partial View olarak Default adında eklenir.
+
+=> Ürün Sayfası 
+Ürün listeleme sayfası ui geliştirmeleri
+Fiyata göre filtreleme tasarımı.
+Renge göre filtreleme tasarımı.
+Ebata göre filtreleme tasarımı.
+
+View componentlerin oluşturulması.
+_ProductListGetProductCountComponentPartial -> Sorting ve Count
+_ProductListComponentPartial -> Product List
+_ProductListPaginationComponentPartial -> Pagination
+
+=> Ürün detayları sayfası ui geliştirmeleri 
+Ürün detayları için ProductListController'da ProductDetail action'ı oluşturuldu.
+
+ProductDetail -> Sağ Tıkla -> Add View -> ProductDetail
+_ProductDetailImageSliderComponentPartial view componenti oluşturuldu.
+
+_ProductDetailFeatureComponentPartial view componenti oluşturuldu. Ürün detayında öne çıkan bilgiler.
+
+_ProductDetailDescriptionComponentPartial view componenti oluşturuldu.
+_ProductDetailInformationComponentPartial view componenti oluşturuldu.
+_ProductDetailReviewComponentPartial view componenti oluşturuldu.
+
+=> Alışveriş Sepeti Sayfa Tasarımı:
+ShoppingCartController controller'ı oluşturulur.
+View\ShoppingCart\Index Adında  bir Razor view oluşturulur. 
+
+_ShoppingCartProductListComponentPartial view component'i oluşturuldu.
+
+_ShoppingCartDiscountCouponComponentPartial view component'i oluşturuldu.
+
+=> İletişim Sayfası:
+ContactController controller'ı oluşturulur.
+
+_ContactDetailComponentPartial view component'i oluşturuldu.
+
+=> Admin Teması
+wwwroot içerisine ovio-admin-template eklenmesi.
+
+MultiShop.WebUI\Areas folder'ı oluşturuldu.
+Add Area -> MVC Area -> Admin
+MultiShop.WebUI'da program.cs'e Area Endpoint'i kopyalanır. Area'dan program.cs'in haberi olması için
+
+app.UseEndpoints(endpoints =>
+        {
+          endpoints.MapControllerRoute(
+            name : "areas",
+            pattern : "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+          );
+        });
+		
+MultiShop.WebUI\Areas\Admin\Controllers'da:
+CategoryController.cs oluşturulur.
+AdminLayoutController.cs oluşturulur.
+
+AdminLayout'a ait Layout oluştulur.
+Category'e ait AdminLayout'u kullanan Razor View oluşturulur.
+
+AdminLayoutController'da:
+[Area("Admin")] attribute eklenir.
+
+ovio-admin-template'de basic.html kodları AdminLayout\Index.cshtml'e taşındı.
+
+MultiShop.WebUI\Areas\Admin'de ViewComponents folder'ı oluşturuldu. 
+AdminLayoutViewComponents folder'ı oluşturulur.
+_AdminLayoutHeadComponentPartial class'ı oluşturulur.
+
+MultiShop.WebUI\Admin\Views içerisine:
+\Shared\Components\_AdminLayoutHeadComponentPartial folder'ları oluştulur.
+Default partial view oluşturulur.
+
+_AdminLayoutHeadComponentPartial
+_AdminLayoutHeaderComponentPartial
+
+CategoryController'da:
+[Area("Admin")] attribute eklenir.
+AdminLayout\Index.cshtml'de @RenderBody() eklenir.  
+<!-- Main content -->
+   @RenderBody()
+<!-- content -->
+
+Dto Katmanı ve Kategori Katmanı
+
+Kategroilerin Listelenmesi:
+CategoryController'da Index() Action'da.
+Api Consume yapılır.
+
+Frontends klasörüne yeni bir proje eklenir.
+Eklenen class library: MultiShop.DtoLayer -> WebUI'ın Dto'sudur.
+
+MultiShop.DtoLayer içine:
+CatalogDtos\CategoryDtos folder'ları oluşturulur.
+CategoryDtos içine: 
+ResultCategoryDto class'ı oluşturulur.
+
+Frontends\MultiShop.WebUI projesine MultiShop.DtoLayer referans verilir. 
+
+MultiShop.WebUI\program.cs'de 
+builder.Services.AddHttpClient(); Register edilir.
+
+MultiShop.Catalog ve MultiShop.WebUI projeleri birlikte ayağa kaldırılır.
+https://localhost:7277/Admin/Category/Index URL'e gidilir.
+
+Postmande Kategoriler getirilmek istendiğinde:
+https://localhost:7070/api/Categories istek atıldığında 401 Unauthorized hatası döner.
+
+Yetki kontrolüne takılmamak için:
+MultiShop.Catalog.Controllers'da [Authorize]//Login olma zorunluluğu commentlenir.
+[AllowAnonymous] Attribute eklenir. Kurallardan muaf tutar.
+https://localhost:7277/Admin/Category/Index adresine gidilir.
+
+MultiShop Layout Logo
+
+Yeni Kategori Ekleme İşlemi:
+WebUI\Views'de bulunan _ViewImports.cshtml dosya Areas\Views'e eklendi.
+_ViewImports.cshtml dosyasına @using MultiShop.DtoLayer.CatalogDtos.CategoryDtos eklenir.
+
+Kategori Silme İşlemi:
+
+MultiShop.WebUI\Areas\Admin\Controllers içinde:
+CategoryController'da Route yönlendirmeleri yapıldı.
+
+Kategori Güncelleme İşlemi:
+İlk olarak güncellenecek kategori kaydının id'ye göre getirilmesi yapılır sonra kayıtta güncelleme işlemi yapılır.
+
+Admin Ürün İşlemleri:
+Ürünlere ait crud işlemleri yapıldı.
+
+Ürünlerin kategorileriyle birlikte getirilmesi.
+
+Katalog mikro servisinde ürünlerin kategorileriyle birlikte getirilmesi.
+
+ProductController'da ProductListWithCategory() Action'ı çağrılır.
+
+Postman üzerinde istek GET isteğinde bulunuldu.
+https://localhost:7070/api/Products/ProductListWithCategory
+ResultProductsWithCategoryDto
+
+ {
+        "productId": "662b96a4f97106fb63b7f37a",
+        "productName": "Pantolon",
+        "productPrice": 1350,
+        "productImageUrl": "deneme2",
+        "productDescription": "test2",
+        "category": {
+            "categoryId": "662b9511f97106fb63b7f378",
+            "categoryName": "Kıyafet"
+        }
+    }
+
+-> Feature Slider geliştirmeleri: 
+
+Catalog mikro servisi içerisinde:
+Entity oluşturuldu.
+Dto oluşturuldu.
+appsettings.json'da collection eklenir.
+Settings'de eklenir.
+Mapping'e eklenir.
+Service interface'i ile Service class'ı oluşturulur.
+program.cs de servis register edilir.
+controller'ı oluşturulur.
+Swagger üzerinden api testi yapılır.
+
+Frontends\MultiShop.DtoLayer\CatalogDtos'da:
+FeatureSliderDtos oluşturulur.
+
+Frontends\MultiShop.WebUI\Areas\Admin\Controllers'da:
+FeatureSlider mvc controller'ı oluşturulur.
+FeatureSliderController'da Index action'ı için View oluşturulur.
+FeatureSliderController'da CreateFeatureSlider action'ı için View oluşturulur.
+FeatureSliderController'da UpdateFeatureSlider action'ı için View oluşturulur.
+
+Frontends\MultiShop.WebUI\Areas\Admin\Views'da:
+_ViewImports a using eklenir.
+FeatureSlider'a ait view'lar düzenlenir. Index - Create - Update
+
+Frontends\MultiShop.WebUI\Areas\Admin\Views\Shared\Components\_AdminLayoutSidebarComponentPartial'da:
+Defalt.cshmtl'e link eklenir.
+<li><a href="/Admin/FeatureSlider/Index/"> <i class="fa fa-picture-o"></i><span>Slider Paneli</span></a></li>
+
+MultiShop.WebUI\ViewComponents\DefaultViewComponents\_CarouselDefaultComponentPartial'da:
+InvokeAsync() metodu eklendi.
+
+MultiShop.WebUI\Views'de:
+_ViewImports.cshtml'e using eklenir.
+
+MultiShop.WebUI\Views\Shared\Components\_CarouselDefaultComponentPartial'da:
+Default.cshtml'de sayfa düzenlemeleri yapılır.
+
+-> SpecialOffer geliştirmeleri:
+
+Catalog mikro servisi içerisinde:
+Entity oluşturuldu.
+Dto oluşturuldu.
+appsettings.json'da collection eklenir.
+Settings'de eklenir.
+Mapping'e eklenir.
+ISpecialOfferService interface'i ile SpecialOfferService class'ı oluşturulur.
+program.cs de servis register edilir.
+SpecialOffersController controller'ı oluşturulur.
+Swagger üzerinden api testi yapılır.
+
+Frontends\MultiShop.DtoLayer\CatalogDtos'da:
+SpecialOfferDtos oluşturulur.
+
+Frontends\MultiShop.WebUI\Areas\Admin\Controllers'da:
+SpecialOffer mvc controller'ı oluşturulur.
+SpecialOfferController'da Index action'ı için View oluşturulur.
+SpecialOfferController'da CreateSpecialOffer action'ı için View oluşturulur.
+SpecialOfferController'da UpdateSpecialOffer action'ı için View oluşturulur.
+
+Frontends\MultiShop.WebUI\Areas\Admin\Views'da:
+_ViewImports a using eklenir.
+SpecialOffer'a ait view'lar düzenlenir. Index - Create - Update
+
+Frontends\MultiShop.WebUI\Areas\Admin\Views\Shared\Components\_AdminLayoutSidebarComponentPartial'da:
+Defalt.cshmtl'e link eklenir.
+<li><a href="/Admin/SpecialOffer/Index/"> <i class="fa fa-cubes"></i><span>Özel Teklifler</span></a></li>
+
+MultiShop.WebUI\ViewComponents\DefaultViewComponents\_SpecialOfferDefaultComponentPartial'da:
+InvokeAsync() metodu eklendi.
+
+MultiShop.WebUI\Views'de:
+_ViewImports.cshtml'e using eklenir.
+
+MultiShop.WebUI\Views\Shared\Components\_SpecialOfferDefaultComponentPartial'da:
+Default.cshtml'de sayfa düzenlemeleri yapılır.
+
+-> Feature - Öne Çıkanlar
+Catalog mikro servisi içerisinde:
+Entity oluşturuldu.
+Dto oluşturuldu.
+appsettings.json'da collection eklenir.
+Settings'de eklenir.
+Mapping'e eklenir.
+Service interface'i ile Service class'ı oluşturulur.
+program.cs de servis register edilir.
+Controller oluşturulur.
+Swagger üzerinden api testi yapılır.
+
+Frontends\MultiShop.DtoLayer\CatalogDtos'da:
+FeatureDtos oluşturulur.
+
+Frontends\MultiShop.WebUI\Areas\Admin\Controllers'da:
+Feature mvc controller'ı oluşturulur.
+FeatureController'da Index action'ı için View oluşturulur.
+FeatureController'da CreateFeature action'ı için View oluşturulur.
+FeatureController'da UpdateFeature action'ı için View oluşturulur.
+
+Frontends\MultiShop.WebUI\Areas\Admin\Views'da:
+_ViewImports a using eklenir.
+Feature'a ait view'lar düzenlenir. Index - Create - Update
+
+Frontends\MultiShop.WebUI\Areas\Admin\Views\Shared\Components\_AdminLayoutSidebarComponentPartial'da:
+Default.cshmtl'e link eklenir.
+<li><a href="/Admin/Feature/Index/"> <i class="fa fa-anchor"></i><span>Öne Çıkan Alan Paneli</span></a></li>
+
+MultiShop.WebUI\ViewComponents\DefaultViewComponents\_FeatureDefaultComponentPartial'da:
+InvokeAsync() metodu eklendi.
+
+MultiShop.WebUI\Views'de:
+_ViewImports.cshtml'e using eklenir.
+
+MultiShop.WebUI\Views\Shared\Components\_FeatureDefaultComponentPartial'da:
+Default.cshtml'de sayfa düzenlemeleri yapılır.
+
+-> Kategorilerin dinamik şekilde görselleri ile getirilmesi:
+Catalog mikro servisinde:
+Category Entity'de ImageUrl eklenir.
+Category Dtos'da ImageUrl eklenir.
+
+Frontends\MultiShop.DtoLayer\CatalogDtos'da:
+CategoryDtos'a ImageUrl eklenir.
+
+Frontends\MultiShop.WebUI\Areas\Admin\Views\Category'de:
+CreateCategory.cshmtl ve UpdateCategory.cshmtl ImageUrl eklendi.
+
+Frontends\MultiShop.WebUI\ViewComponents\DefaultViewComponents\_CategoriesDefaultComponentPartial.cs'de:
+Kategoriler listelenir.
+
+Frontends\MultiShop.WebUI\View\_ViewImports'da:
+CategoryDtos using olarak eklenir.
+
+Frontends\MultiShop.WebUI\View\Shared\Components\_CategoriesDefaultComponentPartial\Default.cshtml'de:
+Sayfa düzenlemeleri yapılır.
+
+wwwroot\images\categoryimages'de:
+Görseller eklenir. Eklenen yeni kategoriler ile görseller Admin Kategori ekranında kontrol edilir.
+https://localhost:7277/Admin/Category/Index 
+
+-> Öne Çıkan Ürünler:
+
+Frontends\MultiShop.WebUI\ViewComponents\DefaultViewComponents\_FeatureProductsDefaultComponentPartial.cs'de:
+
+Frontends\MultiShop.WebUI\View\_ViewImports'da:
+ProductDtos using olarak eklenir.
+
+Frontends\MultiShop.WebUI\View\Shared\Components\_FeatureProductsDefaultComponentPartial\Default.cshtml'de:
+
+-> İndirim Teklifleri:
+
+Catalog mikro servisi içerisinde:
+OfferDiscount
+Entity oluşturuldu.
+Dto oluşturuldu.
+appsettings.json'da collection eklenir.
+Settings'de eklenir.
+Mapping'e eklenir.
+Service interface'i ile Service class'ı oluşturulur.
+Controller oluşturulur.
+program.cs de servis register edilir.
+Swagger üzerinden api testi yapılır.
+
+Frontends\MultiShop.DtoLayer\CatalogDtos'da:
+OfferDiscount oluşturulur.
+
+Frontends\MultiShop.WebUI\Areas\Admin\Controllers'da:
+OfferDiscount mvc controller'ı oluşturulur.
+OfferDiscountController'da Index action'ı için View oluşturulur.
+OfferDiscountController'da CreateSpecialOffer action'ı için View oluşturulur.
+OfferDiscountController'da UpdateSpecialOffer action'ı için View oluşturulur.
+
+Frontends\MultiShop.WebUI\Areas\Admin\Views'da:
+_ViewImports a using eklenir.
+OfferDiscount'a ait view'lar düzenlenir. Index - Create - Update
+
+Frontends\MultiShop.WebUI\Areas\Admin\Views\Shared\Components\_AdminLayoutSidebarComponentPartial'da:
+Defalt.cshmtl'e link eklenir.
+<li><a href="/Admin/OfferDiscount/Index/"> <i class="fa fa-coffee"></i><span>İndirim Teklifleri</span></a></li>
+
+MultiShop.WebUI\ViewComponents\DefaultViewComponents\_OfferDiscountDefaultComponentPartial'da:
+InvokeAsync() metodu eklendi.
+
+MultiShop.WebUI\Views'de:
+_ViewImports.cshtml'e using eklenir.
+
+MultiShop.WebUI\Views\Shared\Components\_OfferDiscountDefaultComponentPartial'da:
+Default.cshtml'de sayfa düzenlemeleri yapılır.
+
+-> Markalar:
+
+Catalog mikro servisi içerisinde:
+OfferDiscount
+Entity oluşturuldu.
+Dto oluşturuldu.
+appsettings.json'da collection eklenir.
+Settings'de eklenir.
+Mapping'e eklenir.
+Service interface'i ile Service class'ı oluşturulur.
+Controller oluşturulur.
+program.cs de servis register edilir.
+Swagger üzerinden api testi yapılır.
+
+Frontends\MultiShop.DtoLayer\CatalogDtos'da:
+Brand oluşturulur.
+
+Frontends\MultiShop.WebUI\Areas\Admin\Controllers'da:
+Brand mvc controller'ı oluşturulur.
+BrandController'da Index action'ı için View oluşturulur.
+BrandController'da CreateBrand action'ı için View oluşturulur.
+BrandController'da UpdateBrand action'ı için View oluşturulur.
+
+Frontends\MultiShop.WebUI\Areas\Admin\Views'da:
+_ViewImports a using eklenir.
+Brand'a ait view'lar düzenlenir. Index - Create - Update
+
+Frontends\MultiShop.WebUI\Areas\Admin\Views\Shared\Components\_AdminLayoutSidebarComponentPartial'da:
+Defalt.cshmtl'e link eklenir.
+<li><a href="/Admin/Brand/Index/"> <i class="fa fa-university"></i><span>Markalar</span></a></li>
+
+MultiShop.WebUI\ViewComponents\DefaultViewComponents\_VendorDefaultComponentPartial'da:
+InvokeAsync() metodu eklendi.
+
+MultiShop.WebUI\Views'de:
+_ViewImports.cshtml'e using eklenir.
+
+MultiShop.WebUI\Views\Shared\Components\_VendorDefaultComponentPartial'da:
+Default.cshtml'de sayfa düzenlemeleri yapılır.
+
+-> Hakkımda:
+Catalog mikro servisi içerisinde:
+About
+Entity oluşturuldu.
+Dto oluşturuldu.
+appsettings.json'da collection eklenir.
+Settings'de eklenir.
+Mapping'e eklenir.
+Service folder'ında Interface'i ile Service class'ı oluşturulur.
+Controller oluşturulur.
+program.cs de servis register edilir.
+Swagger üzerinden api testi yapılır.
+
+Frontends\MultiShop.DtoLayer\CatalogDtos'da:
+About oluşturulur.
+
+Frontends\MultiShop.WebUI\Areas\Admin\Controllers'da:
+About mvc controller'ı oluşturulur.
+AboutController'da Index action'ı için View oluşturulur.
+AboutController'da CreateAbout action'ı için View oluşturulur.
+AboutController'da UpdateAbout action'ı için View oluşturulur.
+
+Frontends\MultiShop.WebUI\Areas\Admin\Views'da:
+_ViewImports a using eklenir.
+About'a ait view'lar düzenlenir. Index - Create - Update
+
+Frontends\MultiShop.WebUI\Areas\Admin\Views\Shared\Components\_AdminLayoutSidebarComponentPartial'da:
+Defalt.cshmtl'e link eklenir.
+<li><a href="/Admin/About/Index/"> <i class="fa fa-info"></i><span>Hakkımda</span></a></li>
+
+MultiShop.WebUI\ViewComponents\DefaultViewComponents\_FooterUILayoutComponentPartial'da:
+InvokeAsync() metodu eklendi.
+
+MultiShop.WebUI\Views'de:
+_ViewImports.cshtml'e using eklenir.
+
+MultiShop.WebUI\Views\Shared\Components\_FooterUILayoutComponentPartial'da:
+Default.cshtml'de sayfa düzenlemeleri yapılır.
+
+-> Kategoriye Göre Filtreleme İşlemleri:
+Ürün listesi kategoriye göre getirilmeli.
+Kategori combobox'ının doldurulması.
+
+-> Ürün Detayları Sayfası:
+Ürüne ait detaylar ile ilgili api ve ui geliştirmeleri yapılmıştır.

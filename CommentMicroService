@@ -1,0 +1,49 @@
+﻿=> Comment Micro Service <=
+
+-> Services\Comment Folder -> Comment -> New Project -> ASP.NET Core Web API -> MultiShop.Comment -> .NET 8.0
+
+-> portainer.io'da:
+Portainer üzerinden App Templates'de Microsoft SQL Server on Linux seçilir.
+Db Name: CommentDb - User: sa - Password: 123456aA*
+Show advanced options seçeneği açılır. Port mapping yapılır. host 1442 portu verilir. 
+Deploy the container butonu tıklanır. 1442 portunda veritabanı ayağa kalkar. 
+
+-> Entity Framework Core paketleri kurulur.
+
+-> UserComment adında Entity sınıfı oluştulur.
+
+-> CommentContext adında context sınıfı oluşturulur.
+
+-> Migration İşlemi:
+Visual Studio da proje MultiShop.Comment seçilir ve Package Manager Console'da proje MultiShop.Comment seçilir.
+
+Locale veritabanından çıkıp port üzerinde docker ile ayağa kaldırılan container içerisinde veritabanı gönderiyoruz.
+
+add-migration mig1 komutu çalıştırılır.
+update-database komutu çalıştırılır.
+
+productId entity sınıfına sonradan eklendiği için:
+add-migration mig2 komutu çalıştırılır.
+update-database komutu çalıştırılır.
+
+Bu şekilde migration uygulanmış olur.
+
+-> DBeaver:
+DBeaver üzerinde localhost:1442 portunda MultiShopCommentDb oluştu. Tamamen docker üzerinden ayağa kalkıyor. 
+Veritabanına erişmek için docker ayakta olmalı.
+
+-> MSSQL:
+Server type: Database Engine
+Server name: localhost,1442
+Authentication: SQL Server Authentication
+Login: sa
+Password: 123456aA*
+
+-> API Controller oluşturulur.
+CommentsController
+
+-> Program.cs de:
+Context register edilir.
+
+-> Api Testi:
+Swagger üzerinden Get - Get(id) - Post - Delete - Put test edilir. 
