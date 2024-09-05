@@ -9,13 +9,19 @@ Api Tarafı:
 
 -> Catalog mikro servisinde appsettings.json'da ContactCollectionName tanımlanır.
 
--> Catalog mikro servisinde Settings'de IDatabaseSettings ve IDatabaseSettings'de ContactCollectionName property tanımlanır.
+-> Catalog mikro servisinde Settings'de IDatabaseSettings ve DatabaseSettings'de ContactCollectionName property tanımlanır.
 
 -> Catalog mikro servisinde ContactServices folderı oluşturulur. IContactService interface'i ile ContactService class'ı oluşturulur.
 
--> Catalog mikro servisinde Controllers'da ContactsController api controller'ı oluşturulur.
+-> Catalog mikro servisinde Controllers'da ContactsController adında api controller'ı oluşturulur.
 
 -> Catalog mikro servisinde program.cs de ContactService register edilir.
 
 UI Tarafı:
-->
+-> DtoLayer\CatalogDtos'da ContactDtos folder'ı içinde dto class'ları oluşturulur.
+
+-> WebUI\Controllers\ContactController'da Index() metodu yazıldı.
+
+-> WebUI\Views'da _ViewImports.cshtml de ContactDtos using olarak eklendi.
+
+-> WebUI\Views\Contact'da Index.cshtml düzenlendi.
