@@ -1,0 +1,21 @@
+﻿=> Contact Page <=
+
+Api Tarafı:
+-> Catalog mikro servisinde Entities'de Contact Entity oluşturulur.
+
+-> Catalog mikro servisinde Dtos'da Contact'a ait Dto'lar oluşturulur.
+
+-> Catalog mikro servisinde Mapping'de Contact'a ait Entity ve Dto'lar maplenir.
+
+-> Catalog mikro servisinde appsettings.json'da ContactCollectionName tanımlanır.
+
+-> Catalog mikro servisinde Settings'de IDatabaseSettings ve IDatabaseSettings'de ContactCollectionName property tanımlanır.
+
+-> Catalog mikro servisinde ContactServices folderı oluşturulur. IContactService interface'i ile ContactService class'ı oluşturulur.
+
+-> Catalog mikro servisinde Controllers'da ContactsController api controller'ı oluşturulur.
+
+-> Catalog mikro servisinde program.cs de ContactService register edilir.
+
+UI Tarafı:
+->

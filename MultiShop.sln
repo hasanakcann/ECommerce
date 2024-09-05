@@ -35,6 +35,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ReadMe", "ReadMe", "{A9BC47
 		CargoMicroService = CargoMicroService
 		CatologMicroService = CatologMicroService
 		CommentMicroService = CommentMicroService
+		Contact = Contact
 		DiscountMicroService = DiscountMicroService
 		ECommerce = ECommerce
 		Frontend = Frontend
@@ -72,7 +73,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MultiShop.DtoLayer", "Front
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Comment", "Comment", "{D00B4816-C1E6-452A-B2BB-31BC23850D17}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiShop.Comment", "Services\Comment\MultiShop.Comment\MultiShop.Comment.csproj", "{DA7CB822-A73B-407C-840A-8971B1DA3D96}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MultiShop.Comment", "Services\Comment\MultiShop.Comment\MultiShop.Comment.csproj", "{DA7CB822-A73B-407C-840A-8971B1DA3D96}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
