@@ -47,3 +47,37 @@ Context register edilir.
 
 -> Api Testi:
 Swagger üzerinden Get - Get(id) - Post - Delete - Put test edilir. 
+
+-> Frontends\DtoLayer'da:
+CommentDto oluşturulur.
+
+-> Admin ve WebUI'da Views altında _ViewImports.cshtml'e usingler eklenir.
+
+-> Admin folder'ın da CommentController oluşturulur.
+Admin tarafında Controller'da Add View ile Index ve UpdateComment sayfaları oluşturulur.
+
+-> Docker:
+Docker ayakta olmadığı durumda veritabanına bağlantı sağlanamaz.
+
+-> SideBar'da link tanımlama:
+Admin\Views\Shared\Components'de _AdminLayoutSidebarComponentPartial folder'ı içinde Default.cshtml'de 
+Yorunlar için SideBar'da link tanımlanır.
+<li><a href="/Admin/Comment/Index/"> <i class="fa fa-comment"></i><span>Yorumlar</span></a></li>
+
+-> Yorumların UI'da Gösterilmesi:
+WebUI\Views\ProductList\ProductDetail.cshtml'de _ProductDetailReviewComponentPartial partial'a parametre geçilir. 
+Commet mikro servisinde Controllers'da CommentListByProductId metodu yazılır.
+Ürüne ait yorumlar getirilebilsin diye ViewBag ile productId taşınır. 
+
+-> WebUI\ViewComponents\ProductDetailViewComponents'de:
+_ProductDetailReviewComponentPartial'da InvokeAsync() metodu yazılmıştır.
+
+-> WebUI\Views\Shared\Components\_ProductDetailReviewComponentPartial'de:
+Default.cshtml sayfa düzenlemeleri yapılmıştır.
+
+-> WebUI\Controllers\ProductListController'da:
+AddComment() metodu eklenir. Eklenen metodun AddComment.cshtml sayfasını oluşturulur.
+
+-> WebUI\Views\Shared\Components\_ProductDetailReviewComponentPartial'da:
+Default.cshtml'de AddComment.cshtml partial view'ı çağrılır. 
+@await Html.PartialAsync("~/Views/ProductList/AddComment.cshtml", new { id = ViewBag.x })

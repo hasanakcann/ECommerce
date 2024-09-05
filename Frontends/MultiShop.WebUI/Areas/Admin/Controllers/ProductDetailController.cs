@@ -25,7 +25,6 @@ namespace MultiShop.WebUI.Areas.Admin.Controllers
             ViewBag.v1 = "Ana Sayfa";
             ViewBag.v2 = "Ürünler";
             ViewBag.v3 = "Ürün Açıklama ve Bilgi Güncelleme Sayfası";
-
             var client = _httpClientFactory.CreateClient();
             var responseMessage = await client.GetAsync("https://localhost:7070/api/ProductDetails/GetProductDetailByProductId?id=" + id);
             if (responseMessage.IsSuccessStatusCode)
@@ -36,10 +35,12 @@ namespace MultiShop.WebUI.Areas.Admin.Controllers
             }
             return View();
         }
+
         [Route("UpdateProductDetail/{id}")]
         [HttpPost]
         public async Task<IActionResult> UpdateProductDetail(UpdateProductDetailDto updateProductDetailDto)
         {
+
             var client = _httpClientFactory.CreateClient();
             var jsonData = JsonConvert.SerializeObject(updateProductDetailDto);
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");

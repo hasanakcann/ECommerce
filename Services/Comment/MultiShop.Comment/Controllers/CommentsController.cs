@@ -55,4 +55,11 @@ public class CommentsController : ControllerBase
         _context.SaveChanges();
         return Ok("Yorum başarıyla silindi.");
     }
+
+    [HttpGet("CommentListByProductId")]
+    public IActionResult CommentListByProductId(string id)
+    {
+        var value = _context.UserComments.Where(x => x.ProductId == id).ToList();
+        return Ok(value);
+    }
 }

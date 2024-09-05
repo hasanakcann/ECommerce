@@ -3,6 +3,7 @@ using MultiShop.Comment.Context;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
 #region Context Registration
 builder.Services.AddDbContext<CommentContext>();
 #endregion
