@@ -37,12 +37,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ReadMe", "ReadMe", "{A9BC47
 		CommentMicroService = CommentMicroService
 		Contact = Contact
 		DiscountMicroService = DiscountMicroService
+		Discovery = Discovery
 		ECommerce = ECommerce
 		Frontend = Frontend
 		IdentityMicroService = IdentityMicroService
 		OrderMicroService = OrderMicroService
 		PortNumber = PortNumber
 		ReadingSort = ReadingSort
+		RegisterLoginOperation = RegisterLoginOperation
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IdentityServer", "IdentityServer", "{5CA6FC3E-2704-4148-A850-0762FCE240E9}"

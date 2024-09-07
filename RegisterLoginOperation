@@ -1,0 +1,153 @@
+﻿=> Register ve Login İşlemleri <=
+
+-> Frontends\MultiShop.WebUI'da wwwroot içerisine register form (colorlib-regform-30) eklenir. 
+
+-> Frontends\MultiShop.WebUI\Controllers'da MVC RegisterController oluşturulur.
+
+-> Frontends\MultiShop.WebUI\Views\Register'da Index.cshtml sayfası oluşturulur. Partial yada Layout değildir.
+
+-> IdentityServer\MultiShop.IdentityServer'da:
+Controllers\RegisterController'da //[Authorize(LocalApi.PolicyName)] commentlenir.
+
+Postman'de:
+POST http://localhost:5001/api/Registers
+{
+   "UserName": "can",
+   "Name":"Can",
+   "Surname":"Erbilek",
+   "Email": "can@gmail.com",
+   "Password":"111111aA*"
+}
+
+Send butonu tıklanır ve yeni kullanıcı oluşturulur.
+
+=> Register Formu:
+
+-> Frontends\MultiShop.DtoLayer'da:
+IdentityDtos\IdentityDtos\RegisterDtos folder'ları oluşturulur.
+CreateRegisterDto class'ı oluşturulur.
+
+-> Frontends\MultiShop.WebUI\Views\_ViewImports.cshtml'de RegisterDtos using olarak eklenir.
+
+-> Frontends\MultiShop.WebUI\Controllers\RegisterController'da
+Create işlemi için Index() metodu eklenir.
+
+-> Kayıt formunun testinde uygulama Frontends\MultiShop.WebUI ve IdentityServer\MultiShop.IdentityServer birlikte çalıştırılır.
+
+-> E-Ticaret uygulamasında api üzerinden identity mikro servisini kullanarak yeni kullanıcı kayıt işlemi tamamlandı.
+
+=> Login Formu:
+
+-> Frontends\MultiShop.WebUI\Controllers'da MVC LoginController oluşturulur.
+
+-> Frontends\MultiShop.WebUI\Views\Login'de Index.cshtml sayfası oluşturulur. Partial yada Layout değildir.
+
+-> Örnek Kullanıcı Veri Setleri:
+Kullanıcı Adı: Şifre: 
+ali01        | 1111aA*
+ayse01		 | 2222aA*
+mehmet01     | 3333aA*
+
+-> IdentityServer\MultiShop.IdentityServer\Dtos'da:
+UserLoginDto oluşturulur.
+
+-> IdentityServer\MultiShop.IdentityServer\Controller'da:
+LoginsController adında api controller oluşturulur.
+LoginsController'da UserLogin metodu ile kullanıcı giriş işlemi yapılır.
+
+Postman'de:
+POST http://localhost:5001/api/Logins
+{
+   "UserName": "ali01",
+   "Password":"1111aA*"
+}
+
+-> Frontends\MultiShop.DtoLayer'da:
+IdentityDtos\IdentityDtos\LoginDtos folder'ları oluşturulur.
+CreateLoginDto class'ı oluşturulur.
+
+-> Frontends\MultiShop.WebUI\Views\_ViewImports.cshtml'de LoginDtos using olarak eklenir.
+
+-> Frontends\MultiShop.WebUI'a Microsoft.AspNetCore.Authentication.JwtBearer paketi eklenir.
+
+-> Frontends\MultiShop.WebUI\Models'de:
+JwtResponseModel modeli oluşturulur.
+
+-> Frontends\MultiShop.WebUI\Controllers\LoginController'da:
+[HttpGet] ve [HttpPost] Index() metodları yazılır.
+
+-> Frontends\MultiShop.WebUI\program.cs de AddAuthentication() register edilir. Cookie configuration yapılır.
+
+-> Frontends\MultiShop.WebUI'a Services folder'ı oluşturulur.
+ILoginService interface'i ile LoginService class'ı oluşturulur.
+MultiShop.WebUI\program.cs de LoginService register edilir.
+
+-> Frontends\MultiShop.WebUI\Views\Login\Index.cshtml'de sayfa düzenlemeleri yapılır. CreateLoginDto modeli tanımlanır.
+
+-> IdentityServer\MultiShop.IdentityServer'a Tools folder'ı oluşturulur.
+GetCheckAppUserViewModel class'ı oluşturulur.
+JwtTokenDefaults class'ı oluşturulur.
+TokenResponseViewModel class'ı oluşturulur.
+JwtTokenGenerator class'ı oluşturulur. GenerateToken() static metot'da token üretilir.
+
+-> IdentityServer\MultiShop.IdentityServer\Controllers'da:
+LoginsController'da UserLogin() metodunda token oluşturulur.
+Uygulama MultiShop.Catalog - MultiShop.IdentityServer - MultiShop.WebUI birlikte çalıştırılır. 
+
+Postman üzerinden test yapılır:
+POST http://localhost:5001/api/Logins
+{
+   "UserName": "ali01",
+   "Password":"1111aA*"
+}
+SEND butonu tıklanır.
+
+İstek gönderildiğinde token ve expireDate'in oluştuğu görülür.
+
+Oluşan token https://jwt.io/ 'da çözümlenir. Encoded alanına yapıştırılır ve Decoded'da data görüntülenir.
+
+Payload: Data
+"http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier": "7e6774dd-8ebf-4587-aa45-e7ea2132024c",
+  "UserName": "ali01",
+  "nbf": 1725731488,
+  "exp": 1730915488,
+  "iss": "http://localhost",
+  "aud": "http://localhost"
+}
+
+-> Frontends\MultiShop.WebUI\Controllers\LoginController'da:
+Uygulamaya giriş yapan kullanıcının id (_loginService.GetUserId) değeri ile token değerini alırız.
+
+-> Services\Catalog\MultiShop.Catalog\Controller'da bulunan tüm controller'larda [AllowAnonymous] attribute kaldırılır. [Authorize] attribute eklenerek uygulamaya login olma zorunluluğu getirilir.
+
+-> Kullanıcıya UI'da token atanması:
+Frontends\MultiShop.WebUI\Controllers'da MVC TestController oluşturulur.
+Frontends\MultiShop.WebUI\Views\Test'de Index sayfası oluşturulur. 
+
+-> Frontends\MultiShop.WebUI\Controllers\TestController\Index metodunda:
+//Token değerinin UI'da gösterilmesi testi yapılmıştır. Bu yöntem güvenli bir yöntem değildir.
+string token;
+using (var httpClient = new HttpClient())
+{
+    var request = new HttpRequestMessage
+    {
+        RequestUri = new Uri("http://localhost:5001/connect/token"),
+        Method = HttpMethod.Post,
+        Content = new FormUrlEncodedContent(new Dictionary<string, string>
+        {
+            {"client_id","MultiShopVisitorId" },
+            {"client_secret","multishopsecret" },
+            {"grant_type","client_credentials" }
+        })
+    };
+
+    using (var response = await httpClient.SendAsync(request))
+    {
+        if (response.IsSuccessStatusCode)
+        {
+            var content = await response.Content.ReadAsStringAsync();
+            var tokenResponse = JObject.Parse(content);
+            token = tokenResponse["access_token"].ToString();
+        }
+    }
+}

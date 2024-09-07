@@ -1,12 +1,15 @@
 ﻿=> Okuma Sıralaması <=
 
-- ECommerce
-- CatalogMicroService
-- DiscountMicroService
-- OrderMicroService
-- IdentityMicroService
-- PortNumber
-- CargoMicroService
-- BasketMicroService
-- Frontends
-- CommetMicroService
+1 -> ECommerce
+2 -> CatalogMicroService
+3 -> DiscountMicroService
+4 -> OrderMicroService
+5 -> IdentityMicroService
+6 -> PortNumber
+7 -> CargoMicroService
+8 -> BasketMicroService
+9 -> Frontends
+10 -> CommetMicroService
+11 -> Contact
+12 -> RegisterLoginOperation
+13 -> Discovery

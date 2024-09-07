@@ -5,8 +5,7 @@ using MultiShop.Catalog.Services.FeatureServices;
 
 namespace MultiShop.Catalog.Controllers;
 
-//[Authorize]//Login olma zorunluluğu eklendi.
-[AllowAnonymous]
+[Authorize]//Login olma zorunluluğu.
 [Route("api/[controller]")]
 [ApiController]
 public class FeaturesController : ControllerBase

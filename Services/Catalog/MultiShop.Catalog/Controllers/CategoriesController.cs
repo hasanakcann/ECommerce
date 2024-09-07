@@ -5,8 +5,7 @@ using MultiShop.Catalog.Services.CategoryServices;
 
 namespace MultiShop.Catalog.Controllers;
 
-//[Authorize]//Login olma zorunluluğu eklendi.
-[AllowAnonymous]
+[Authorize]//Login olma zorunluluğu.
 [Route("api/[controller]")]
 [ApiController]
 public class CategoriesController : ControllerBase
