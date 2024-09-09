@@ -1,1 +1,61 @@
 ﻿=> Discovery Metotları <=
+
+https://identityserver4.readthedocs.io/en/latest/endpoints/userinfo.html
+
+-> Frontends\MultiShop.DtoLayer\IdentityDtos\LoginDtos'da:
+SignInDto class'ı oluşturulur.
+
+-> Frontends\MultiShop.WebUI\Services'da:
+Concrete ve Interfaces folder'ları oluşturuldu.
+Interfaces folder'ı içine IIdentityService interface'i oluşturulur.
+Concrete folder'ı içine IdentityService class'ı oluşturulur.
+
+-> Frontends\MultiShop.WebUI\appsettings.json'da:
+ ClientSettings'de client'lar tanımlanır.
+
+-> Frontends\MultiShop.WebUI'da:
+Settings folder'ı oluşturulur.
+Settings folder'ı içine ClientSettings class'ı oluşturulur.
+
+-> Frontends\MultiShop.WebUI\Services\IdentityService class'ında SignIn() metodu yazılır.
+SignIn() metodu yazılırken GetDiscoveryDocumentAsync() çalışabilmesi için, Frontends\MultiShop.WebUI'a IdentityServer4.Storage paketi kurulur. 
+
+-> IdentityServer\MultiShop.IdentityServer\Config.cs'de:
+Visitor - Ziyaretçi için AllowedScopes = { "CatalogReadPermission" } yapılır.
+
+-> Frontends\MultiShop.WebUI\Controllers\LoginController'da:
+SignIn() metotları oluşturulur.
+
+-> Frontends\MultiShop.WebUI\Program.cs'de:
+Register edilir.
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+  {
+      options.LoginPath = "/Login/Index/";
+      options.ExpireTimeSpan = TimeSpan.FromDays(5);
+      options.Cookie.Name = "MultiShopCookie";
+      options.SlidingExpiration = true;
+  });
+
+builder.Services.AddHttpClient<IIdentityService, IdentityService>();
+
+builder.Services.Configure<ClientSettings>(builder.Configuration.GetSection("ClientSettings"));//appsettings.json'da tanımlı.
+
+-> Frontends\MultiShop.WebUI\Views\Login'de SignIn sayfası oluşturulur.
+
+-> Frontends\MultiShop.WebUI\Controllers\TestController'da:
+Index() metodunda gelen token okutulup sonrasında view dönülür.
+client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token); kodu eklenir.
+Bearer: Postman Authorization'da Auth Type: OAuth 2.0'deki Header Prefix'tir.
+Local ayağa kaldırılır ve Login/SigIn metoduna gidilir.TestController üzerinden token değerinin UI'da gösterilmesi testi yapılır. 
+
+-> Frontends\MultiShop.WebUI\ViewComponents\UILayoutViewComponents\_NavbarUILayoutComponentPartial'da:
+InvokeAsync() metoduna TestController Index() metodunda bulunan kodlar taşınır.
+Kullanıcı başarılı şekilde giriş yaparsa kategoriler listelencektir.
+
+-> Frontends\MultiShop.WebUI\Controllers\TestController'da:
+Deneme1 metodu oluşturulur.
+Kullanıcıların Deneme1 metoduna erişim sağlabilmeleri test edilir.
+
+Uygulama ayağa kaldırılır
+https://localhost:7277/Test/Deneme1 adresine gidilir.
+Gelen kategori değerleri token'a bağlı olarak gelmiştir.

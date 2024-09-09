@@ -2,6 +2,7 @@
 using MultiShop.DtoLayer.CatalogDtos.CategoryDtos;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Net.Http.Headers;
 
 namespace MultiShop.WebUI.Controllers
 {
@@ -21,7 +22,7 @@ namespace MultiShop.WebUI.Controllers
         public async Task<IActionResult> Index()
         {
             //Token değerinin UI'da gösterilmesi testi yapılmıştır. Bu yöntem güvenli bir yöntem değildir.
-            string token;
+            string token = "";
             using (var httpClient = new HttpClient())
             {
                 var request = new HttpRequestMessage
@@ -30,9 +31,9 @@ namespace MultiShop.WebUI.Controllers
                     Method = HttpMethod.Post,
                     Content = new FormUrlEncodedContent(new Dictionary<string, string>
                     {
-                        {"client_id","MultiShopVisitorId" },
-                        {"client_secret","multishopsecret" },
-                        {"grant_type","client_credentials" }
+                        { "client_id","MultiShopVisitorId" },
+                        { "client_secret","multishopsecret" },
+                        { "grant_type","client_credentials" }
                     })
                 };
 
@@ -47,16 +48,22 @@ namespace MultiShop.WebUI.Controllers
                 }
             }
 
-            var client = _httpClientFactory.CreateClient();//Api çağrımı yapılır.
-            var responseMessage = await client.GetAsync("https://localhost:7070/api/Categories");//Yapılacak olan işlemin türü belirtilir. Catalog mikro servisinde bulunan Categories controller'ına Get isteğinde bulunulur.
+            var client = _httpClientFactory.CreateClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var responseMessage = await client.GetAsync("https://localhost:7070/api/Categories");
 
-            if (responseMessage.IsSuccessStatusCode)//200 OK
+            if (responseMessage.IsSuccessStatusCode)
             {
-                var jsonData = await responseMessage.Content.ReadAsStringAsync();//Gelen veri string formatta okunur.
+                var jsonData = await responseMessage.Content.ReadAsStringAsync();
                 var values = JsonConvert.DeserializeObject<List<ResultCategoryDto>>(jsonData);
                 return View(values);
             }
 
+            return View();
+        }
+
+        public IActionResult Deneme1()
+        {
             return View();
         }
     }
