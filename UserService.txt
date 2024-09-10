@@ -1,0 +1,64 @@
+﻿=> User Service - Login İşlemleri <=
+
+-> Frontends\MultiShop.WebUI\Models'de:
+UserDetailViewModel class'ı oluşturulur.
+
+-> Frontends\MultiShop.WebUI\Services\Interfaces'da:
+IUserService interface'i oluşturulur.
+
+-> Frontends\MultiShop.WebUI\Services\Concrete'de:
+UserService class'ı oluşturulur.
+
+-> Frontends\MultiShop.WebUI\Controllers'da:
+UserController adında MVC controller oluşturulur.
+GetUser() metodu çağrılır.
+
+-> Frontends\MultiShop.WebUI'da Handlers folder'ı oluşturulur.
+ResourceOwnerPasswordTokenHandler class'ı oluşturulur. SendAsync() metodu yazılır.
+Http Status Code: https://learn.microsoft.com/tr-tr/dotnet/api/system.net.httpstatuscode?view=net-8.0
+
+-> Frontends\MultiShop.WebUI\Program.cs'de:
+Register işlemleri yapılır.
+
+builder.Services.AddScoped<ResourceOwnerPasswordTokenHandler>();
+
+var values = builder.Configuration.GetSection("ServiceApiSettings").Get<ServiceApiSettings>();
+builder.Services.AddHttpClient<IUserService, UserService>(options =>
+{
+    options.BaseAddress = new Uri(values.IdentityServerUrl);
+}).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
+
+-> IdentityServer\MultiShop.IdentityServer\Controllers'da:
+UsersController adında ASP.NET Core Api Controller oluşturulur.
+Frontends\MultiShop.WebUI\Services\Concrete\UserService.cs'de bulunan getuser metodu ile aynı isimde olacak şekilde IdentityServer\MultiShop.IdentityServer\Controllers'da UsersController'da GetUser() metodu yazılır.
+
+-> Frontends\MultiShop.WebUI\Views\User
+Index.cshtml'de Kullanıcı Profil Bilgisi sayfası oluşturulur. 
+
+-> Postman'de:
+POST http://localhost:5001/connect/token
+Body:
+client_id -> MultiShopManagerId
+client_secret -> multishopsecret
+grant_type -> password
+username -> ali01
+password -> 1111aA*
+
+SEND butonu tıklanır ve token oluşur.
+
+GET http://localhost:5001/api/users/getuser
+Authorization:
+Auth Type -> OAuth 2.0 seçilir ve yukarı da alınan token yapıştılır.
+SEND butonu tıklanır. Kullanıcıya ait bilgiler listelenir.
+
+{
+    "id": "7e6774dd-8ebf-4587-aa45-e7ea2132024c",
+    "name": "Ali",
+    "surname": "Çınar",
+    "email": "ali@gamil.com",
+    "userName": "ali01"
+}
+
+-> MultiShop.OcelotGateway - MultiShop.IdentityServer - MultiShop.Catalog ve MultiShop.WebUI projeleri ile birlikte uygulama ayağa kaldırılır. 
+https://localhost:7277/Login/SignIn adresine gidilir. https://localhost:7277/User sayfasına yönlenir.
+Kullanıcı Profil Sayfası açılır.

@@ -30,7 +30,7 @@ public class IdentityService : IIdentityService
         //discoveryEndPoint üzerinden istek yapılacak olan adres belirtilir.
         var discoveryEndPoint = await _httpClient.GetDiscoveryDocumentAsync(new DiscoveryDocumentRequest
         {
-            Address = _serviceApiSettings.IdentityServerUrl,//appsettings.json'da gelir.
+            Address = _serviceApiSettings.IdentityServerUrl,//appsettings.json'dan gelir.
             Policy = new DiscoveryPolicy
             {
                 RequireHttps = false
@@ -93,7 +93,7 @@ public class IdentityService : IIdentityService
         //discoveryEndPoint üzerinden istek yapılacak olan adres belirtilir.
         var discoveryEndPoint = await _httpClient.GetDiscoveryDocumentAsync(new DiscoveryDocumentRequest
         {
-            Address = _serviceApiSettings.IdentityServerUrl,//appsettings.json'da gelir.
+            Address = _serviceApiSettings.IdentityServerUrl,//appsettings.json'dan gelir.
             Policy = new DiscoveryPolicy
             {
                 RequireHttps = false
