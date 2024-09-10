@@ -4,8 +4,8 @@
 //    "windowsAuthentication": false,
 //    "anonymousAuthentication": true,
 //    "iisExpress": {
-//      "applicationUrl": "http://localhost:40165",
-//      "sslPort": 44390
+//      "applicationUrl": "http://localhost:4375",
+//      "sslPort": 44360
 //    }
 //  },
 //  "profiles": {
@@ -14,7 +14,7 @@
 //      "dotnetRunMessages": true,
 //      "launchBrowser": true,
 //      "launchUrl": "swagger",
-//      "applicationUrl": "http://localhost:5087",
+//      "applicationUrl": "http://localhost:5209",
 //      "environmentVariables": {
 //        "ASPNETCORE_ENVIRONMENT": "Development"
 //      }
@@ -24,7 +24,7 @@
 //      "dotnetRunMessages": true,
 //      "launchBrowser": true,
 //      "launchUrl": "swagger",
-//      "applicationUrl": "https://localhost:7096;http://localhost:5087",
+//      "applicationUrl": "https://localhost:7122;http://localhost:5209",
 //      "environmentVariables": {
 //        "ASPNETCORE_ENVIRONMENT": "Development"
 //      }
@@ -46,8 +46,8 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:40165",
-      "sslPort": 44390
+      "applicationUrl": "http://localhost:4375",
+      "sslPort": 44360
     }
   },
   "profiles": {
@@ -56,7 +56,7 @@
       "dotnetRunMessages": true,
       "launchBrowser": true,
       "launchUrl": "swagger",
-      "applicationUrl": "http://localhost:5087",
+      "applicationUrl": "http://localhost:5209",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
@@ -64,9 +64,9 @@
     "https": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "launchBrowser": false,//false yapıldı, uygulama çalışacak fakat tarayıcı açılmayacak.
+      "launchBrowser": false, //false set edildi.
       "launchUrl": "swagger",
-      "applicationUrl": "http://localhost:7070",//http olarak 7070 portu verildi.
+      "applicationUrl": "http://localhost:7077", //http olarak 7077 portu verildi.
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
@@ -81,5 +81,4 @@
     }
   }
 }
-
 

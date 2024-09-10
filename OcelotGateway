@@ -1,0 +1,64 @@
+﻿=> Ocelot Gateway <=
+
+Makale: https://www.serifaydin.com/post/ocelot-nedir-api-gateway-nedir-ocelot-identity-server-ve-net-uygulamalar%C4%B1nda-ocelot-kullan%C4%B1m%C4%B1
+
+-> MultiShop uygulamasında ApiGateway folder'ı oluşturulur.
+
+-> MultiShop uygulamasında RapidApi folder'ı oluşturulur.
+
+-> ApiGateway folder'ında yeni bir proje oluşturulur.
+ASP.NET Core Empty projesi seçilir.
+Proje Name: MultiShop.ocelotGateway
+Configure for HTTPS seçimi kaldırılır. .NET 8.0 için oluşturulur.
+
+-> ApiGateway\MultiShop.ocelotGateway\Properties\launchSettings.json'da 5000 portu verilir.
+
+-> MultiShop.ocelotGateway'e ocelot paketi kurulur.
+
+-> Ocelot: https://ocelot.readthedocs.io/en/latest/introduction/gettingstarted.html
+
+-> MultiShop.ocelotGateway'e ocelot.json dosyası oluşturulur. ocelot.json'da:
+Catalog - Discount - Order - Cargo - Basket - Comment mikro servisleri için de ocelot.json'da yapılandırma yapılır.
+
+-> Services\Payment folder'ı oluşturulur.
+Payment folder'ı içinde ASP.NET Core Web Api projesi MultiShop.Payment adında oluşturulur.
+Payment mikro servisi için de ocelot.json'da yapılandırma yapılır.
+
+-> Services\Images folder'ı oluşturulur.
+Images folder'ı içinde ASP.NET Core Web Api projesi MultiShop.Images adında oluşturulur.
+Images mikro servisi için de ocelot.json'da yapılandırma yapılır.
+
+-> Catalog mikro servisinin ocelot ile testi:
+Services\Catalog\MultiShop.Catalog\Properties\launchSettings.json'da 
+"applicationUrl": "http://localhost:7070",//http olarak 7070 portu verilir.
+
+-> ApiGateway\MultiShop.OcelotGateway\Program.cs de ocelot configuration yapılır ve register edilir.
+IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("ocelot.json").Build();
+builder.Services.AddOcelot(configuration);
+await app.UseOcelot();
+
+-> Uygulama MultiShop.OcelotGateway - MultiShop.Catalog ve MultiShop.IdentityServer ile ayağa kaldırılır.
+Postman üzerinden test yapılır. Postman'de:
+POST http://localhost:5001/connect/token 'da token üretilir. 
+Üretilen token ile GET http://localhost:5000/services/catalog/categories 
+SEND butonu tıklanırak istekte bulunulur. Kategoriler listelenir.
+
+Ocelot ile port numaralarına ihtiyaç ortadan kalkar.
+Catalog mikro servisi 5000 portu üzerinde Ocelot ile uyumlu bir şekilde çalışır.
+
+-> Ocelot'un krouma altına alınması:
+IdentityServer\MultiShop.IdentityServer\Config.cs'de Ocelot tanımlanır.
+ApiGateway\MultiShop.OcelotGateway'e Microsoft.AspNetCore.Authentication.JwtBearer paketi kurulur.
+ApiGateway\MultiShop.OcelotGateway\Program.cs'e Authentication eklenir.
+ApiGateway\MultiShop.OcelotGateway\appsettings.json'a IdentityServerUrl eklenir. Koruma altına alınır. Token almadan ocelot'a erişim sağlayamam.
+
+-> Ocelot.json'da tüm mikro servisler (Catalog - Discount - Order - Cargo - Basket - Comment - Payment - Images) için yapılandırma düzenlemeleri yapıldı.
+
+-> IdentityServer\MultiShop.IdentityServer\Config.cs'de tüm mikro servisler için düzenlemeler yapılır.
+
+-> Ocelot.json api testi:
+Uygulama MultiShop.OcelotGateway - MultiShop.Catalog ve MultiShop.IdentityServer ile ayağa kaldırılır.
+Postman'de: 
+POST http://localhost:5001/connect/token SEND butonu tıklanır ve token üretilir.
+Daha sonra alınan token ile GET http://localhost:5000/services/catalog/categories isteğinde bulunulur. Kategoriler getirilir.
+Dağıtımın ocelot gateway ile yapıldığı görülür.

@@ -24,3 +24,12 @@ MultiShop.Basket\Properties\launchSettings.json'da launchBrowser false set edild
 
 -> Comment
 MultiShop.Comment\Properties\launchSettings.json'da launchBrowser false set edildi. 7075 portu setlendi.
+
+-> Ocelot
+ApiGateway\MultiShop.OcelotGateway\Properties\launchSettings.json'da 5000 portu verilir.
+
+-> Payment
+MultiShop.Payment\Properties\launchSettings.json'da launchBrowser false set edildi. 7076 portu setlendi.
+
+-> Images
+MultiShop.Images\Properties\launchSettings.json'da launchBrowser false set edildi. 7077 portu setlendi.

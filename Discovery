@@ -54,8 +54,7 @@ Kullanıcı başarılı şekilde giriş yaparsa kategoriler listelencektir.
 
 -> Frontends\MultiShop.WebUI\Controllers\TestController'da:
 Deneme1 metodu oluşturulur.
-Kullanıcıların Deneme1 metoduna erişim sağlabilmeleri test edilir.
-
+Kullanıcıların Deneme1 metoduna erişim sağlayabilmeleri test edilir.
 Uygulama ayağa kaldırılır
 https://localhost:7277/Test/Deneme1 adresine gidilir.
-Gelen kategori değerleri token'a bağlı olarak gelmiştir.
+Gelen kategorilerin token'a bağlı olarak geldiği görülür.

@@ -66,7 +66,7 @@
       "dotnetRunMessages": true,
       "launchBrowser": false, //false yapıldı, uygulama çalışacak fakat tarayıcı açılmayacak.
       "launchUrl": "swagger",
-      "applicationUrl": "https://localhost:7075", //7075 portu verildi.
+      "applicationUrl": "http://localhost:7075", //http olarak 7075 portu verildi.
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
