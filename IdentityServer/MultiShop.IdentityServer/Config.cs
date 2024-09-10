@@ -165,7 +165,11 @@ namespace MultiShop.IdentityServer
                     "CommentFullPermission",
                     "PaymentFullPermission",
                     "ImageFullPermission",
-                    "OcelotFullPermission"
+                    "OcelotFullPermission",
+                    IdentityServerConstants.LocalApi.ScopeName,
+                    IdentityServerConstants.StandardScopes.Email,
+                    IdentityServerConstants.StandardScopes.OpenId,
+                    IdentityServerConstants.StandardScopes.Profile
                 }
             },
 

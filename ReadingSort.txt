@@ -14,3 +14,5 @@
 12 -> RegisterLoginOperation
 13 -> Discovery
 14 -> Ocelot Gateway
+15 -> ServiceApiSettings
+16 -> 

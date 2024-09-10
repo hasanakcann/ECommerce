@@ -1,0 +1,30 @@
+﻿=> Service Api Settings <=
+
+-> Frontends\MultiShop.WebUI\appsettings.json'da:
+Ocelot'un dağılımını yaptığı sayfalara UI'dan erişim sağlayabilmek için ServiceApiSettings'de linkler tanımlanır.
+
+-> Frontends\MultiShop.WebUI\Settings'de:
+ServiceApiSettings class'ı oluşturulur.
+
+-> Frontends\MultiShop.WebUI\Program.cs'de:
+ServiceApiSettings Configure edilir.
+
+-> Frontends\MultiShop.WebUI\Services\Concrete\IdentityService'de:
+_serviceApiSettings parametresi tanımlanır ve contructor olarak geçilir.
+_serviceApiSettings'e göre düzenlemeler yapılır.
+
+-> IdentityServer\MultiShop.IndentityServer\Config.cs'de:
+Manager için AllowedScopes'da ScopeName - Email - OpenId - Profile eklenir:
+IdentityServerConstants.LocalApi.ScopeName 
+IdentityServerConstants.StandardScopes.Email
+IdentityServerConstants.StandardScopes.OpenId
+IdentityServerConstants.StandardScopes.Profile
+
+Makale: Access Token ve Refresh Token Nedir?
+https://huseyinseber.medium.com/access-token-ve-refresh-token-nedir-df0f339f93f8
+
+-> Frontends\MultiShop.WebUI\Services\Interfaces\IIdentityService'de:
+GetRefreshToken() metodu eklenir.
+
+-> Frontends\MultiShop.WebUI\Services\Concrete\IdentityService'de:
+GetRefreshToken() metodu yazılır.

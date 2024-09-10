@@ -37,6 +37,7 @@ builder.Services.AddScoped<ILoginService, LoginService>();
 builder.Services.AddHttpClient<IIdentityService, IdentityService>();
 
 builder.Services.Configure<ClientSettings>(builder.Configuration.GetSection("ClientSettings"));//appsettings.json'da tanımlı.
+builder.Services.Configure<ServiceApiSettings>(builder.Configuration.GetSection("ServiceApiSettings"));//appsettings.json'da tanımlı.
 #endregion
 
 builder.Services.AddControllersWithViews();
