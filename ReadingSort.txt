@@ -16,3 +16,4 @@
 14 -> Ocelot Gateway
 15 -> ServiceApiSettings
 16 -> UserService
+17 -> ClientCredentialTokenHandler

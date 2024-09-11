@@ -35,7 +35,12 @@ public class ResourceOwnerPasswordTokenHandler : DelegatingHandler
                 response = await base.SendAsync(request, cancellationToken);
             }
         }
-        
+
+        if (response.StatusCode == HttpStatusCode.Unauthorized)
+        {
+            Console.WriteLine("Yetkisiz işlem.");
+        }
+
         return response;
     }
 }
