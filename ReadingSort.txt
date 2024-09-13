@@ -17,3 +17,4 @@
 15 -> ServiceApiSettings
 16 -> UserService
 17 -> ClientCredentialTokenHandler
+18 -> 

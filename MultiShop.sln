@@ -46,6 +46,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ReadMe", "ReadMe", "{A9BC47
 		OrderMicroService.txt = OrderMicroService.txt
 		PortNumber.txt = PortNumber.txt
 		ReadingSort.txt = ReadingSort.txt
+		Refactor.txt = Refactor.txt
 		ServiceApiSettings.txt = ServiceApiSettings.txt
 		RegisterLoginOperation.txt = RegisterLoginOperation.txt
 		UserService.txt = UserService.txt
