@@ -121,3 +121,44 @@ builder.Services.AddHttpClient<IAboutService, AboutService>(options =>
 {
     options.BaseAddress = new Uri($"{values.OcelotUrl}/{values.Catalog.Path}");
 }).AddHttpMessageHandler<ClientCredentialTokenHandler>();
+
+=> Ana Sayfa Dönüşümleri <=
+-> Frontends\MultiShop.WebUI\ViewComponents\UILayoutViewComponents'de:
+_NavbarUILayoutComponentPartial.cs ve _FooterUILayoutComponentPartial.cs'de düzenleme yapıldı.
+
+-> Frontends\MultiShop.WebUI\ViewComponents\DefaultViewComponents'de:
+_CarouselDefaultComponentPartial.cs - _FeatureDefaultComponentPartial.cs - _CategoriesDefaultComponentPartial.cs - _FeatureProductsDefaultComponentPartial.cs - _OfferDiscountDefaultComponentPartial.cs - _VendorDefaultComponentPartial.cs ve _SpecialOfferDefaultComponentPartial'de düzenleme yapıldı.
+
+-> Linklerin Verilmesi:
+-> Frontends\MultiShop.WebUI\ViewComponents\UILayoutViewComponents folder'ın da _DirectoryAlert.cs class'ı oluşturulur.
+
+-> Services\Catalog\MultiShop.Catalog\Controllers'da:
+ProductDetailsController - ProductImagesController - ProducsController'da düzenleme yapıldı.
+
+-> Frontends\MultiShop.WebUI\Controllers'da:
+DefaultController - ProductListController'da düzenleme yapıldı.
+
+-> Frontends\MultiShop.WebUI\Services\CatalogServices'da:
+ProductDetailServices - ProductImageServices - ProductServices'da düzenleme yapıldı.
+
+-> Frontends\MultiShop.WebUI\ViewComponents'de:
+DefaultViewComponents - ProductDetailViewComponents - ProductListViewComponents - UILayoutViewComponents'de düzenleme yapıldı.
+
+-> Frontends\MultiShop.WebUI\Views'da:
+Default - ProductList - UILayout'da düzenleme yapıldı.
+
+-> Frontends\MultiShop.WebUI\Views\Shared\Components'de:
+_DirectoryAlertUILayoutComponentPartial - _NavbarUILayoutComponentPartial - _ProductDetailDescriptionComponentPartial - _ProductDetailInformationComponentPartial'da düzenleme yapıldı.
+
+-> Frontends\MultiShop.WebUI\Program.cs'de:
+Servisleri register edildi.
+
+builder.Services.AddHttpClient<IProductImageService, ProductImageService>(options =>
+{
+    options.BaseAddress = new Uri($"{values.OcelotUrl}/{values.Catalog.Path}");
+}).AddHttpMessageHandler<ClientCredentialTokenHandler>();
+
+builder.Services.AddHttpClient<IProductDetailService, ProductDetailService>(options =>
+{
+    options.BaseAddress = new Uri($"{values.OcelotUrl}/{values.Catalog.Path}");
+}).AddHttpMessageHandler<ClientCredentialTokenHandler>();

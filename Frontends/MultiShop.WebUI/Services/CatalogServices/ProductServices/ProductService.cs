@@ -41,13 +41,19 @@ public class ProductService : IProductService
         await _httpClient.PutAsJsonAsync<UpdateProductDto>("products", updateProductDto);
     }
 
-    public Task<List<ResultProductsWithCategoryDto>> GetProductsWithCategoryAsync()
+    public async Task<List<ResultProductsWithCategoryDto>> GetProductsWithCategoryAsync()
     {
-        throw new NotImplementedException();
+        var responseMessage = await _httpClient.GetAsync("products");
+        var jsonData = await responseMessage.Content.ReadAsStringAsync();
+        var values = JsonConvert.DeserializeObject<List<ResultProductsWithCategoryDto>>(jsonData);
+        return values;
     }
 
-    public Task<List<ResultProductsWithCategoryDto>> GetProductsWithCategoryByCategoryIdAsync(string categoryId)
+    public async Task<List<ResultProductsWithCategoryDto>> GetProductsWithCategoryByCategoryIdAsync(string categoryId)
     {
-        throw new NotImplementedException();
+        var responseMessage = await _httpClient.GetAsync("products/productswithcategorybycategoryid/" + categoryId);
+        var jsonData = await responseMessage.Content.ReadAsStringAsync();
+        var values = JsonConvert.DeserializeObject<List<ResultProductsWithCategoryDto>>(jsonData);
+        return values;
     }
 }
