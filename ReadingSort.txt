@@ -17,4 +17,5 @@
 15 -> ServiceApiSettings
 16 -> UserService
 17 -> ClientCredentialTokenHandler
-18 -> 
+18 -> Refactor
+19 -> CommentMicroService

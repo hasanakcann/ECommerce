@@ -5,7 +5,7 @@ using MultiShop.Comment.Entities;
 
 namespace MultiShop.Comment.Controllers;
 
-[AllowAnonymous]
+[Authorize] //Login olma zorunluluğu eklenir.
 [Route("api/[controller]")]
 [ApiController]
 public class CommentsController : ControllerBase
@@ -56,7 +56,7 @@ public class CommentsController : ControllerBase
         return Ok("Yorum başarıyla silindi.");
     }
 
-    [HttpGet("CommentListByProductId")]
+    [HttpGet("CommentListByProductId/{id}")]
     public IActionResult CommentListByProductId(string id)
     {
         var value = _context.UserComments.Where(x => x.ProductId == id).ToList();

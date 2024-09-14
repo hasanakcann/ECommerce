@@ -1,3 +1,4 @@
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using MultiShop.Comment.Context;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,6 +7,18 @@ var builder = WebApplication.CreateBuilder(args);
 
 #region Context Registration
 builder.Services.AddDbContext<CommentContext>();
+#endregion
+
+#region Authentication
+//JwtBearer token geçerliliğini kontrol eden pakettir.
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+{
+    //Authority JwtBearer'ı kiminle kullanıcağını belirtir. IdentityServerUrl appsettings.json'dan gelir.
+    //Comment mikro servisi ayağa kalkarken IdentityServer mikro servisi de ayağa kalkar.
+    options.Authority = builder.Configuration["IdentityServerUrl"];
+    options.Audience = "ResourceComment";//Config tarafında dinleyici olan key ResourceComment ApiResource setlenir.
+    options.RequireHttpsMetadata = false;//IdentityServerUrl http olduğu için false set edildi.
+});
 #endregion
 
 builder.Services.AddControllers();
@@ -23,6 +36,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

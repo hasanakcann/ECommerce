@@ -1,83 +1,67 @@
 ﻿=> Comment Micro Service <=
 
--> Services\Comment Folder -> Comment -> New Project -> ASP.NET Core Web API -> MultiShop.Comment -> .NET 8.0
+-> Services\Comment\MultiShop.Comment\appsettings.json'da identityserverurl eklenir.
+"IdentityServerUrl": "http://localhost:5001",//5001 IdentityServer'ın ayağa kalktığı port numarasıdır. 
 
--> portainer.io'da:
-Portainer üzerinden App Templates'de Microsoft SQL Server on Linux seçilir.
-Db Name: CommentDb - User: sa - Password: 123456aA*
-Show advanced options seçeneği açılır. Port mapping yapılır. host 1442 portu verilir. 
-Deploy the container butonu tıklanır. 1442 portunda veritabanı ayağa kalkar. 
+-> MultiShop.Comment'de Microsoft.AspNetCore.Authentication.JwtBearer paketi kurulur.
 
--> Entity Framework Core paketleri kurulur.
+-> Services\Comment\MultiShop.Comment\Program.cs'de:
+Authentication register edilir.
 
--> UserComment adında Entity sınıfı oluştulur.
+//JwtBearer token geçerliliğini kontrol eden pakettir.
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+{
+    //Authority JwtBearer'ı kiminle kullanıcağını belirtir. IdentityServerUrl appsettings.json'dan gelir.
+    //Comment mikro servisi ayağa kalkarken IdentityServer mikro servisi de ayağa kalkar.
+    options.Authority = builder.Configuration["IdentityServerUrl"];
+    options.Audience = "ResourceComment";//Config tarafında dinleyici olan key ResourceComment ApiResource setlenir.
+    options.RequireHttpsMetadata = false;//IdentityServerUrl http olduğu için false set edildi.
+});
 
--> CommentContext adında context sınıfı oluşturulur.
+app.UseAuthentication();
 
--> Migration İşlemi:
-Visual Studio da proje MultiShop.Comment seçilir ve Package Manager Console'da proje MultiShop.Comment seçilir.
+-> Services\Comment\MultiShop.Comment\Controllers\CommentsController'da:
+[Authorize] -> Login olma zorunluluğu eklenir.
+CommentListByProductId metodunda Id paremetresi eklenir.
+[HttpGet("CommentListByProductId/{id}")]
 
-Locale veritabanından çıkıp port üzerinde docker ile ayağa kaldırılan container içerisinde veritabanı gönderiyoruz.
+-> Frontends\MultiShop.WebUI\Services'de CommentServices folder'ı oluşturulur.
+CommentServices folder'ı içinde:
+ICommentService interface'i ile CommentService class'ı oluşturulur.
 
-add-migration mig1 komutu çalıştırılır.
-update-database komutu çalıştırılır.
+-> Frontends\MultiShop.WebUI\ViewComponents\ProductDetailViewComponents\_ProductDetailReviewComponentPartial'de:
+Düzenleme yapılır.
 
-productId entity sınıfına sonradan eklendiği için:
-add-migration mig2 komutu çalıştırılır.
-update-database komutu çalıştırılır.
+-> Frontends\MultiShop.WebUI\Program.cs'de:
+Comment service register edilir.
 
-Bu şekilde migration uygulanmış olur.
+builder.Services.AddHttpClient<ICommentService, CommentService>(options =>
+{
+    options.BaseAddress = new Uri($"{values.OcelotUrl}/{values.Comment.Path}");
+}).AddHttpMessageHandler<ClientCredentialTokenHandler>();
 
--> DBeaver:
-DBeaver üzerinde localhost:1442 portunda MultiShopCommentDb oluştu. Tamamen docker üzerinden ayağa kalkıyor. 
-Veritabanına erişmek için docker ayakta olmalı.
+-> Uygulama ayağa kalkarken MultiShop.OcelotGateway - MultiShop.Catalog - MultiShop.IdentityServer - MultiShop.Comment ve MultiShop.WebUI projeleri birlikte ayağa kaldırılır.
 
--> MSSQL:
-Server type: Database Engine
-Server name: localhost,1442
-Authentication: SQL Server Authentication
-Login: sa
-Password: 123456aA*
+-> Frontends\MultiShop.WebUI\Services\CatalogServices'de:
+ContactServices folder'ı oluşturulur. ContactServices folder'ı içinde:
+IContactService interface'i ile ContactService class'ı oluşturulur.
 
--> API Controller oluşturulur.
-CommentsController
+-> Frontends\MultiShop.WebUI\Program.cs'de:
+Contact servisi register edilir.
+builder.Services.AddHttpClient<IContactService, ContactService>(options =>
+{
+    options.BaseAddress = new Uri($"{values.OcelotUrl}/{values.Catalog.Path}");
+}).AddHttpMessageHandler<ClientCredentialTokenHandler>();
 
--> Program.cs de:
-Context register edilir.
+-> Uygulama ayağa kalkarken MultiShop.OcelotGateway - MultiShop.Catalog - MultiShop.IdentityServer - MultiShop.Comment ve MultiShop.WebUI projeleri birlikte ayağa kaldırılır.
 
--> Api Testi:
-Swagger üzerinden Get - Get(id) - Post - Delete - Put test edilir. 
+https://localhost:7277/Contact/Index adresine gidilerek iletişim sayfası görüntülenir.
 
--> Frontends\DtoLayer'da:
-CommentDto oluşturulur.
+-> Postman'de gönderilen mesajların görüntülenmesi:
+Uygulama ayakta iken:
+POST http://localhost:5001/connect/token token ürelilir.
+GET http://localhost:5000/services/catalog/contacts üretilen token ile get isteğinde bulunulur.
 
--> Admin ve WebUI'da Views altında _ViewImports.cshtml'e usingler eklenir.
-
--> Admin folder'ın da CommentController oluşturulur.
-Admin tarafında Controller'da Add View ile Index ve UpdateComment sayfaları oluşturulur.
-
--> Docker:
-Docker ayakta olmadığı durumda veritabanına bağlantı sağlanamaz.
-
--> SideBar'da link tanımlama:
-Admin\Views\Shared\Components'de _AdminLayoutSidebarComponentPartial folder'ı içinde Default.cshtml'de 
-Yorunlar için SideBar'da link tanımlanır.
-<li><a href="/Admin/Comment/Index/"> <i class="fa fa-comment"></i><span>Yorumlar</span></a></li>
-
--> Yorumların UI'da Gösterilmesi:
-WebUI\Views\ProductList\ProductDetail.cshtml'de _ProductDetailReviewComponentPartial partial'a parametre geçilir. 
-Commet mikro servisinde Controllers'da CommentListByProductId metodu yazılır.
-Ürüne ait yorumlar getirilebilsin diye ViewBag ile productId taşınır. 
-
--> WebUI\ViewComponents\ProductDetailViewComponents'de:
-_ProductDetailReviewComponentPartial'da InvokeAsync() metodu yazılmıştır.
-
--> WebUI\Views\Shared\Components\_ProductDetailReviewComponentPartial'de:
-Default.cshtml sayfa düzenlemeleri yapılmıştır.
-
--> WebUI\Controllers\ProductListController'da:
-AddComment() metodu eklenir. Eklenen metodun AddComment.cshtml sayfasını oluşturulur.
-
--> WebUI\Views\Shared\Components\_ProductDetailReviewComponentPartial'da:
-Default.cshtml'de AddComment.cshtml partial view'ı çağrılır. 
-@await Html.PartialAsync("~/Views/ProductList/AddComment.cshtml", new { id = ViewBag.x })
+-> Frontends\MultiShop.WebUI\Views\Shared\Components\_NavbarUILayoutComponentPartial\Default.cshtml'de:
+İletişim için link verilir.
+<a href="/Contact/Index/" class="nav-item nav-link">İletişim</a>
