@@ -32,6 +32,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ReadMe", "ReadMe", "{A9BC4743-0B18-4AA2-AC82-F47BB2ACC1C3}"
 	ProjectSection(SolutionItems) = preProject
 		BasketMicroService.txt = BasketMicroService.txt
+		BasketMicroServiceUIRefactor.txt = BasketMicroServiceUIRefactor.txt
 		CargoMicroService.txt = CargoMicroService.txt
 		CatologMicroService.txt = CatologMicroService.txt
 		CommentMicroService.txt = CommentMicroService.txt

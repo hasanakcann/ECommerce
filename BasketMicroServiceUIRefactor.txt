@@ -1,0 +1,69 @@
+﻿=> Basket UI İşlemleri <=
+
+-> Frontends\MultiShop.DtoLayer'da BasketDtos folder'ı oluştulur.
+BasketDtos folder'ı içinde:
+BasketItemDto ve BasketTotalDto class'ı oluşturulur.
+
+-> Frontends\MultiShop.WebUI\Services'de BasketServices folder'ı oluşturulur.
+BasketServices folder'ı içinde:
+IBasketService interface'i ile BasketService class'ı oluşturulur.
+
+-> Frontends\MultiShop.WebUI\Controllers'da ShoppingCartController controller'ın da:
+Index() ve AddBasketItem() metodları yazılır.
+
+-> Postman üzerinden sepete veri ekleme:
+Uygulama ayağa kaldırılır.
+
+Manager için token üretilir.
+POST http://localhost:5001/connect/token
+
+Alınan token değeri ile:
+GET http://localhost:5000/services/catalog/products productId görüntülenir.
+
+POST http://localhost:7074/api/baskets
+{
+    "userId": "7e6774dd-8ebf-4587-aa45-e7ea2132024c",
+    "discountCode":"",
+    "discountRate":0,
+    "basketItems":[
+        {
+            "productId":"66cf82fe0b01f67388253322",
+            "productName":"Sabun",
+            "quantity":1,
+            "price":79.15
+        },
+        {
+            "productId":"66c78c84fd28a673cd20b95f",
+            "productName":"Detarjan",
+            "quantity":2,
+            "price":230
+        }
+    ]
+}
+
+JSON data Post ediilir.
+
+GET http://localhost:7074/api/baskets post edilen data görüntülenir.
+
+-> Frontends\MultiShop.WebUI\Program.cs'de:
+BasketService register edilir.
+
+builder.Services.AddHttpClient<IBasketService, BasketService>(options =>
+{
+    options.BaseAddress = new Uri($"{values.OcelotUrl}/{values.Basket.Path}");
+}).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
+
+-> Frontends\MultiShop.WebUI\Views'de _ViewImports.cshtml'e using eklenir.
+@using MultiShop.DtoLayer.BasketDtos
+
+-> Frontends\MultiShop.WebUI\ViewComponents\ShoppingCartViewComponents folder'ın da _ShoppingCartProductListComponentPartial'de:
+InvokeAsync() metodu yazılır.
+
+-> Frontends\MultiShop.WebUI\Views\Shared\Components\_ShoppingCartProductListComponentPartial'da:
+Default.cshtml sayfasında düzenlemeler yapılır.
+
+-> Frontends\MultiShop.WebUI\Controllers\ShoppingCartController'da:
+AddBasketItem() metodu yazıldı. Sepete ürün ekleme işlemi yapıldı. Eklenen ürünler redis de tutuluyor.
+
+-> Frontends\MultiShop.WebUI\Controllers\ShoppingCartController'da:
+RemoveBasketItem() metodu yazıldı. Sepetten ürün kaldırma işlemi yapıldı. Ürün redis de silinir.

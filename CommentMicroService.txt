@@ -41,27 +41,3 @@ builder.Services.AddHttpClient<ICommentService, CommentService>(options =>
 }).AddHttpMessageHandler<ClientCredentialTokenHandler>();
 
 -> Uygulama ayağa kalkarken MultiShop.OcelotGateway - MultiShop.Catalog - MultiShop.IdentityServer - MultiShop.Comment ve MultiShop.WebUI projeleri birlikte ayağa kaldırılır.
-
--> Frontends\MultiShop.WebUI\Services\CatalogServices'de:
-ContactServices folder'ı oluşturulur. ContactServices folder'ı içinde:
-IContactService interface'i ile ContactService class'ı oluşturulur.
-
--> Frontends\MultiShop.WebUI\Program.cs'de:
-Contact servisi register edilir.
-builder.Services.AddHttpClient<IContactService, ContactService>(options =>
-{
-    options.BaseAddress = new Uri($"{values.OcelotUrl}/{values.Catalog.Path}");
-}).AddHttpMessageHandler<ClientCredentialTokenHandler>();
-
--> Uygulama ayağa kalkarken MultiShop.OcelotGateway - MultiShop.Catalog - MultiShop.IdentityServer - MultiShop.Comment ve MultiShop.WebUI projeleri birlikte ayağa kaldırılır.
-
-https://localhost:7277/Contact/Index adresine gidilerek iletişim sayfası görüntülenir.
-
--> Postman'de gönderilen mesajların görüntülenmesi:
-Uygulama ayakta iken:
-POST http://localhost:5001/connect/token token ürelilir.
-GET http://localhost:5000/services/catalog/contacts üretilen token ile get isteğinde bulunulur.
-
--> Frontends\MultiShop.WebUI\Views\Shared\Components\_NavbarUILayoutComponentPartial\Default.cshtml'de:
-İletişim için link verilir.
-<a href="/Contact/Index/" class="nav-item nav-link">İletişim</a>
