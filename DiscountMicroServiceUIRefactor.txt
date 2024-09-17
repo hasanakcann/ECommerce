@@ -1,0 +1,53 @@
+﻿=> Discount Micro Service UI Refactor <=
+
+-> Frontends\MultiShop.DtoLayer'da DiscountDtos folder'ı oluşturulur.
+DiscountDtos folder'ı içinde GetDiscountCodeDetailByCode class'ı oluşturulur.
+
+-> Frontends\MultiShop.WebUI\Services folder'ın da DiscountServices folder'ı oluşturulur.
+DiscountServices folder'ı içinde:
+IDiscountService interface'i ile DiscountService class'ı oluşturulur.
+
+-> Services\Discount\MultiShop.Discount\Services\IDiscountService'de:
+GetCodeDetailByCode metodu oluşturulur.
+
+-> Services\Discount\MultiShop.Discount\Services\DiscountService'de:
+GetCodeDetailByCode metodu yazılır.
+
+-> Services\Discount\MultiShop.Discount\Controllers\DiscountsController'da:
+GetCodeDetailByCode metodu çağrılır.
+
+-> Postman'de GetCodeDetailByCode metodunun testi:
+POST http://localhost:5001/connect/token token alınır.
+
+GET http://localhost:7071/api/discounts token ile code görüntülenir.
+
+GET http://localhost:7071/api/discounts/GetCodeDetailByCodeAsync?code=Bonus20 token ile kodu Bonus20 olan kayıt için istek gönderilir. 
+Response:
+{
+    "couponId": 2,
+    "code": "Bonus20",
+    "rate": 25,
+    "isActive": true,
+    "validDate": "2024-04-28T15:45:30.4166667"
+}
+
+=> Kupon Kodunun Uygulanması <=
+
+-> Frontends\MultiShop.WebUI\Controllers'da DiscountController MVC controller oluşturulur.
+
+-> Frontends\MultiShop.WebUI\Views\Shared\Components\_ShoppingCartDiscountCouponComponentPartial'de:
+Default.cshtml sayfasında düzenleme yapıldı.
+
+-> Frontends\MultiShop.WebUI\Program.cs'de:
+Discount servisi register edilir.
+builder.Services.AddHttpClient<IDiscountService, DiscountService>(options =>
+{
+    options.BaseAddress = new Uri($"{values.OcelotUrl}/{values.Discount.Path}");
+}).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
+
+-> Frontends\MultiShop.WebUI\Views\Discount'da:
+ConfirmDiscountCoupon.cshtml sayfası oluşturulur.
+
+-> Frontends\MultiShop.WebUI\Views\ShoppingCart\Index'de:
+Partial view çağrılır.
+@await Html.PartialAsync("~/Views/Discount/ConfirmDiscountCoupon.cshtml")

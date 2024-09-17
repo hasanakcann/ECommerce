@@ -39,6 +39,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ReadMe", "ReadMe", "{A9BC47
 		ClientCredentialTokenService.txt = ClientCredentialTokenService.txt
 		Contact.txt = Contact.txt
 		DiscountMicroService.txt = DiscountMicroService.txt
+		DiscountMicroServiceUIRefactor.txt = DiscountMicroServiceUIRefactor.txt
 		Discovery.txt = Discovery.txt
 		ECommerce.txt = ECommerce.txt
 		Frontend.txt = Frontend.txt

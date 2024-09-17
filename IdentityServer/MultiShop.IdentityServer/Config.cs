@@ -161,6 +161,7 @@ namespace MultiShop.IdentityServer
                 AllowedScopes = {
                     "CatalogReadPermission",
                     "CatalogFullPermission",
+                    "DiscountFullPermission",
                     "BasketFullPermission",
                     "CommentFullPermission",
                     "PaymentFullPermission",

@@ -15,11 +15,20 @@ public class ShoppingCartController : Controller
         _basketService = basketService;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index(string code, int discountRate, decimal totalNewPriceWithDiscount)
     {
+        ViewBag.code = code;
+        ViewBag.discountRate = discountRate;
+        ViewBag.totalNewPriceWithDiscount = totalNewPriceWithDiscount;
         ViewBag.directory1 = "Ana Sayfa";
         ViewBag.directory2 = "Ürünler";
         ViewBag.directory3 = "Sepetim";
+        var values = await _basketService.GetBasket();
+        ViewBag.total = values.TotalPrice; //Toplam ürün fiyatı
+        var totalPriceWithTax = values.TotalPrice / 100 * 20 + values.TotalPrice;//%20 kdv hesaplaması
+        ViewBag.totalPriceWithTax = totalPriceWithTax;
+        var tax = values.TotalPrice / 100 * 20;
+        ViewBag.tax = tax;
         return View();
     }
 

@@ -73,6 +73,36 @@ namespace MultiShop.Discount.Services
         }
 
         /// <summary>
+        ///     Koda göre kupon detayları getirilir.
+        /// </summary>
+        public async Task<ResultDiscountCouponDto> GetCodeDetailByCodeAsync(string code)
+        {
+            string query = "Select * From Coupons Where Code=@code";
+            var parameters = new DynamicParameters();
+            parameters.Add("@code", code);
+            using (var connection = _context.CreateConnection())
+            {
+                var values = await connection.QueryFirstOrDefaultAsync<ResultDiscountCouponDto>(query, parameters);
+                return values;
+            }
+        }
+
+        /// <summary>
+        ///     İndirim oranı getirilir.
+        /// </summary>
+        public int GetDiscountCouponRate(string code)
+        {
+            string query = "Select Rate From Coupons Where Code=@code";
+            var parameters = new DynamicParameters();
+            parameters.Add("@code", code);
+            using (var connection = _context.CreateConnection())
+            {
+                var values = connection.QueryFirstOrDefault<int>(query, parameters);
+                return values;
+            }
+        }
+
+        /// <summary>
         ///     Güncelleme işlemi yapılır.
         /// </summary>
         public async Task UpdateDiscountCouponAsync(UpdateDiscountCouponDto updateCouponDto)
