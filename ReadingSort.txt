@@ -21,4 +21,4 @@
 19 -> CommentMicroService
 20 -> BasketMicroServiceUIRefactor
 21 -> DiscountMicroServiceUIRefactor
-22 -> 
+22 -> OrderMicroServiceUIRefactor

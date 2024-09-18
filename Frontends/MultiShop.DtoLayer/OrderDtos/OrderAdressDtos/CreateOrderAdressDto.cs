@@ -1,6 +1,6 @@
-﻿namespace MultiShop.Order.Application.Features.CQRS.Commands.AddressCommands;
+﻿namespace MultiShop.DtoLayer.OrderDtos.OrderAdressDtos;
 
-public class CreateAddressCommand
+public class CreateOrderAdressDto
 {
     /// <summary>
     ///     Kullanıcı id bilgisidir.

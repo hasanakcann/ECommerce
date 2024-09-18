@@ -162,6 +162,7 @@ namespace MultiShop.IdentityServer
                     "CatalogReadPermission",
                     "CatalogFullPermission",
                     "DiscountFullPermission",
+                    "OrderFullPermission",
                     "BasketFullPermission",
                     "CommentFullPermission",
                     "PaymentFullPermission",

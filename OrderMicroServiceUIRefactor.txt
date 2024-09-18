@@ -1,0 +1,70 @@
+﻿=> Order UI Refactor <=
+
+-> Frontends\MultiShop.WebUI\Controllers'da OrderController adında MVC controller oluşturulur.
+
+-> Frontends\MultiShop.WebUI\Views\Order'da:
+Index.cshtml sayfası oluşturulur.
+
+-> Frontends\MultiShop.WebUI\ViewComponents'de OrderViewComponents folder'ı oluşturulur.
+OrderViewComponents folder'ı içinde:
+_OrderAddressDetailComponentPartial class'ı oluşturulur.
+
+-> Frontends\MultiShop.WebUI\Views\Shared\Components'de _OrderAddressDetailComponentPartial folder'ı oluşturulur.
+_OrderAddressDetailComponentPartial folder'ı içinde:
+Default.cshtml partial sayfa oluşturulur.
+
+-> Frontends\MultiShop.WebUI\ViewComponents'de OrderViewComponents folder'ı oluşturulur.
+OrderViewComponents folder'ı içinde:
+_OrderSummaryComponentPartial class'ı oluşturulur.
+
+-> Frontends\MultiShop.WebUI\Views\Shared\Components'de _OrderSummaryComponentPartial folder'ı oluşturulur.
+_OrderSummaryComponentPartial folder'ı içinde:
+Default.cshtml partial sayfa oluşturulur.
+
+-> Frontends\MultiShop.WebUI\ViewComponents'de OrderViewComponents folder'ı oluşturulur.
+OrderViewComponents folder'ı içinde:
+_OrderPaymentMethodComponentPartial class'ı oluşturulur.
+
+-> Frontends\MultiShop.WebUI\Views\Shared\Components'de _OrderPaymentMethodComponentPartial folder'ı oluşturulur.
+_OrderPaymentMethodComponentPartial folder'ı içinde:
+Default.cshtml partial sayfa oluşturulur.
+
+-> Services\Order\Core\MultiShop.Order.Domain\Entities'de:
+Addresses entity'de property eklendi.
+Proje'de MultiShop.Order.WebApi seçilir ve Package Manager Console'da MultiShop.Order.Persistance projesi seçilir.
+Package Manager Console'da:
+add-migration mig2
+update-database
+komutları çalıştırılır.
+
+-> Services\Order\Core\MultiShop.Order.Application\Features\CQRS\Handlers\AddressHandlers\CreateAddressCommandHandler'da:
+Handle metodu düzenlendi.
+
+-> Frontends\MultiShop.DtoLayer'da OrderDtos folder'ı oluşturulur.
+OrderDtos folder'ı içinde OrderAdressDtos folder'ı oluşturulur.
+OrderAdressDtos folder'ı içinde:
+CreateOrderAdressDto oluşturulur.
+
+-> Frontends\MultiShop.WebUI\Services'de OrderServices folder'ı oluşturulur.
+OrderServices folder'ı içinde OrderAdressServices folder'ı oluşturulur.
+OrderAdressServices folder'ı içinde:
+IOrderAdressService interface'i ile OrderAdressService class'ı oluşturulur.
+
+-> Frontends\MultiShop.WebUI\Program.cs'de:
+OrderAdressService register edilir.
+
+builder.Services.AddHttpClient<IOrderAdressService, OrderAdressService>(options =>
+{
+    options.BaseAddress = new Uri($"{values.OcelotUrl}/{values.Order.Path}");
+}).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
+
+-> Frontends\MultiShop.WebUI\Views\_ViewImports.cshtml'de using eklenir.
+@using MultiShop.DtoLayer.OrderDtos.OrderAdressDtos
+
+-> Frontends\MultiShop.WebUI\Views\Order'da:
+Index.cshtml sayfasında düzenlemeler yapıldı.
+
+-> Frontends\MultiShop.WebUI\Controllers'da PaymentController adında MVC controller oluşturulur.
+
+-> Frontends\MultiShop.WebUI\Views\Payment'da Index.cshtml sayfası oluşturulur.
+Kredi kartı tasarımı yapılmıştır.

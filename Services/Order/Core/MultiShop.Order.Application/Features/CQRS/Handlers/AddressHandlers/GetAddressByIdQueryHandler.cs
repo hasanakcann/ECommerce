@@ -3,28 +3,27 @@ using MultiShop.Order.Application.Features.CQRS.Results.AddressResults;
 using MultiShop.Order.Application.Interfaces;
 using MultiShop.Order.Domain.Entities;
 
-namespace MultiShop.Order.Application.Features.CQRS.Handlers.AddressHandlers
+namespace MultiShop.Order.Application.Features.CQRS.Handlers.AddressHandlers;
+
+public class GetAddressByIdQueryHandler
 {
-    public class GetAddressByIdQueryHandler
+    private readonly IRepository<Address> _repository;
+
+    public GetAddressByIdQueryHandler(IRepository<Address> repository)
     {
-        private readonly IRepository<Address> _repository;
+        _repository = repository;
+    }
 
-        public GetAddressByIdQueryHandler(IRepository<Address> repository)
+    public async Task<GetAddressByIdQueryResult> Handle(GetAddressByIdQuery query)
+    {
+        var values = await _repository.GetByIdAsync(query.Id);
+        return new GetAddressByIdQueryResult
         {
-            _repository = repository;
-        }
-
-        public async Task<GetAddressByIdQueryResult> Handle(GetAddressByIdQuery query)
-        {
-            var values = await _repository.GetByIdAsync(query.Id);
-            return new GetAddressByIdQueryResult
-            {
-                AddressId = values.AddressId,
-                City = values.City,
-                Detail = values.Detail,
-                District = values.District, 
-                UserId = values.UserId
-            };
-        }
+            AddressId = values.AddressId,
+            City = values.City,
+            Detail = values.Detail1,
+            District = values.District, 
+            UserId = values.UserId
+        };
     }
 }

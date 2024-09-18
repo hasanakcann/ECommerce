@@ -46,6 +46,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ReadMe", "ReadMe", "{A9BC47
 		IdentityMicroService.txt = IdentityMicroService.txt
 		OcelotGateway.txt = OcelotGateway.txt
 		OrderMicroService.txt = OrderMicroService.txt
+		OrderMicroServiceUIRefactor.txt = OrderMicroServiceUIRefactor.txt
 		PortNumber.txt = PortNumber.txt
 		ReadingSort.txt = ReadingSort.txt
 		Refactor.txt = Refactor.txt
