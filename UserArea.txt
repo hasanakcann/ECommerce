@@ -1,0 +1,82 @@
+﻿=> User Area <=
+
+=> Frontends\MultiShop.WebUI\Areas'da User adında MVC Area oluşturulur.
+
+=> Frontends\MultiShop.WebUI\Areas\User\Controllers'da:
+ProfileController - MyOrderController - LogOutController - MessageController - UserLayoutController - CargoController oluşturulur.
+
+=> Frontends\MultiShop.WebUI\Areas\User\Views\UserLayout'da:
+Index sayfası oluşturulur.
+
+=> Frontends\MultiShop.WebUI\wwwroot'da:
+User template olarak spica folder'ı eklendi.
+Spica Download: https://themewagon.com/?s=spica&post_type=product
+
+=> Frontends\MultiShop.WebUI\Areas\User\Controllers'da:
+CargoController - LogOutController - MessageController - MyOrderController - ProfileController - UserLayoutController controller'ları oluşturuldu.
+
+=> Frontends\MultiShop.WebUI\Areas\User'da ViewComponents folder'ı oluşturulur.
+_UserLayoutHeadComponentPartial - _UserLayoutNavBarComponentPartial - _UserLayoutSideBarComponentPartial class'ları oluşturulur.
+
+=> Frontends\MultiShop.WebUI\Areas\User\Views\MyOrder'da:
+MyOrderList.cshtml sayfası düzenlendi.Layout olarak kullanıldı. Spica template den tasarım kodları alındı, renderbody olarak düzenlendi.
+
+=> Frontends\MultiShop.WebUI\Areas\User\Views\Shared\Components'de:
+_UserLayoutHeadComponentPartial - _UserLayoutNavBarComponentPartial - _UserLayoutSideBarComponentPartial folder'ları oluşturuldu. Bu folder'lar da Default.cshtml partial sayfalar oluşturuldu.
+
+=> Frontends\MultiShop.WebUI\Areas\User\Views\UserLayout'da:
+Index.cshtml sayfası oluşturuldu. 
+
+=> Services\Order\Core\MultiShop.Order.Application\Interfaces'da:
+IOrderingRepository ve IOrderDetailRepository interface'leri oluşturuldu.
+
+=> Services\Order\Infrastructure\MultiShop.Order.Persistance\Repository'de:
+OrderingRepository class'ı oluşturuldu.
+
+=> Services\Order\Core\MultiShop.Order.Application\Features\Mediator\Results\OrderingResult'da:
+GetOrderingByUserIdQueryResult class'ı oluşturuldu.
+
+=> Services\Order\Core\MultiShop.Order.Application\Features\Mediator\Queries\OrderingQueries'de:
+GetOrderingByUserIdQuery class'ı oluşturuldu.
+
+=> Services\Order\Core\MultiShop.Order.Application\Features\Mediator\Handlers\OrderingHandlers'da:
+GetOrderingByUserIdQueryHandler class'ı oluşturuldu.
+
+=> Services\Order\Presentation\MultiShop.Order.WebApi\Controllers\OrderingsController'da:
+GetOrderingByUserId HttpGet metodu oluşturulur.
+
+=> Services\Order\Presentation\MultiShop.Order.WebApi\Program.cs'de:
+Repository register edilir.
+builder.Services.AddScoped(typeof(IOrderingRepository), typeof(OrderingRepository));
+
+=> Postman üzerinden entitye özgü metot testi yapılır.
+POST http://localhost:5001/connect/token token oluşturulur.
+
+GET http://localhost:5000/services/order/orderings token ile istekte bulunulur.
+
+GET http://localhost:5000/services/order/orderings/getorderingbyuserid?id=1 token ile istekte bulunur. UserId'ye göre veri getirilir.
+
+=> Frontends\MultiShop.DtoLayer\OrderDtos'da OrderOrderingDtos folder'ı oluşturulur.
+OrderOrderingDtos folder'ı içinde:
+ResultOrderingByUserIdDto oluşturulur.
+
+=> Frontends\MultiShop.WebUI\Services\OrderServices'de OrderOrderingServices folder'ı oluşturulur.
+OrderOrderingServices folder'ı içinde:
+IOrderOrderingService interface'i ile OrderOrderingService class'ı oluşturulur.
+
+=> Frontends\MultiShop.WebUI\Views\_ViewImports.cshtml'de using eklenir.
+@using MultiShop.DtoLayer.OrderDtos.OrderOrderingDtos
+
+=> Frontends\MultiShop.WebUI\Areas\User\Views'de _ViewImports.cshtml eklenir.
+_ViewImports.cshtml'de using eklenir.
+@using MultiShop.DtoLayer.OrderDtos.OrderOrderingDtos
+
+=> Frontends\MultiShop.WebUI\Areas\User\Views\MyOrder'da:
+MyOrderList.cshtml sayfasında düzenlemeler yapıldı.
+
+=> Frontends\MultiShop.WebUI\Program.cs'de:
+OrderOrderingService register edilir.
+builder.Services.AddHttpClient<IOrderOrderingService, OrderOrderingService>(options =>
+{
+    options.BaseAddress = new Uri($"{values.OcelotUrl}/{values.Order.Path}");
+}).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();

@@ -16,6 +16,7 @@ builder.Services.AddDbContext<OrderContext>();
 
 #region Repository Registration
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+builder.Services.AddScoped(typeof(IOrderingRepository), typeof(OrderingRepository));
 #endregion
 
 #region Service Registration - MediatR

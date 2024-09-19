@@ -22,3 +22,4 @@
 20 -> BasketMicroServiceUIRefactor
 21 -> DiscountMicroServiceUIRefactor
 22 -> OrderMicroServiceUIRefactor
+23 -> UserArea
