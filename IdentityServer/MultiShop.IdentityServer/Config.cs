@@ -80,6 +80,7 @@ namespace MultiShop.IdentityServer
             new ApiResource("ResourcePayment"){Scopes = {"PaymentFullPermission"}},
             new ApiResource("ResourceImage"){Scopes = {"ImageFullPermission"}},
             new ApiResource("ResourceOcelot"){Scopes = {"OcelotFullPermission"}},
+            new ApiResource("ResourceMessage"){Scopes = {"MessageFullPermission"}},
             new ApiResource(IdentityServerConstants.LocalApi.ScopeName)
         };
 
@@ -129,6 +130,9 @@ namespace MultiShop.IdentityServer
             //Ocelot için tam yetki
             new ApiScope("OcelotFullPermission", "Full authority for ocelot operations"),
 
+            //Mesaj işlemlerine dair tam yetki
+            new ApiScope("MessageFullPermission", "Full authority for message operations"),
+
             new ApiScope(IdentityServerConstants.LocalApi.ScopeName)
         };
 
@@ -168,6 +172,7 @@ namespace MultiShop.IdentityServer
                     "PaymentFullPermission",
                     "ImageFullPermission",
                     "OcelotFullPermission",
+                    "MessageFullPermission",
                     IdentityServerConstants.LocalApi.ScopeName,
                     IdentityServerConstants.StandardScopes.Email,
                     IdentityServerConstants.StandardScopes.OpenId,

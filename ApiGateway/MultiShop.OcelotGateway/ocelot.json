@@ -13,7 +13,7 @@
       ],
       "UpstreamPathTemplate": "/services/catalog/{everything}", //Client tarafından gelen istektir. Catalog mikro servisinden gelen her istek setlenir.
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ], //İzin verilen http metotları setlenir.
-      "UpstreamScheme": "http" ,
+      "UpstreamScheme": "http",
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "OcelotAuthenticationScheme",
         "AllowedScopes": [ "CatalogFullPermission" ]
@@ -51,7 +51,7 @@
       ],
       "UpstreamPathTemplate": "/services/order/{everything}", //Client tarafından gelen istektir. Order mikro servisinden gelen her istek setlenir.
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ], //İzin verilen http metotları setlenir.
-      "UpstreamScheme": "http" ,
+      "UpstreamScheme": "http",
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "OcelotAuthenticationScheme",
         "AllowedScopes": [ "OrderFullPermission" ]
@@ -95,6 +95,25 @@
         "AllowedScopes": [ "BasketFullPermission" ]
       }
     },
+    //Message Micro Service
+    {
+      "DownstreamPathTemplate": "/api/{everything}", //Client tarafından gelen isteğe verilen yanıt. Ocelot'un kendi özel komutu everything ile gelen her isteği karşılarız.
+      //"DownstreamScheme": "https",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7078 //Message mikro servisinin port numarası tanımlanır.
+        }
+      ],
+      "UpstreamPathTemplate": "/services/message/{everything}", //Client tarafından gelen istektir. Message mikro servisinden gelen her istek setlenir.
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ], //İzin verilen http metotları setlenir.
+      "UpstreamScheme": "http",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "OcelotAuthenticationScheme",
+        "AllowedScopes": [ "MessageFullPermission" ]
+      }
+    },
     //Comment Micro Service
     {
       "DownstreamPathTemplate": "/api/{everything}", //Client tarafından gelen isteğe verilen yanıt. Ocelot'un kendi özel komutu everything ile gelen her isteği karşılarız.
@@ -108,7 +127,7 @@
       ],
       "UpstreamPathTemplate": "/services/comment/{everything}", //Client tarafından gelen istektir. Comment mikro servisinden gelen her istek setlenir.
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ], //İzin verilen http metotları setlenir.
-      "UpstreamScheme": "http" ,
+      "UpstreamScheme": "http",
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "OcelotAuthenticationScheme",
         "AllowedScopes": [ "CommentFullPermission" ]

@@ -35,8 +35,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ReadMe", "ReadMe", "{A9BC47
 		BasketMicroServiceUIRefactor.txt = BasketMicroServiceUIRefactor.txt
 		CargoMicroService.txt = CargoMicroService.txt
 		CatologMicroService.txt = CatologMicroService.txt
-		CommentMicroService.txt = CommentMicroService.txt
 		ClientCredentialTokenService.txt = ClientCredentialTokenService.txt
+		CommentMicroService.txt = CommentMicroService.txt
 		Contact.txt = Contact.txt
 		DiscountMicroService.txt = DiscountMicroService.txt
 		DiscountMicroServiceUIRefactor.txt = DiscountMicroServiceUIRefactor.txt
@@ -44,14 +44,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ReadMe", "ReadMe", "{A9BC47
 		ECommerce.txt = ECommerce.txt
 		Frontend.txt = Frontend.txt
 		IdentityMicroService.txt = IdentityMicroService.txt
+		MessageMicroService.txt = MessageMicroService.txt
 		OcelotGateway.txt = OcelotGateway.txt
 		OrderMicroService.txt = OrderMicroService.txt
 		OrderMicroServiceUIRefactor.txt = OrderMicroServiceUIRefactor.txt
 		PortNumber.txt = PortNumber.txt
 		ReadingSort.txt = ReadingSort.txt
 		Refactor.txt = Refactor.txt
-		ServiceApiSettings.txt = ServiceApiSettings.txt
 		RegisterLoginOperation.txt = RegisterLoginOperation.txt
+		ServiceApiSettings.txt = ServiceApiSettings.txt
 		UserArea.txt = UserArea.txt
 		UserService.txt = UserService.txt
 	EndProjectSection
@@ -90,15 +91,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RapidApi", "RapidApi", "{7C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ApiGateway", "ApiGateway", "{521DBB42-6A73-4D1A-9BB8-2D91DDB699AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiShop.OcelotGateway", "ApiGateway\MultiShop.OcelotGateway\MultiShop.OcelotGateway.csproj", "{2A3DF9DF-2E9C-4686-89BF-55266A9DD604}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MultiShop.OcelotGateway", "ApiGateway\MultiShop.OcelotGateway\MultiShop.OcelotGateway.csproj", "{2A3DF9DF-2E9C-4686-89BF-55266A9DD604}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Payment", "Payment", "{BCEB2530-47AF-4D7A-944E-5209093AEA6C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiShop.Payment", "Services\Payment\MultiShop.Payment\MultiShop.Payment.csproj", "{370D1ABE-FC5C-43A0-BE7F-2C121C4899EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MultiShop.Payment", "Services\Payment\MultiShop.Payment\MultiShop.Payment.csproj", "{370D1ABE-FC5C-43A0-BE7F-2C121C4899EA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Images", "Images", "{2D3D3E20-674B-49E9-A5BF-09D2CD32464E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiShop.Images", "Services\Images\MultiShop.Images\MultiShop.Images.csproj", "{1DB27194-8DDE-4BE5-B67E-07C685A35B8D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MultiShop.Images", "Services\Images\MultiShop.Images\MultiShop.Images.csproj", "{1DB27194-8DDE-4BE5-B67E-07C685A35B8D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Message", "Message", "{A9EA11E7-AD5D-4CFD-A2AD-9715E95638ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiShop.Message", "Services\Message\MultiShop.Message\MultiShop.Message.csproj", "{E030F45B-6110-4038-83D9-8913429A13D7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -182,6 +187,10 @@ Global
 		{1DB27194-8DDE-4BE5-B67E-07C685A35B8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1DB27194-8DDE-4BE5-B67E-07C685A35B8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1DB27194-8DDE-4BE5-B67E-07C685A35B8D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E030F45B-6110-4038-83D9-8913429A13D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E030F45B-6110-4038-83D9-8913429A13D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E030F45B-6110-4038-83D9-8913429A13D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E030F45B-6110-4038-83D9-8913429A13D7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -217,6 +226,8 @@ Global
 		{370D1ABE-FC5C-43A0-BE7F-2C121C4899EA} = {BCEB2530-47AF-4D7A-944E-5209093AEA6C}
 		{2D3D3E20-674B-49E9-A5BF-09D2CD32464E} = {23D2E14E-AA39-46DA-BC3D-188DF748D818}
 		{1DB27194-8DDE-4BE5-B67E-07C685A35B8D} = {2D3D3E20-674B-49E9-A5BF-09D2CD32464E}
+		{A9EA11E7-AD5D-4CFD-A2AD-9715E95638ED} = {23D2E14E-AA39-46DA-BC3D-188DF748D818}
+		{E030F45B-6110-4038-83D9-8913429A13D7} = {A9EA11E7-AD5D-4CFD-A2AD-9715E95638ED}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {69CEE46C-CEF7-4E91-8DBA-09B690BE9FB0}

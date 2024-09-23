@@ -1,0 +1,150 @@
+﻿=> Message Micro Service <=
+
+=> Frontends\MultiShop.WebUI\Areas\User\Views\Message folder'ın da Index.cshtml sayfası oluşturuldu.
+
+=> PostgreSql
+En büyük avantajı ve MsSql'den farkı ücretsiz olmasıdır.
+Makale: https://www.hosting.com.tr/blog/postgresql/
+Download: https://www.enterprisedb.com/downloads/postgres-postgresql-downloads -> Version: 17.RC1
+Password: 1111aA*
+
+=> Pg Admin
+PgAdmin 4 açılır.
+Servers\PostgreSQL 17 seçilir.
+
+=> Services'de Message folder'ı oluşturulur.
+Message folder'ı içinde:
+MultiShop.Message adında .Net 8.0 AspNet Core Web Api projesi oluşturulur. 
+
+=> Services\MultiShop.Message'a paket kurulumu yapılır.
+Microsoft.EntityFrameworkCore 
+Microsoft.EntityFrameworkCore.Design 
+Microsoft.EntityFrameworkCore.Tools 
+Npgsql 
+Npgsql.EntityFrameworkCore.PostgreSQL
+
+
+=> Services\MultiShop.Message'da DAL(Data Access Layer) folder'ı oluşturulur.
+DAL folder'ı içinde:
+Context ve Entities folder'ları oluşturulur.
+
+Entities folder'ı içinde:
+UserMessage class'ı oluşturulur.
+
+Context folder'ı içinde:
+MessageContext class'ı oluşturulur.
+
+=> Services\MultiShop.Message\appsettings.json'da configuration yapılır.
+
+=> Services\MultiShop.Message\Program.cs'de:
+Configuration register edilir.
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<MessageContext>(options =>
+{
+    options.UseNpgsql(connectionString);
+});
+
+=> Postgresql Migration:
+Proje MultiShop.Message seçilir. 
+Package Manager Console'da proje MultiShop.Message seçilir.
+add-migration mig1
+update-database komutları çalıştırılır.
+MultiShopMessageDb veritabanında UserMessage tablosu oluşur.
+
+=> Services\Message\MultiShop.Message'da Dtos folder'ı oluşturulur.
+Dtos folder'ı içinde:
+CreateMessageDto - UpdateMessageDto - ResultMessageDto - ResultInboxMessageDto - ResultSendboxMessageDto - GetByIdMessageDto dto class'ları oluşturulur.
+
+=> Services\MultiShop.Message'a paket kurulumu yapılır.
+AutoMapper.Extensions.Microsoft.DependencyInjection 
+
+=> Services\Message\MultiShop.Message'da Mapping folder'ı oluşturulur.
+Mapping folder'ı içinde:
+GeneralMapping class'ı oluşturulur.
+
+=> Services\Message\MultiShop.Message'da Services folder'ı oluşturulur.
+Services folder'ı içinde:
+IUserMessageService interface'i ile UserMessageService class'ı oluşturulur.
+
+=> Services\Message\MultiShop.Message\Controllers'da:
+UserMessagesController controller'ı oluşturulur.
+
+=> Services\Message\MultiShop.Message\Program.cs'de:
+AutoMapper register edilir.
+builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
+UserMessage servisi register edilir.
+builder.Services.AddScoped<IUserMessageService, UserMessageService>();
+
+=> Services\MultiShop.Message'a paket kurulumu yapılır.
+Microsoft.AspNetCore.Authentication.JwtBearer
+
+=> IdentityServer\MultiShop.IdentityServer\Config.cs'de:
+ResourceMessage ve MessageFullPermission yetkisi tanımlanır.
+
+=> Services\Message\MultiShop.Message\Program.cs'de:
+Authentication tanımlanır.
+
+//JwtBearer token geçerliliğini kontrol eden pakettir.
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+{
+    //Authority JwtBearer'ı kiminle kullanıcağını belirtir. IdentityServerUrl appsettings.json'dan gelir.
+    //Message mikro servisi ayağa kalkarken IdentityServer mikro servisi de ayağa kalkar.
+    options.Authority = builder.Configuration["IdentityServerUrl"];
+    options.Audience = "ResourceMessage";//Config tarafında dinleyici olan key ResourceMessage ApiResource setlenir.
+    options.RequireHttpsMetadata = false;//IdentityServerUrl http olduğu için false set edildi.
+});
+
+app.UseAuthentication();
+
+=> Services\MultiShop.Message\Properties\launchSettings.json'da:
+"launchBrowser": false, //false set edildi.
+"applicationUrl": "http://localhost:7078", //http olarak 7078 portu verildi.
+
+=> Services\MultiShop.Message\appsettings.json'da:
+"IdentityServerUrl": "http://localhost:5001",//5001 IdentityServer'ın ayağa kalktığı port numarasıdır.
+
+=> ApiGateway\MultiShop.OcelotGateway\ocelot.json'da:
+Message mikro servisi yapılandırılır.
+
+=> Postman üzerinden api testi:
+Manager için token alınır.
+POST http://localhost:5001/connect/token
+
+Alınan token ile mesajlar getirilir.
+GET http://localhost:5000/services/message/usermessages
+
+=> Frontends\MultiShop.DtoLayer'da MessageDtos folder'ı oluşturulur.
+MessageDtos folder'ı içinde dto class'ları oluşturulur.
+ResultInboxMessageDto 
+ResultSendboxMessageDto
+
+=> Frontends\MultiShop.WebUI\Services'de MessageServices folder'ı oluşturulur.
+MessageService folder'ı içinde:
+IMessageService interface'i ile MessageService class'ı oluşturulur.
+
+=> Frontends\MultiShop.WebUI\Areas\User\Controllers\MessageController'da:
+Inbox ve Sendbox metotları yazılır.
+
+=> Frontends\MultiShop.WebUI\Areas\User\Views\_ViewImports.cshtml'de:
+Using eklenir.
+@using MultiShop.DtoLayer.MessageDtos
+
+=> Frontends\MultiShop.WebUI\appsettings.json'da:
+Message tanımlanır.
+
+"Message": {
+      "Path": "services/message/"
+    }
+
+=> Frontends\MultiShop.WebUI\Program.cs'de:
+Message service register edilir.
+
+builder.Services.AddHttpClient<IMessageService, MessageService>(options =>
+{
+    options.BaseAddress = new Uri($"{values.OcelotUrl}/{values.Message.Path}");
+}).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
+
+=> Frontends\MultiShop.WebUI\Areas\User\Views\Message'da:
+Inbox.cshtml sayfası düzenlenir.
+Sendbox.cshtml sayfası düzenlenir.

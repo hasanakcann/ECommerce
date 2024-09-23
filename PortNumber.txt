@@ -33,3 +33,6 @@ MultiShop.Payment\Properties\launchSettings.json'da launchBrowser false set edil
 
 -> Images
 MultiShop.Images\Properties\launchSettings.json'da launchBrowser false set edildi. 7077 portu setlendi.
+
+-> Message
+MultiShop.Message\Properties\launchSettings.json'da launchBrowser false set edildi. 7078 portu setlendi.

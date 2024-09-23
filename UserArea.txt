@@ -54,7 +54,7 @@ POST http://localhost:5001/connect/token token oluşturulur.
 
 GET http://localhost:5000/services/order/orderings token ile istekte bulunulur.
 
-GET http://localhost:5000/services/order/orderings/getorderingbyuserid?id=1 token ile istekte bulunur. UserId'ye göre veri getirilir.
+GET http://localhost:5000/services/order/orderings/getorderingbyuserid?id=1 token ile istekte bulunulur. UserId'ye göre veri getirilir.
 
 => Frontends\MultiShop.DtoLayer\OrderDtos'da OrderOrderingDtos folder'ı oluşturulur.
 OrderOrderingDtos folder'ı içinde:
