@@ -24,3 +24,4 @@
 22 -> OrderMicroServiceUIRefactor
 23 -> UserArea
 24 -> MessageMicroService
+25 -> AdminModule

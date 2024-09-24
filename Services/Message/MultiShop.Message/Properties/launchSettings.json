@@ -64,7 +64,7 @@
     "https": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "launchBrowser": true, //false set edildi.
+      "launchBrowser": false, //false set edildi.
       "launchUrl": "swagger",
       "applicationUrl": "http://localhost:7078", //http olarak 7078 portu verildi.
       "environmentVariables": {

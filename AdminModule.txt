@@ -1,0 +1,201 @@
+﻿=> Admin Modülü Eksiklerin Tamamlanması <=
+
+=> IdentityServer\Controllers\UsersController'da:
+GetAllUserList() metodu yazılır. Tüm kullanıcılar listelenir.
+
+Postman'de motot testi:
+POST http://localhost:5001/connect/token token alınır.
+
+Alınan token ile birlikte kullanıcılar listelenir.
+GET http://localhost:5001/api/users/getalluserlist
+
+=> Frontends\MultiShop.DtoLayer\IdentityDtos'da UserDtos folder'ı oluşturulur.
+UserDtos folder'ı içinde:
+ResultUserDto class'ı oluşturulur.
+
+=> Frontends\MultiShop.WebUI\Areas\Admin\Controllers'da UserController isminde MVC controller oluşturulur.
+
+=> Frontends\MultiShop.WebUI\Areas\Admin\View\User'da UserList.cshtml sayfası oluşturulur.
+
+=> Frontends\MultiShop.WebUI\Areas\Admin\View'de _ViewImports.cshtml'de using eklenir.
+@using MultiShop.DtoLayer.IdentityDtos.UserDtos
+
+=> Frontends\MultiShop.WebUI\Services'da UserIdentityServices folder'ı oluşturulur.
+UserIdentityServices folder'ı içinde:
+IUserIdentityService interface ile UserIdentityService class'ı oluşturulur.
+
+=> Frontends\MultiShop.WebUI\Program.cs'de:
+
+builder.Services.AddHttpClient<IUserIdentityService, UserIdentityService>(options =>
+{
+    options.BaseAddress = new Uri(values.IdentityServerUrl);
+}).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
+
+=> IndentityServer\MultiShop.IdentityServer\Config.cs'de:
+Manager ve Admin için CargoFullPermission yetkisi verildi.
+
+Postman üzerinde:
+POST http://localhost:5001/connect/token token alınır. 
+
+Alınan token ile:
+GET http://localhost:7073/api/cargocompanies get isteğinde bulunulur. Kargo şirketleri listelenir.
+
+[
+    {
+        "cargoCompanyId": 2,
+        "cargoCompanyName": "Aras Kargo"
+    },
+    {
+        "cargoCompanyId": 3,
+        "cargoCompanyName": "Mng Kargo"
+    },
+    {
+        "cargoCompanyId": 4,
+        "cargoCompanyName": "Ptt Kargo"
+    }
+]
+
+=> Frontends\MultiShop.DtoLayer'da:
+CargoDtos\CargoCompanyDto folder'ı içinde:
+ResultCargoCompanyDto - CreateCargoCompanyDto - UpdateCargoCompanyDto class'ları oluşturulur.
+
+=> Frontends\MultiShop.WebUI\Areas\Admin\Controllers'da:
+CargoController isminde MVC controller oluşturulur.
+
+=> Frontends\MultiShop.WebUI\Services'da CargoServices folder'ı oluşturulur.
+CargoServices\CargoCompanyServices folder'ı içinde:
+ICargoCompanyService interface'i ile CargoCompanyService class'ı oluşturulur.
+
+=> Frontends\MultiShop.WebUI\Program.cs'de:
+CargoCompanyService register edilir.
+
+builder.Services.AddHttpClient<ICargoCompanyService, CargoCompanyService>(options =>
+{
+    options.BaseAddress = new Uri($"{values.OcelotUrl}/{values.Cargo.Path}");
+}).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
+
+=> Frontends\MultiShop.WebUI\Areas\Admin\Views'de _ViewImports.cshtml de yusing eklenir.
+@using MultiShop.DtoLayer.CargoDtos.CargoCompanyDtos
+
+=> Frontends\MultiShop.WebUI\Areas\Admin\Views\Cargo'da CargoCompanyList.cshtml sayfası oluşturulur.
+
+=> Frontends\MultiShop.WebUI\Areas\Admin\Controllers\CargoController'da metotlar yazılır.
+
+=> Frontends\MultiShop.WebUI\Areas\Admin\Views\Cargo'da:
+CreateCargoCompany.cshtml ve UpdateCargoCompany.cshtml sayfaları oluşturulur.
+
+=> Services\Cargo\MultiShop.Cargo.EntityLayer\Concrete'de:
+CargoCustomer class'ında UserCustomerId property eklenir.
+Migration:
+Proje MultiShop.Cargo.WebApi seçilir.
+Package Manager Console'da proje MultiShop.Cargo.DataAccessLayer seçilir.
+add-migration mig2
+update-database
+komutları çalıştırılır.
+
+=> Services\Cargo\MultiShop.CargoDtoLayer\CargoCustomerDtos'da:
+CreateCargoCustomerDto ve UpdateCargoCustomerDto UserCustomerId property eklenir.
+
+=> Services\Cargo\MultiShop.Cargo.WebApi\Controllers\CargoCustomersController'da:
+CreateCargoCustomer ve UpdateCargoCustomer metotlarında UserCustomerId'ye atama yapılır.
+
+=> Postman üzerinde:
+POST http://localhost:5001/connect/token token alınır.
+Alınan token ile:
+POST http://localhost:7073/api/cargocustomers müşteri eklenir. 
+GET http://localhost:7073/api/cargocustomers müşteriler getirilir. 
+[
+    {
+        "cargoCustomerId": 1,
+        "name": "Merve",
+        "surname": "Yıldırım",
+        "email": "merve@gmail.com",
+        "phone": "a",
+        "district": "b",
+        "city": "c",
+        "address": "d",
+        "userCustomerId": "9b19e63b-1165-47bf-84be-452e6135bd93"
+    },
+    {
+        "cargoCustomerId": 2,
+        "name": "Mehmet",
+        "surname": "Öztürk",
+        "email": "mehmet@gmail.com",
+        "phone": "b",
+        "district": "c",
+        "city": "d",
+        "address": "e",
+        "userCustomerId": "115463af-4e62-4a84-a842-3cb647ab7538"
+    },
+    {
+        "cargoCustomerId": 3,
+        "name": "Cem",
+        "surname": "Kaya",
+        "email": "cem@gmail.com",
+        "phone": "c",
+        "district": "d",
+        "city": "e",
+        "address": "f",
+        "userCustomerId": "b8644db9-7add-4477-b2fd-f4af8fb192cf"
+    },
+    {
+        "cargoCustomerId": 4,
+        "name": "Ayşe",
+        "surname": "Kaya",
+        "email": "ayse@gmail.com",
+        "phone": "d",
+        "district": "e",
+        "city": "f",
+        "address": "g",
+        "userCustomerId": "7b18bf97-b2f2-447b-8041-5d52402984d3"
+    }
+]
+
+=> Services\Cargo\MultiShop.Cargo.DataAccessLayer\Abstract\ICargoCustomerDal.cs'de:
+GetCargoCustomerById metodu yazılır.
+
+=> Services\Cargo\MultiShop.Cargo.DataAccessLayer\EntityFramework\EfCargoCustomerDal.cs'de:
+Entity'e özgü metot yazılır.
+GetCargoCustomerById metodu implement edilir.
+
+=> Services\Cargo\MultiShop.Cargo.BusinessLayer\Abstract\ICargoCustomerService.cs'de:
+TGetCargoCustomerById metodu yazılır.
+
+=> Services\Cargo\MultiShop.Cargo.BusinessLayer\Concrete\CargoCustomerManager.cs'de:
+TGetCargoCustomerById metodu implement edilir.
+
+=> => Services\Cargo\MultiShop.Cargo.WebApi\Controllers\CargoCustomersController.cs'de
+GetCargoCustomerById metodu yazılır.
+
+=> Postman üzerinde:
+POST http://localhost:5001/connect/token token alınır.
+
+DBeaver -> MultiShopIdentityDb -> AspNetUsers tablosunda merve01 kullanıcısına ait Id = "9b19e63b-1165-47bf-84be-452e6135bd93"
+GET http://localhost:7073/api/cargocustomers/GetCargoCustomerById?id=9b19e63b-1165-47bf-84be-452e6135bd93 alınan token ile id ye göre kargo müşterisi getirilir.
+
+=> Frontends\MultiShop.DtoLayer\CargoDtos'da CargoCustomerDtos folder'ı oluşturulur.
+CargoCustomerDtos folder'ı içinde:
+GetCargoCustomerByIdDto adında dto class'ı oluşturulur.
+
+=> Frontends\MultiShop.WebUI\Services\CargoServices'da CargoCustomerServices folder'ı oluşturulur.
+CargoCustomerServices folder'ı içinde:
+ICargoCustomerService interface'i ile CargoCustomerService class'ı oluşturulur.
+
+=> Frontends\MultiShop.WebUI\Areas\Admin\Controllers\UserController'da:
+UserAddressInfo() metodu yazılır.
+
+=> Frontends\MultiShop.WebUI\Areas\Admin\Views\User'da:
+UserAddressInfo.cshtml sayfası oluşturulur.
+
+=> Frontends\MultiShop.WebUI\Areas\Admin\Views\_ViewImports.cshtml'de using eklenir.
+@using MultiShop.DtoLayer.CargoDtos.CargoCustomerDtos
+
+=> Frontends\MultiShop.WebUI\Areas\Admin\Views\User\UserList.cshtml'de:
+Adres Detayı eklenir.
+
+=> Frontends\MultiShop.WebUI\Program.cs'de:
+CargoCustomerService register edilir.
+builder.Services.AddHttpClient<ICargoCustomerService, CargoCustomerService>(options =>
+{
+    options.BaseAddress = new Uri($"{values.OcelotUrl}/{values.Cargo.Path}");
+}).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();

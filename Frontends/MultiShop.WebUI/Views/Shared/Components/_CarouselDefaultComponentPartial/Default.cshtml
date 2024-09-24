@@ -1,4 +1,5 @@
 ﻿@model List<ResultFeatureSliderDto>
+
 @{
     int count = 0;
 }
@@ -15,8 +16,6 @@
                     <li data-target="#header-carousel" data-slide-to="4"></li>
                 </ol>
                 <div class="carousel-inner">
-
-
                     @foreach (var item in Model)
                     {
                         count++;
@@ -50,6 +49,6 @@
                 </div>
             </div>
         </div>
-        @await Component.InvokeAsync("_SpecialOfferDefaultComponentPartial");
+        @await Component.InvokeAsync("_SpecialOfferDefaultComponentPartial")
     </div>
 </div>
