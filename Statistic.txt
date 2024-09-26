@@ -1,0 +1,183 @@
+﻿=> İstatistikler <=
+
+                                                        => Backend Kısmı <=
+=> Services\Catalog\MultiShop.Catalog\Services'da StatisticServices folder'ı oluşturulur.
+StatisticServices folder'ı içinde:
+IStatisticService interface'i ile StatisticService class'ı oluşturulur.
+
+=> Services\Catalog\MultiShop.Catalog\Controllers'da:
+StatisticsController adında Api controller oluşturulur.
+
+=> Services\Catalog\MultiShop.Catalog\Program.cs'de:
+StatisticService register edilir.
+builder.Services.AddScoped<IStatisticService, StatisticService>();
+
+=> Postman üzerinde api testi:
+POST http://localhost:5001/connect/token token alınır.
+Alınan token ile:
+GET http://localhost:5000/services/catalog/statistics/getbrandcount isteğinde bulunulur. 
+GET http://localhost:5000/services/catalog/statistics/getcategorycount isteğinde bulunulur. 
+GET http://localhost:5000/services/catalog/statistics/getproductcount isteğinde bulunulur. 
+GET http://localhost:5000/services/catalog/statistics/getproductaverageprice isteğinde bulunulur.
+GET http://localhost:5000/services/catalog/statistics/getmaxpriceproductname isteğinde bulunulur.
+GET http://localhost:5000/services/catalog/statistics/getminpriceproductname isteğinde bulunulur.
+
+-------------------------------------------------------------------------------------------------------------
+
+=> IdendityServer\Controllers'da StatisticsController adında Api controller oluşturulur.
+Postman'de Statistics controller'ı na istekte bulunulur. GetUserCount() metodunda kullanıcı sayısı getrilir.
+GET http://localhost:5001/api/statistics 
+
+-------------------------------------------------------------------------------------------------------------
+
+=> Services\Comment\MultiShop.Comment\Controllers\CommentsController'da:
+GetActiveCommentCount() - GetPassiveCommentCount() - GetTotalCommentCount() metotları yazılır.
+Postman üzerinde api testi:
+POST http://localhost:5001/connect/token token alınır.
+Alınan token ile:
+GET http://localhost:7075/api/comments/gettotalcommentcount isteğinde bulunulur.
+GET http://localhost:7075/api/comments/getactivecommentcount isteğinde bulunulur.
+GET http://localhost:7075/api/comments/getpassivecommentcount isteğinde bulunulur.
+
+-------------------------------------------------------------------------------------------------------------
+
+=> Services\Discount\MultiShop.Discount\Services'da:
+IDiscountService interface'in de GetDiscountCouponCount() metodu tanımlanır.
+DiscountService class'ın da implement edilen GetDiscountCouponCount() metodu yazılır.
+
+=> Services\Discount\MultiShop.Discount\Controllers\DiscountsController.cs'de:
+GetDiscountCouponCount() metodu yazılır.
+
+Postman üzerinde api testi:
+POST http://localhost:5001/connect/token token alınır.
+Alınan token ile:
+GET http://localhost:7071/api/discounts/getdiscountcouponcount isteğinde bulunulur.
+
+-------------------------------------------------------------------------------------------------------------
+
+=> Services\Message\MultiShop.Message\Services'da:
+IUserMessageService interface'in de GetTotalMessageCount() metodu tanımlanır.
+UserMessageService class'ın da implement edilen GetTotalMessageCount() metodu yazılır.
+
+=> Services\Message\MultiShop.Message\Controllers\UserMessagesController.cs'de:
+GetTotalMessageCount() metodu yazılır.
+
+Postman üzerinde api testi:
+POST http://localhost:5001/connect/token token alınır.
+Alınan token ile:
+GET http://localhost:7078/api/usermessages/gettotalmessagecount isteğinde bulunulur.
+
+-------------------------------------------------------------------------------------------------------------
+                                                     => Frontend Kısmı <=
+
+=> Frontends\MultiShop.WebUI\Areas\Admin\Controllers'da StatisticController adında MVC controller oluşturulur.
+
+=> Frontends\MultiShop.WebUI\wwwroot\ovio-admin-template\html\index.cshtml'den main content tasarımı alınır.
+
+=> Frontends\MultiShop.WebUI\Areas\Admin\Views\Statistic folder'ı içinde Index.cshtml sayfası oluşturulur.
+Main content tasarımı düzenlenir.
+
+=> Frontends\MultiShop.WebUI\Services'da StatisticServices folder'ı oluşturulur.
+StatisticServices folder'ı içinde CatalogStatisticServices folder'ı oluşturulur.
+CatalogStatisticServices folder'ı içinde:
+ICatalogStatisticService interface'i ile CatalogStatisticService class'ı oluşturulur.
+
+CatalogStatisticService'de GetBrandCount() - GetProductCount() - GetCategoryCount() - GetMaxPriceProductName() - GetMinPriceProductName() metotları yazılır.
+
+=> Frontends\MultiShop.WebUI\Areas\Admin\Controllers\StatisticController'da:
+Index() metodunda GetBrandCount() - GetProductCount() - GetCategoryCount() - GetMaxPriceProductName() - GetMinPriceProductName() çağrılır. 
+Frontends\MultiShop.WebUI\Areas\Admin\Views\Statistic\Index.cshtml'de:
+@ViewBag.getBrandCount ile toplam marka sayısı taşınır.
+@ViewBag.getProductCount ile toplam ürün sayısı taşınır.
+@ViewBag.getCategoryCount ile toplam kategori sayısı taşınır.
+@ViewBag.getMaxPriceProductName ile en pahalı ürün taşınır.
+@ViewBag.getMinPriceProductName ile en ucuz ürün taşınır.
+
+=> Frontends\MultiShop.WebUI\Program.cs'de:
+CatalogStatisticService register edilir.
+builder.Services.AddHttpClient<ICatalogStatisticService, CatalogStatisticService>(options =>
+{
+    options.BaseAddress = new Uri($"{values.OcelotUrl}/{values.Catalog.Path}");
+}).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
+
+-------------------------------------------------------------------------------------------------------------
+
+=> Frontends\MultiShop.WebUI\Services\StatisticServices'da UserStatisticServices folder'ı oluşturulur.
+UserStatisticServices folder'ı içinde:
+IUserStatisticService interface'i ile UserStatisticService class'ı oluşturulur.
+
+UserStatisticService'de:
+GetUserCount() metodu yazılır.
+
+=> Frontends\MultiShop.WebUI\Areas\Admin\Controllers\StatisticController'da:
+Index() metodunda GetUserCount() çağrılır.
+@ViewBag.getUserCount ile toplam kullanıcı sayısı taşınır.
+
+=> Frontends\MultiShop.WebUI\Program.cs'de:
+UserStatisticService register edilir.
+
+builder.Services.AddHttpClient<IUserStatisticService, UserStatisticService>(options =>
+{
+    options.BaseAddress = new Uri(values.IdentityServerUrl);
+}).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
+
+-------------------------------------------------------------------------------------------------------------
+
+=> Frontends\MultiShop.WebUI\Services\StatisticServices'da CommentStatisticServices folder'ı oluşturulur.
+CommentStatisticServices folder'ı içinde:
+ICommentStatisticService interface'i ile CommentStatisticService class'ı oluşturulur.
+CommentStatisticService'de:
+GetActiveCommentCount() - GetPassiveCommentCount() - GetTotalCommentCount() metotları yazılır.
+
+=> Frontends\MultiShop.WebUI\Areas\Admin\Controllers\StatisticController'da:
+Index() metodunda GetActiveCommentCount() - GetPassiveCommentCount() - GetTotalCommentCount() çağrılır.
+
+@ViewBag.getTotalCommentCount ile toplam yorum sayısı taşınır.
+@ViewBag.getActiveCommentCount ile aktif yorum sayısı taşınır.
+@ViewBag.getPassiveCommentCount ile pasif yorum sayısı taşınır.
+
+=> Frontends\MultiShop.WebUI\Program.cs'de:
+CommentStatisticService register edilir.
+
+builder.Services.AddHttpClient<ICommentStatisticService, CommentStatisticService>(options =>
+{
+    options.BaseAddress = new Uri($"{values.OcelotUrl}/{values.Comment.Path}");
+}).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
+
+-------------------------------------------------------------------------------------------------------------
+
+=> Frontends\MultiShop.WebUI\Services\StatisticServices'da DiscountStatisticServices folder'ı oluşturulur.
+DiscountStatisticServices folder'ı içinde:
+IDiscountStatisticService interface'i ile DiscountStatisticService class'ı oluşturulur.
+DiscountStatisticService'de:
+GetDiscountCouponCount() metodu yazılır.
+
+=> Frontends\MultiShop.WebUI\Areas\Admin\Controllers\StatisticController'da:
+Index() metodunda GetDiscountCouponCount() çağrılır.
+@ViewBag.getDiscountCouponCount ile indirim kuponu sayısı taşınır.
+
+=> Frontends\MultiShop.WebUI\Program.cs'de:
+DiscountStatisticService register edilir.
+
+builder.Services.AddHttpClient<IDiscountStatisticService, DiscountStatisticService>(options =>
+{
+    options.BaseAddress = new Uri($"{values.OcelotUrl}/{values.Discount.Path}");
+}).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();
+
+-------------------------------------------------------------------------------------------------------------
+
+=> Frontends\MultiShop.WebUI\Services\StatisticServices'da MessageStatisticServices folder'ı oluşturulur.
+MessageStatisticServices folder'ı içinde:
+IMessageStatisticService interface'i ile MessageStatisticService class'ı oluşturulur.
+MessageStatisticService'de:
+GetTotalMessageCount() metodu yazılır.
+
+=> Frontends\MultiShop.WebUI\Areas\Admin\Controllers\StatisticController'da:
+Index() metodunda GetTotalMessageCount() çağrılır.
+@ViewBag.getTotalMessageCount ile toplam mesaj sayısı taşınır.
+
+MessageStatisticService register edilir.
+builder.Services.AddHttpClient<IMessageStatisticService, MessageStatisticService>(options =>
+{
+    options.BaseAddress = new Uri($"{values.OcelotUrl}/{values.Message.Path}");
+}).AddHttpMessageHandler<ResourceOwnerPasswordTokenHandler>();

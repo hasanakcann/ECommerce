@@ -2,122 +2,134 @@
 using MultiShop.Discount.Context;
 using MultiShop.Discount.Dtos;
 
-namespace MultiShop.Discount.Services
+namespace MultiShop.Discount.Services;
+
+public class DiscountService : IDiscountService
 {
-    public class DiscountService : IDiscountService
+    private readonly DapperContext _context;
+
+    public DiscountService(DapperContext context)
     {
-        private readonly DapperContext _context;
+        _context = context;
+    }
 
-        public DiscountService(DapperContext context)
+    /// <summary>
+    ///     Dapper üzerinde ekleme işlemi sağlanır. Yeni bir indirim kuponu ekleme işlemi yapılır.
+    /// </summary>
+    public async Task CreateDiscountCouponAsync(CreateDiscountCouponDto createCouponDto)
+    {
+        string query = "Insert Into Coupons (Code, Rate, IsActive, ValidDate) values (@code, @rate, @isActive, @validDate)";
+        var parameters = new DynamicParameters();
+        parameters.Add("@code", createCouponDto.Code);
+        parameters.Add("@rate", createCouponDto.Rate);
+        parameters.Add("@isActive", createCouponDto.IsActive);
+        parameters.Add("@validDate", createCouponDto.ValidDate);
+        using (var connection = _context.CreateConnection())
         {
-            _context = context;
+            await connection.ExecuteAsync(query, parameters);
         }
+    }
 
-        /// <summary>
-        ///     Dapper üzerinde ekleme işlemi sağlanır. Yeni bir indirim kuponu ekleme işlemi yapılır.
-        /// </summary>
-        public async Task CreateDiscountCouponAsync(CreateDiscountCouponDto createCouponDto)
+    /// <summary>
+    ///     İndirim kuponu işlemlerinde silme işlemi yapılır.
+    /// </summary>
+    public async Task DeleteDiscountCouponAsync(int id)
+    {
+        string query = "Delete From Coupons where CouponId=@couponId";
+        var parameters = new DynamicParameters();
+        parameters.Add("@couponId", id);
+        using (var connection = _context.CreateConnection())
         {
-            string query = "Insert Into Coupons (Code, Rate, IsActive, ValidDate) values (@code, @rate, @isActive, @validDate)";
-            var parameters = new DynamicParameters();
-            parameters.Add("@code", createCouponDto.Code);
-            parameters.Add("@rate", createCouponDto.Rate);
-            parameters.Add("@isActive", createCouponDto.IsActive);
-            parameters.Add("@validDate", createCouponDto.ValidDate);
-            using (var connection = _context.CreateConnection())
-            {
-                await connection.ExecuteAsync(query, parameters);
-            }
+            await connection.ExecuteAsync(query, parameters);
+        };
+    }
+
+    /// <summary>
+    ///     Tüm indirim kuponları getirilir.
+    /// </summary>
+    public async Task<List<ResultDiscountCouponDto>> GetAllDiscountCouponAsync()
+    {
+        string query = "Select * From Coupons";
+        using (var connection = _context.CreateConnection())
+        {
+            var values = await connection.QueryAsync<ResultDiscountCouponDto>(query);
+            return values.ToList();
         }
+    }
 
-        /// <summary>
-        ///     İndirim kuponu işlemlerinde silme işlemi yapılır.
-        /// </summary>
-        public async Task DeleteDiscountCouponAsync(int id)
+    /// <summary>
+    ///     Id'ye göre indirim kuponları getirilir.
+    /// </summary>
+    public async Task<GetByIdDiscountCouponDto> GetByIdDiscountCouponAsync(int id)
+    {
+        string query = "Select * From Coupons Where CouponId=@couponId";
+        var parameters = new DynamicParameters();
+        parameters.Add("@couponId", id);
+        using (var connection = _context.CreateConnection())
         {
-            string query = "Delete From Coupons where CouponId=@couponId";
-            var parameters = new DynamicParameters();
-            parameters.Add("@couponId", id);
-            using (var connection = _context.CreateConnection())
-            {
-                await connection.ExecuteAsync(query, parameters);
-            };
+            var values = await connection.QueryFirstOrDefaultAsync<GetByIdDiscountCouponDto>(query, parameters);
+            return values;
         }
+    }
 
-        /// <summary>
-        ///     Tüm indirim kuponları getirilir.
-        /// </summary>
-        public async Task<List<ResultDiscountCouponDto>> GetAllDiscountCouponAsync()
+    /// <summary>
+    ///     Koda göre kupon detayları getirilir.
+    /// </summary>
+    public async Task<ResultDiscountCouponDto> GetCodeDetailByCodeAsync(string code)
+    {
+        string query = "Select * From Coupons Where Code=@code";
+        var parameters = new DynamicParameters();
+        parameters.Add("@code", code);
+        using (var connection = _context.CreateConnection())
         {
-            string query = "Select * From Coupons";
-            using (var connection = _context.CreateConnection())
-            {
-                var values = await connection.QueryAsync<ResultDiscountCouponDto>(query);
-                return values.ToList();
-            }
+            var values = await connection.QueryFirstOrDefaultAsync<ResultDiscountCouponDto>(query, parameters);
+            return values;
         }
+    }
 
-        /// <summary>
-        ///     Id'ye göre indirim kuponları getirilir.
-        /// </summary>
-        public async Task<GetByIdDiscountCouponDto> GetByIdDiscountCouponAsync(int id)
+    /// <summary>
+    ///     Kupon sayısı getirilir.
+    /// </summary>
+    public async Task<int> GetDiscountCouponCount()
+    {
+        string query = "Select Count(*) From Coupons";
+        using (var connection = _context.CreateConnection())
         {
-            string query = "Select * From Coupons Where CouponId=@couponId";
-            var parameters = new DynamicParameters();
-            parameters.Add("@couponId", id);
-            using (var connection = _context.CreateConnection())
-            {
-                var values = await connection.QueryFirstOrDefaultAsync<GetByIdDiscountCouponDto>(query, parameters);
-                return values;
-            }
+            var values = await connection.QueryFirstOrDefaultAsync<int>(query);
+            return values;
         }
+    }
 
-        /// <summary>
-        ///     Koda göre kupon detayları getirilir.
-        /// </summary>
-        public async Task<ResultDiscountCouponDto> GetCodeDetailByCodeAsync(string code)
+    /// <summary>
+    ///     İndirim oranı getirilir.
+    /// </summary>
+    public int GetDiscountCouponRate(string code)
+    {
+        string query = "Select Rate From Coupons Where Code=@code";
+        var parameters = new DynamicParameters();
+        parameters.Add("@code", code);
+        using (var connection = _context.CreateConnection())
         {
-            string query = "Select * From Coupons Where Code=@code";
-            var parameters = new DynamicParameters();
-            parameters.Add("@code", code);
-            using (var connection = _context.CreateConnection())
-            {
-                var values = await connection.QueryFirstOrDefaultAsync<ResultDiscountCouponDto>(query, parameters);
-                return values;
-            }
+            var values = connection.QueryFirstOrDefault<int>(query, parameters);
+            return values;
         }
+    }
 
-        /// <summary>
-        ///     İndirim oranı getirilir.
-        /// </summary>
-        public int GetDiscountCouponRate(string code)
+    /// <summary>
+    ///     Güncelleme işlemi yapılır.
+    /// </summary>
+    public async Task UpdateDiscountCouponAsync(UpdateDiscountCouponDto updateCouponDto)
+    {
+        string query = "Update Coupons Set Code=@code, Rate=@rate, IsActive=@isActive, ValidDate=@validDate where CouponId=@couponId";
+        var parameters = new DynamicParameters();
+        parameters.Add("@code", updateCouponDto.Code);
+        parameters.Add("@rate", updateCouponDto.Rate);
+        parameters.Add("@isActive", updateCouponDto.IsActive);
+        parameters.Add("@validDate", updateCouponDto.ValidDate);
+        parameters.Add("@couponId", updateCouponDto.CouponId);
+        using (var connection = _context.CreateConnection())
         {
-            string query = "Select Rate From Coupons Where Code=@code";
-            var parameters = new DynamicParameters();
-            parameters.Add("@code", code);
-            using (var connection = _context.CreateConnection())
-            {
-                var values = connection.QueryFirstOrDefault<int>(query, parameters);
-                return values;
-            }
-        }
-
-        /// <summary>
-        ///     Güncelleme işlemi yapılır.
-        /// </summary>
-        public async Task UpdateDiscountCouponAsync(UpdateDiscountCouponDto updateCouponDto)
-        {
-            string query = "Update Coupons Set Code=@code, Rate=@rate, IsActive=@isActive, ValidDate=@validDate where CouponId=@couponId";
-            var parameters = new DynamicParameters();
-            parameters.Add("@code", updateCouponDto.Code);
-            parameters.Add("@rate", updateCouponDto.Rate);
-            parameters.Add("@isActive", updateCouponDto.IsActive);
-            parameters.Add("@validDate", updateCouponDto.ValidDate);
-            parameters.Add("@couponId", updateCouponDto.CouponId);
-            using (var connection = _context.CreateConnection())
-            {
-                await connection.ExecuteAsync(query, parameters);
-            }
+            await connection.ExecuteAsync(query, parameters);
         }
     }
 }

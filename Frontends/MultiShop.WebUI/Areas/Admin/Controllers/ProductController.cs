@@ -91,21 +91,10 @@ public class ProductController : Controller
         return RedirectToAction("Index", "Product", new { area = "Admin" });
     }
 
-    [HttpGet]
     [Route("ProductListWithCategory")]
     public async Task<IActionResult> ProductListWithCategory()
     {
         ProductViewBagList();
-
-        //var client = _httpClientFactory.CreateClient();
-        //var responseMessage = await client.GetAsync("https://localhost:7070/api/Products/ProductListWithCategory");
-
-        //if (responseMessage.IsSuccessStatusCode)
-        //{
-        //    var jsonData = await responseMessage.Content.ReadAsStringAsync();
-        //    var values = JsonConvert.DeserializeObject<List<ResultProductWithCategoryDto>>(jsonData);
-        //    return View(values);
-        //}
 
         return View();
     }

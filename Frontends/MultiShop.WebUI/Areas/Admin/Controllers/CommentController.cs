@@ -6,13 +6,12 @@ using System.Text;
 
 namespace MultiShop.WebUI.Areas.Admin.Controllers;
 
-[Area("Admin")]
 [AllowAnonymous]
+[Area("Admin")]
 [Route("Admin/Comment")]
 public class CommentController : Controller
 {
     private readonly IHttpClientFactory _httpClientFactory;
-
     public CommentController(IHttpClientFactory httpClientFactory)
     {
         _httpClientFactory = httpClientFactory;

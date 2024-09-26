@@ -55,6 +55,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ReadMe", "ReadMe", "{A9BC47
 		RegisterLoginOperation.txt = RegisterLoginOperation.txt
 		ServiceApiSettings.txt = ServiceApiSettings.txt
 		UserArea.txt = UserArea.txt
+		Statistic.txt = Statistic.txt
 		UserService.txt = UserService.txt
 	EndProjectSection
 EndProject

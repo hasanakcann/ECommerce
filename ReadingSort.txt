@@ -25,3 +25,4 @@
 23 -> UserArea
 24 -> MessageMicroService
 25 -> AdminModule
+26 -> Istatistik 
