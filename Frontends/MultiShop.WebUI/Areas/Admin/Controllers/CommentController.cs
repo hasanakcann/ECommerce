@@ -30,7 +30,7 @@ public class CommentController : Controller
         ViewBag.v3 = "Yorum Listesi";
 
         var client = _httpClientFactory.CreateClient();//Api çağrımı yapılır.
-        var responseMessage = await client.GetAsync("https://localhost:7075/api/Comments");//Yapılacak olan işlemin türü belirtilir. Comment mikro servisinde bulunan Comments controller'ına Get isteğinde bulunulur.
+        var responseMessage = await client.GetAsync("http://localhost:7075/api/Comments");//Yapılacak olan işlemin türü belirtilir. Comment mikro servisinde bulunan Comments controller'ına Get isteğinde bulunulur.
 
         if (responseMessage.IsSuccessStatusCode)//200 OK
         {
@@ -46,7 +46,7 @@ public class CommentController : Controller
     public async Task<IActionResult> DeleteComment(string id)
     {
         var client = _httpClientFactory.CreateClient();
-        var responseMessage = await client.DeleteAsync("https://localhost:7075/api/Comments?id=" + id);
+        var responseMessage = await client.DeleteAsync("http://localhost:7075/api/Comments?id=" + id);
         if (responseMessage.IsSuccessStatusCode)
         {
             return RedirectToAction("Index", "Comment", new { area = "Admin" });
@@ -63,7 +63,7 @@ public class CommentController : Controller
         ViewBag.v2 = "Yorumlar";
         ViewBag.v3 = "Yorum Güncelleme Sayfası";
         var client = _httpClientFactory.CreateClient();
-        var responseMessage = await client.GetAsync("https://localhost:7075/api/Comments/" + id);
+        var responseMessage = await client.GetAsync("http://localhost:7075/api/Comments/" + id);
         if (responseMessage.IsSuccessStatusCode)
         {
             var jsonData = await responseMessage.Content.ReadAsStringAsync();
@@ -82,7 +82,7 @@ public class CommentController : Controller
         var jsonData = JsonConvert.SerializeObject(updateCommentDto);
         StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
-        var responseMessage = await client.PutAsync("https://localhost:7075/api/Comments/", stringContent);
+        var responseMessage = await client.PutAsync("http://localhost:7075/api/Comments/", stringContent);
         if (responseMessage.IsSuccessStatusCode)
         {
             return RedirectToAction("Index", "Comment", new { area = "Admin" });

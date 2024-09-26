@@ -50,7 +50,7 @@ public class ProductListController : Controller
         var client = _httpClientFactory.CreateClient();
         var jsonData = JsonConvert.SerializeObject(createCommentDto);
         StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-        var responseMessage = await client.PostAsync("https://localhost:7075/api/Comments", stringContent);
+        var responseMessage = await client.PostAsync("http://localhost:7075/api/Comments", stringContent);
         if (responseMessage.IsSuccessStatusCode)
         {
             return RedirectToAction("Index", "Default");
